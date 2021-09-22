@@ -23,13 +23,13 @@ const FormInput: React.FC<FieldProps> = (props) => {
   const handleClick = () => setShow(!show);
 
   return (
-    <FormControl my={2} isInvalid={meta.error && meta.touched}>
+    <FormControl my={2} isInvalid={(meta.error && meta.touched) || false}>
       <FormLabel htmlFor={field.name}>{props.label}</FormLabel>
       <InputGroup>
         <Input
           {...field}
           id={field.name}
-          type={show ? "text" : "password"}
+          type={show || props.type !== "password" ? "text" : "password"}
           placeholder={props.placeholder}
         />
         {props.type === "password" && (

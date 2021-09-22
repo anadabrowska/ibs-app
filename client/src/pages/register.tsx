@@ -1,26 +1,26 @@
-import React from "react";
-import { Form, Formik } from "formik";
 import { Button, Container, Heading, Link } from "@chakra-ui/react";
-import FormWrapper from "../components/FormWrapper";
-import FormInput from "../components/FormInput";
-import { useLoginMutation } from "../generated/graphql";
-import { mapErrors } from "../utils/mapErrors";
+import { Form, Formik } from "formik";
 import { useRouter } from "next/dist/client/router";
+import React from "react";
+import FormInput from "../components/FormInput";
+import FormWrapper from "../components/FormWrapper";
+import { useRegisterMutation } from "../generated/graphql";
+import { mapErrors } from "../utils/mapErrors";
 import NextLink from "next/link";
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   const router = useRouter();
-  const [{}, login] = useLoginMutation();
+  const [{}, register] = useRegisterMutation();
   return (
     <Formik
-      initialValues={{ email: "", password: "" }}
+      initialValues={{ firstName: "", lastName: "", email: "", password: "" }}
       onSubmit={async (values, { setErrors }) => {
-        const response = await login(values);
+        const response = await register(values);
         console.log(response);
 
-        if (response.data?.login.errors) {
-          setErrors(mapErrors(response.data.login.errors));
-        } else if (response.data?.login.user) {
+        if (response.data?.register.errors) {
+          setErrors(mapErrors(response.data.register.errors));
+        } else if (response.data?.register.user) {
           router.push("/");
         }
       }}
@@ -29,8 +29,10 @@ const Login: React.FC = () => {
         <FormWrapper>
           <Form>
             <Heading mb={4} as="h4" size="md">
-              Sign in to your acconut
+              Sign up to IBS-App
             </Heading>
+            <FormInput name="firstName" label="first name" placeholder="Ann" />
+            <FormInput name="lastName" label="last name" placeholder="Smith" />
             <FormInput
               name="email"
               label="email"
@@ -52,9 +54,9 @@ const Login: React.FC = () => {
             </Button>
           </Form>
           <Container mt={4} textAlign="center">
-            <p>New to IBS-App?</p>
-            <NextLink href="/register">
-              <Link color="teal.500">Create new account</Link>
+            <p>Already have an account?</p>
+            <NextLink href="/login">
+              <Link color="teal.500">Sign in to an existing account</Link>
             </NextLink>
           </Container>
         </FormWrapper>
@@ -63,4 +65,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Register;

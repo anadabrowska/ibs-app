@@ -10,8 +10,9 @@ import { User } from "./entities/User";
 import redis from "redis";
 import session from "express-session";
 import connectRedis from "connect-redis";
-import { __prod__ } from "./constants";
+import { COOKIE_NAME, __prod__ } from "./constants";
 import { Context } from "./types";
+import cors from "cors";
 
 declare module "express-session" {
   export interface SessionData {
@@ -37,8 +38,15 @@ const main = async () => {
   const redisClient = redis.createClient();
 
   app.use(
+    cors({
+      origin: "http://localhost:3000",
+      credentials: true,
+    })
+  );
+
+  app.use(
     session({
-      name: "session-id",
+      name: COOKIE_NAME,
       store: new RedisStore({
         client: redisClient,
         //TODO: think of session length, now it's forever

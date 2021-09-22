@@ -11,6 +11,7 @@ import {
 import argon2 from "argon2";
 import { User } from "../entities/User";
 import { Context } from "src/types";
+import { COOKIE_NAME } from "../constants";
 
 @InputType()
 class RegisterInput {
@@ -79,7 +80,7 @@ export class UserResover {
       return {
         errors: [
           {
-            fieldName: "email",
+            fieldName: "password",
             message: "Passowrd does not fulfill all requirements",
           },
         ],
@@ -90,7 +91,7 @@ export class UserResover {
       lastName: input.lastName,
       email: input.email,
       password: hashedPassword,
-    });
+    }).save();
 
     return {
       user,
@@ -133,5 +134,20 @@ export class UserResover {
     return {
       user,
     };
+  }
+
+  @Mutation(() => Boolean)
+  logout(@Ctx() { req, res }: Context) {
+    return new Promise((resolve) =>
+      req.session.destroy((error) => {
+        res.clearCookie(COOKIE_NAME);
+        if (error) {
+          console.log(error);
+          resolve(false);
+          return;
+        }
+        resolve(true);
+      })
+    );
   }
 }

@@ -1,11 +1,11 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Center, Flex } from "@chakra-ui/react";
 import React from "react";
 
 interface FormWrapperProps {}
 
 const FormWrapper: React.FC<FormWrapperProps> = ({ children }) => {
   return (
-    <Flex minHeight="100vh" width="full" align="center" justifyContent="center">
+    <Center minHeight="100vh">
       <Box
         p={3}
         borderWidth={1}
@@ -17,7 +17,7 @@ const FormWrapper: React.FC<FormWrapperProps> = ({ children }) => {
       >
         {children}
       </Box>
-    </Flex>
+    </Center>
   );
 };
 
