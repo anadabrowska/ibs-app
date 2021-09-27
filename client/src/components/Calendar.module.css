@@ -1,0 +1,25 @@
+.calendar {
+  height: max-content;
+  width: max-content;
+  padding: 0.75em;
+  position: relative;
+  overflow: hidden;
+}
+
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 25px;
+  font-weight: 600;
+  padding: 10px 0px;
+}
+
+.weekDays {
+  height: 50px;
+  font-weight: 600;
+}
+
+.monthDay {
+  height: 40px;
+}
