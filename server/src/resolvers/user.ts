@@ -9,9 +9,11 @@ import {
   Resolver,
 } from "type-graphql";
 import argon2 from "argon2";
+import { v4 } from "uuid";
 import { User } from "../entities/User";
 import { Context } from "src/types";
-import { COOKIE_NAME } from "../constants";
+import { COOKIE_NAME, FORGOT_PASSWORD_KEY_PREFIX } from "../constants";
+import { sendEmail } from "../utils/sendEmail";
 
 @InputType()
 class RegisterInput {
@@ -49,8 +51,16 @@ class UserResponse {
   user?: User;
 }
 
+@ObjectType()
+class ActionResponse {
+  @Field(() => [FieldError], { nullable: true })
+  errors?: FieldError[];
+  @Field(() => Boolean, { nullable: true })
+  success?: Boolean;
+}
+
 @Resolver()
-export class UserResover {
+export class UserResolver {
   @Query(() => User, { nullable: true })
   async me(@Ctx() { req }: Context) {
     if (!req.session.userId) {
@@ -149,5 +159,54 @@ export class UserResover {
         resolve(true);
       })
     );
+  }
+
+  @Mutation(() => ActionResponse)
+  async forgotPassword(
+    @Arg("email") email: string,
+    @Ctx() { redis }: Context
+  ): Promise<ActionResponse> {
+    //TODO: add MUCH better validation
+
+    if (email.length <= 2) {
+      return {
+        errors: [
+          {
+            fieldName: "email",
+            message: "Invalid email",
+          },
+        ],
+      };
+    }
+
+    const user = await User.findOne({ where: { email: email } });
+
+    if (!user) {
+      return {
+        errors: [
+          {
+            fieldName: "email",
+            message: "User with this email doesn't exist",
+          },
+        ],
+      };
+    }
+
+    const token = v4();
+
+    //token expores after a day
+    await redis.set(
+      FORGOT_PASSWORD_KEY_PREFIX + token,
+      user.id,
+      "ex",
+      1000 * 60 * 60 * 24 * 1
+    );
+
+    await sendEmail(
+      email,
+      "forgot password",
+      `<a href="http://localhost:3000/change-password/${token}">reset password</a>`
+    );
+    return { success: true };
   }
 }

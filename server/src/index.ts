@@ -5,9 +5,9 @@ import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { TestResover } from "./resolvers/test";
-import { UserResover } from "./resolvers/user";
+import { UserResolver } from "./resolvers/user";
 import { User } from "./entities/User";
-import redis from "redis";
+import Redis from "ioredis";
 import session from "express-session";
 import connectRedis from "connect-redis";
 import { COOKIE_NAME, __prod__ } from "./constants";
@@ -35,7 +35,7 @@ const main = async () => {
   const app = express();
 
   const RedisStore = connectRedis(session);
-  const redisClient = redis.createClient();
+  const redis = new Redis();
 
   app.use(
     cors({
@@ -48,7 +48,7 @@ const main = async () => {
     session({
       name: COOKIE_NAME,
       store: new RedisStore({
-        client: redisClient,
+        client: redis as any,
         //TODO: think of session length, now it's forever
         disableTouch: true,
       }),
@@ -68,10 +68,10 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [TestResover, UserResover],
+      resolvers: [TestResover, UserResolver],
       validate: false,
     }),
-    context: ({ req, res }): Context => ({ req, res }),
+    context: ({ req, res }): Context => ({ req, res, redis }),
   });
 
   apolloServer.applyMiddleware({
