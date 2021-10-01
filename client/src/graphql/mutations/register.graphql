@@ -16,8 +16,7 @@ mutation Register(
       ...StandardUser
     }
     errors {
-      fieldName
-      message
+      ...StarndardError
     }
   }
 }

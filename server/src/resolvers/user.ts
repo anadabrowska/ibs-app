@@ -209,4 +209,63 @@ export class UserResolver {
     );
     return { success: true };
   }
+
+  @Mutation(() => UserResponse)
+  async changePassword(
+    @Arg("token") token: string,
+    @Arg("newPassword") newPassword: string,
+    @Ctx() { redis }: Context
+  ): Promise<UserResponse> {
+    //TODO: add MUCH better validation
+    //create generic validation functions for things like password or email
+
+    if (newPassword.length <= 2) {
+      return {
+        errors: [
+          {
+            fieldName: "newPassword",
+            message: "Passowrd does not fulfill all requirements",
+          },
+        ],
+      };
+    }
+    const key = FORGOT_PASSWORD_KEY_PREFIX + token;
+    const userId = await redis.get(key);
+
+    if (!userId) {
+      return {
+        errors: [
+          {
+            fieldName: "token",
+            message: "Your token expired, request password change again",
+          },
+        ],
+      };
+    }
+
+    const parsedUserId = parseInt(userId);
+    const user = await User.findOne({ where: { id: parsedUserId } });
+
+    if (!user) {
+      return {
+        errors: [
+          {
+            fieldName: "token",
+            message: "This user no longer exist",
+          },
+        ],
+      };
+    }
+
+    await User.update(
+      { id: parsedUserId },
+      {
+        password: await argon2.hash(newPassword),
+      }
+    );
+
+    await redis.del(key);
+
+    return { user };
+  }
 }

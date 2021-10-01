@@ -16,7 +16,6 @@ const Login: React.FC = () => {
       initialValues={{ email: "", password: "" }}
       onSubmit={async (values, { setErrors }) => {
         const response = await login(values);
-        console.log(response);
 
         if (response.data?.login.errors) {
           setErrors(mapErrors(response.data.login.errors));
@@ -42,6 +41,11 @@ const Login: React.FC = () => {
               placeholder="password"
               type="password"
             />
+            <Container textAlign="right">
+              <NextLink href="/forgot-password">
+                <Link color="teal.500">Forgot password?</Link>
+              </NextLink>
+            </Container>
             <Button
               mt={4}
               colorScheme="teal"
