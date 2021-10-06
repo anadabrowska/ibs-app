@@ -37,7 +37,7 @@ export class Form extends BaseEntity {
   generalFeeling: number;
 
   @Field()
-  @Column()
+  @Column({ type: "float" })
   weight: number;
 
   @Field(() => [Symptom], { nullable: true })
@@ -49,7 +49,7 @@ export class Form extends BaseEntity {
   stoolType: number;
 
   @Field()
-  @Column()
+  @Column({ type: "float" })
   sleepLenght: number;
 
   @Field()

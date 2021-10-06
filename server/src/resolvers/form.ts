@@ -12,6 +12,8 @@ import {
   Query,
 } from "type-graphql";
 import { getConnection } from "typeorm";
+import { Activity } from "../entities/activity";
+import { Symptom } from "../entities/symptom";
 
 @InputType()
 class ActivityInput {
@@ -73,10 +75,25 @@ export class FormResover {
     @Arg("input") input: FormInput,
     @Ctx() { req }: Context
   ): Promise<Form> {
+    const { symptoms, activities, ...formInput } = input;
     const form = await Form.create({
-      ...input,
+      ...formInput,
       creatorId: req.session.userId,
     }).save();
+
+    input.activities?.forEach(async (activity) => {
+      await Activity.create({
+        ...activity,
+        formId: form.id,
+      }).save();
+    });
+
+    input.symptoms?.forEach(async (symptom) => {
+      await Symptom.create({
+        ...symptom,
+        formId: form.id,
+      }).save();
+    });
 
     return form;
   }
@@ -87,7 +104,7 @@ export class FormResover {
     @Arg("before") before: string,
     @Arg("after") after: string
   ): Promise<Form[] | undefined> {
-    const result: Form[] | undefined = await getConnection()
+    const forms: Form[] | undefined = await getConnection()
       .getRepository(Form)
       .createQueryBuilder("form")
       .where("form.createdAt < :before", {
@@ -98,6 +115,23 @@ export class FormResover {
       })
       .getMany();
 
-    return result;
+    for (const form of forms) {
+      const activities: Activity[] | undefined = await getConnection()
+        .getRepository(Activity)
+        .createQueryBuilder()
+        .where({ formId: form.id })
+        .getMany();
+
+      form.activities = activities;
+
+      const symptoms: Symptom[] | undefined = await getConnection()
+        .getRepository(Symptom)
+        .createQueryBuilder()
+        .where({ formId: form.id })
+        .getMany();
+
+      form.symptoms = symptoms;
+    }
+    return forms;
   }
 }

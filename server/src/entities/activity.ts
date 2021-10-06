@@ -1,14 +1,24 @@
 import { Field, ObjectType } from "type-graphql";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { Form } from "./form";
 
 @ObjectType()
 @Entity()
-export class Activity {
+export class Activity extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
-  
+
+  @Field()
+  @Column()
+  formId: number;
+
   @Field()
   @Column()
   type: string;
@@ -18,7 +28,7 @@ export class Activity {
   moodAfter: number;
 
   @Field()
-  @Column()
+  @Column({ type: "float" })
   time: number;
 
   @ManyToOne(() => Form, (form) => form.activities)

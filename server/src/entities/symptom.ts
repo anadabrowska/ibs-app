@@ -1,13 +1,23 @@
 import { Field, ObjectType } from "type-graphql";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { Form } from "./form";
 
 @ObjectType()
 @Entity()
-export class Symptom {
+export class Symptom extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Field()
+  @Column()
+  formId: number;
 
   @Field()
   @Column()
@@ -17,9 +27,9 @@ export class Symptom {
   @Column()
   intensity: number;
 
-  @Field()
-  @Column()
-  isDangerous: boolean;
+  @Field({ nullable: true })
+  @Column({ nullable: true })
+  isDangerous?: boolean;
 
   @ManyToOne(() => Form, (form) => form.symptoms)
   form: Form;
