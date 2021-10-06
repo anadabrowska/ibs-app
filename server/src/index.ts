@@ -13,6 +13,10 @@ import connectRedis from "connect-redis";
 import { COOKIE_NAME, __prod__ } from "./constants";
 import { Context } from "./types";
 import cors from "cors";
+import { FormResover } from "./resolvers/form";
+import { Form } from "./entities/form";
+import { Activity } from "./entities/activity";
+import { Symptom } from "./entities/symptom";
 
 declare module "express-session" {
   export interface SessionData {
@@ -29,7 +33,7 @@ const main = async () => {
     logging: true,
     synchronize: true,
     migrations: [path.join(__dirname, "./migrations/*")],
-    entities: [User],
+    entities: [User, Form, Symptom, Activity],
   });
 
   const app = express();
@@ -68,7 +72,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [TestResover, UserResolver],
+      resolvers: [TestResover, UserResolver, FormResover],
       validate: false,
     }),
     context: ({ req, res }): Context => ({ req, res, redis }),
