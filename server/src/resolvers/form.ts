@@ -68,7 +68,7 @@ class FormInput {
 }
 
 @Resolver()
-export class FormResover {
+export class FormResolver {
   @Mutation(() => Form)
   @UseMiddleware(isAuth)
   async createForm(

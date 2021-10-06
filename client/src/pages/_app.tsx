@@ -24,7 +24,7 @@ function updateQueryWithTypes<Result, Query>(
 }
 
 const client = createClient({
-  url: "http://localhost:4000/graphql",
+  url: process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/graphql",
   fetchOptions: {
     credentials: "include",
   },

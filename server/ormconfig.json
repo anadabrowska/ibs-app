@@ -1,0 +1,10 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": "postgres",
+  "database": "ibs-app",
+  "entities": ["dist/entities/**/*{.js,.ts}"],
+  "migrations": ["dist/migrations/**/*{.js,.ts}"]
+}
