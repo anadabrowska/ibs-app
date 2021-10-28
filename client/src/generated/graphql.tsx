@@ -20,10 +20,64 @@ export type ActionResponse = {
   success?: Maybe<Scalars['Boolean']>;
 };
 
+export type Activity = {
+  __typename?: 'Activity';
+  formId: Scalars['Float'];
+  id: Scalars['Float'];
+  moodAfter: Scalars['Float'];
+  time: Scalars['Float'];
+  type: Scalars['String'];
+};
+
+export type ActivityInput = {
+  moodAfter: Scalars['Float'];
+  time: Scalars['Float'];
+  type: Scalars['String'];
+};
+
 export type FieldError = {
   __typename?: 'FieldError';
   fieldName: Scalars['String'];
   message: Scalars['String'];
+};
+
+export type Form = {
+  __typename?: 'Form';
+  activities?: Maybe<Array<Activity>>;
+  createdAt: Scalars['String'];
+  creatorId: Scalars['Float'];
+  generalFeeling: Scalars['Float'];
+  id: Scalars['Float'];
+  inTherapy: Scalars['Boolean'];
+  menstruation?: Maybe<Scalars['Boolean']>;
+  migraine: Scalars['Boolean'];
+  mood: Scalars['Float'];
+  notes?: Maybe<Scalars['String']>;
+  pollakiuria: Scalars['Boolean'];
+  sleepLenght: Scalars['Float'];
+  sleepQuality: Scalars['Float'];
+  stoolType: Scalars['Float'];
+  stress: Scalars['Float'];
+  symptoms?: Maybe<Array<Symptom>>;
+  udpatedAt: Scalars['String'];
+  weight: Scalars['Float'];
+};
+
+export type FormInput = {
+  activities?: Maybe<Array<ActivityInput>>;
+  generalFeeling: Scalars['Float'];
+  inTherapy: Scalars['Boolean'];
+  menstruation?: Maybe<Scalars['Boolean']>;
+  migraine: Scalars['Boolean'];
+  mood: Scalars['Float'];
+  notes?: Maybe<Scalars['String']>;
+  pollakiuria: Scalars['Boolean'];
+  sleepLenght: Scalars['Float'];
+  sleepQuality: Scalars['Float'];
+  stoolType: Scalars['Float'];
+  stress: Scalars['Float'];
+  symptoms?: Maybe<Array<SymptomInput>>;
+  weight: Scalars['Float'];
 };
 
 export type LoginInput = {
@@ -34,6 +88,7 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   changePassword: UserResponse;
+  createForm: Form;
   forgotPassword: ActionResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
@@ -44,6 +99,11 @@ export type Mutation = {
 export type MutationChangePasswordArgs = {
   newPassword: Scalars['String'];
   token: Scalars['String'];
+};
+
+
+export type MutationCreateFormArgs = {
+  input: FormInput;
 };
 
 
@@ -63,8 +123,15 @@ export type MutationRegisterArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  formsFromTimeRange?: Maybe<Array<Form>>;
   me?: Maybe<User>;
   test: Scalars['String'];
+};
+
+
+export type QueryFormsFromTimeRangeArgs = {
+  after: Scalars['String'];
+  before: Scalars['String'];
 };
 
 export type RegisterInput = {
@@ -72,6 +139,21 @@ export type RegisterInput = {
   firstName: Scalars['String'];
   lastName: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type Symptom = {
+  __typename?: 'Symptom';
+  formId: Scalars['Float'];
+  id: Scalars['Float'];
+  intensity: Scalars['Float'];
+  isDangerous?: Maybe<Scalars['Boolean']>;
+  name: Scalars['String'];
+};
+
+export type SymptomInput = {
+  intensity: Scalars['Float'];
+  isDangerous?: Maybe<Scalars['Boolean']>;
+  name: Scalars['String'];
 };
 
 export type User = {
@@ -102,6 +184,13 @@ export type ChangePasswordMutationVariables = Exact<{
 
 export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, email: string, firstName: string, lastName: string }> } };
 
+export type CreateFormMutationVariables = Exact<{
+  input: FormInput;
+}>;
+
+
+export type CreateFormMutation = { __typename?: 'Mutation', createForm: { __typename?: 'Form', id: number, createdAt: string, generalFeeling: number, weight: number, stoolType: number, sleepLenght: number, sleepQuality: number, mood: number, stress: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', type: string, moodAfter: number, time: number }>> } };
+
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
 }>;
@@ -131,6 +220,14 @@ export type RegisterMutationVariables = Exact<{
 
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, email: string, firstName: string, lastName: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
+
+export type FormsFromTimeRangeQueryVariables = Exact<{
+  before: Scalars['String'];
+  after: Scalars['String'];
+}>;
+
+
+export type FormsFromTimeRangeQuery = { __typename?: 'Query', formsFromTimeRange?: Maybe<Array<{ __typename?: 'Form', createdAt: string, generalFeeling: number, weight: number, stoolType: number, sleepLenght: number, sleepQuality: number, mood: number, stress: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', name: string, intensity: number }>>, activities?: Maybe<Array<{ __typename?: 'Activity', type: string, moodAfter: number, time: number }>> }>> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -167,6 +264,40 @@ ${StandardUserFragmentDoc}`;
 
 export function useChangePasswordMutation() {
   return Urql.useMutation<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument);
+};
+export const CreateFormDocument = gql`
+    mutation createForm($input: FormInput!) {
+  createForm(input: $input) {
+    id
+    createdAt
+    generalFeeling
+    weight
+    symptoms {
+      name
+      intensity
+      isDangerous
+    }
+    stoolType
+    sleepLenght
+    sleepQuality
+    mood
+    stress
+    inTherapy
+    menstruation
+    migraine
+    pollakiuria
+    notes
+    activities {
+      type
+      moodAfter
+      time
+    }
+  }
+}
+    `;
+
+export function useCreateFormMutation() {
+  return Urql.useMutation<CreateFormMutation, CreateFormMutationVariables>(CreateFormDocument);
 };
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
@@ -226,6 +357,38 @@ ${StarndardErrorFragmentDoc}`;
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const FormsFromTimeRangeDocument = gql`
+    query FormsFromTimeRange($before: String!, $after: String!) {
+  formsFromTimeRange(before: $before, after: $after) {
+    createdAt
+    generalFeeling
+    weight
+    symptoms {
+      name
+      intensity
+    }
+    stoolType
+    sleepLenght
+    sleepQuality
+    mood
+    stress
+    activities {
+      type
+      moodAfter
+      time
+    }
+    inTherapy
+    menstruation
+    migraine
+    pollakiuria
+    notes
+  }
+}
+    `;
+
+export function useFormsFromTimeRangeQuery(options: Omit<Urql.UseQueryArgs<FormsFromTimeRangeQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<FormsFromTimeRangeQuery>({ query: FormsFromTimeRangeDocument, ...options });
 };
 export const MeDocument = gql`
     query Me {

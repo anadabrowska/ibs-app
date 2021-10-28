@@ -1,0 +1,28 @@
+mutation createForm($input: FormInput!) {
+  createForm(input: $input) {
+    id
+    createdAt
+    generalFeeling
+    weight
+    symptoms {
+      name
+      intensity
+      isDangerous
+    }
+    stoolType
+    sleepLenght
+    sleepQuality
+    mood
+    stress
+    inTherapy
+    menstruation
+    migraine
+    pollakiuria
+    notes
+    activities {
+      type
+      moodAfter
+      time
+    }
+  }
+}

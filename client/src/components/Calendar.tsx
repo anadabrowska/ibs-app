@@ -2,8 +2,6 @@ import { Center, Divider, Grid } from "@chakra-ui/react";
 import React from "react";
 import styles from "./Calendar.module.css";
 
-interface CalendarProps {}
-
 const Calendar: React.FC = () => {
   const isLeapYear = (year: number) => {
     return (
