@@ -34,7 +34,7 @@ const RadioCard: React.FC<RadioCardProps> = (props) => {
         >
           <FontAwesomeIcon
             icon={[state.isChecked ? "fas" : "far", props.icon || "coffee"]}
-            color={state.isChecked ? "teal" : "white"}
+            color={state.isChecked ? "teal" : "gray"}
             size={state.isChecked ? "3x" : "2x"}
           />
           <Box

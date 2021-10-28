@@ -137,6 +137,7 @@ const CreateForm: React.FC = () => {
 
   const [notes, setNotes] = useState("");
   const onSubmit = async () => {
+    //TODO: ajust the names to be the same on client and server side
     const formState = {
       mood: generalMood,
       weight: weight,

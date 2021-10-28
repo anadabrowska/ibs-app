@@ -7,6 +7,7 @@ import {
   ObjectType,
   Query,
   Resolver,
+  UseMiddleware,
 } from "type-graphql";
 import argon2 from "argon2";
 import { v4 } from "uuid";
@@ -14,6 +15,7 @@ import { User } from "../entities/User";
 import { Context } from "src/types";
 import { COOKIE_NAME, FORGOT_PASSWORD_KEY_PREFIX } from "../constants";
 import { sendEmail } from "../utils/sendEmail";
+import { isAuth } from "../middleware/isAuth";
 
 @InputType()
 class RegisterInput {
@@ -62,6 +64,7 @@ class ActionResponse {
 @Resolver()
 export class UserResolver {
   @Query(() => User, { nullable: true })
+  @UseMiddleware(isAuth)
   async me(@Ctx() { req }: Context) {
     if (!req.session.userId) {
       return null;

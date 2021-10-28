@@ -1,4 +1,4 @@
-import { Box, Center } from "@chakra-ui/react";
+import { Box, Center, Spinner } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import Calendar from "../components/Calendar";
 import TopBar from "../components/TopBar";
@@ -15,9 +15,18 @@ const Index = () => {
   return (
     <div>
       <TopBar />
-      <Box m={4}>Hello {data?.me?.firstName}</Box>
       <Center m={4}>
-        <Calendar />
+        {!data?.me ? (
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="blue.500"
+            size="xl"
+          />
+        ) : (
+          <Calendar />
+        )}
       </Center>
     </div>
   );
