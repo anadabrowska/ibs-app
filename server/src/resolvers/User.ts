@@ -11,7 +11,7 @@ import {
 } from "type-graphql";
 import argon2 from "argon2";
 import { v4 } from "uuid";
-import { User } from "../entities/User";
+import { Gender, User } from "../entities/User";
 import { Context } from "src/types";
 import { COOKIE_NAME, FORGOT_PASSWORD_KEY_PREFIX } from "../constants";
 import { sendEmail } from "../utils/sendEmail";
@@ -23,6 +23,8 @@ class RegisterInput {
   firstName: string;
   @Field()
   lastName: string;
+  @Field()
+  gender: Gender;
   @Field()
   email: string;
   @Field()
@@ -99,9 +101,20 @@ export class UserResolver {
         ],
       };
     }
+    if (input.gender.length === 0) {
+      return {
+        errors: [
+          {
+            fieldName: "gender",
+            message: "this field can't be empty",
+          },
+        ],
+      };
+    }
     const user = await User.create({
       firstName: input.firstName,
       lastName: input.lastName,
+      gender: input.gender,
       email: input.email,
       password: hashedPassword,
     }).save();

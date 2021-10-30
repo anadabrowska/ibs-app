@@ -1,6 +1,7 @@
 mutation Register(
   $firstName: String!
   $lastName: String!
+  $gender: String!
   $email: String!
   $password: String!
 ) {
@@ -8,6 +9,7 @@ mutation Register(
     input: {
       firstName: $firstName
       lastName: $lastName
+      gender: $gender
       email: $email
       password: $password
     }

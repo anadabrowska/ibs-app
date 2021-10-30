@@ -2,18 +2,18 @@ mutation createForm($input: FormInput!) {
   createForm(input: $input) {
     id
     createdAt
-    generalFeeling
+    dayRate
     weight
     symptoms {
       name
       intensity
       isDangerous
     }
-    stoolType
+    stoolTypes
     sleepLenght
     sleepQuality
     mood
-    stress
+    stressLevel
     inTherapy
     menstruation
     migraine

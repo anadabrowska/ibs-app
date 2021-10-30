@@ -146,7 +146,7 @@ const CreateForm: React.FC = () => {
       }),
       sleepLenght: sleepDuration,
       sleepQuality: sleepQuality,
-      stress: stressLevel,
+      stressLevel: stressLevel,
       activities: activities.map((activity) => {
         return {
           type: activity.name,
@@ -154,12 +154,12 @@ const CreateForm: React.FC = () => {
           time: activity.duration,
         };
       }),
-      stoolType: BST,
+      stoolTypes: [BST],
       inTherapy: inTherapy,
       menstruation: menstruation,
       migraine: migraine,
       pollakiuria: pollakiuria,
-      generalFeeling: dayRate,
+      dayRate: dayRate,
       notes: notes,
     };
     await createForm({ input: formState });

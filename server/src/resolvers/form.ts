@@ -38,13 +38,13 @@ class SymptomInput {
 @InputType()
 class FormInput {
   @Field()
-  generalFeeling: number;
+  dayRate: number;
   @Field()
   weight: number;
   @Field(() => [SymptomInput], { nullable: true })
   symptoms?: SymptomInput[];
-  @Field()
-  stoolType: number;
+  @Field(() => [Number])
+  stoolTypes: number[];
   @Field()
   sleepLenght: number;
   @Field()
@@ -52,7 +52,7 @@ class FormInput {
   @Field()
   mood: number;
   @Field()
-  stress: number;
+  stressLevel: number;
   @Field(() => [ActivityInput], { nullable: true })
   activities?: ActivityInput[];
   @Field()

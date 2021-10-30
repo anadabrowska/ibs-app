@@ -30,11 +30,11 @@ export class Form extends BaseEntity {
 
   @Field(() => String)
   @UpdateDateColumn()
-  udpatedAt: Date;
+  updatedAt: Date;
 
   @Field()
   @Column()
-  generalFeeling: number;
+  dayRate: number;
 
   @Field()
   @Column({ type: "float" })
@@ -44,9 +44,9 @@ export class Form extends BaseEntity {
   @OneToMany(() => Symptom, (symptom) => symptom.form)
   symptoms?: Symptom[];
 
-  @Field()
-  @Column()
-  stoolType: number;
+  @Field(() => [Number])
+  @Column("int", { array: true })
+  stoolTypes: number[];
 
   @Field()
   @Column({ type: "float" })
@@ -62,7 +62,7 @@ export class Form extends BaseEntity {
 
   @Field()
   @Column()
-  stress: number;
+  stressLevel: number;
 
   @Field(() => [Activity], { nullable: true })
   @OneToMany(() => Activity, (activity) => activity.form)

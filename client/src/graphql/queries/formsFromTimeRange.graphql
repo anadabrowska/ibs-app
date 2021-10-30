@@ -1,17 +1,17 @@
 query FormsFromTimeRange($before: String!, $after: String!) {
   formsFromTimeRange(before: $before, after: $after) {
     createdAt
-    generalFeeling
+    dayRate
     weight
     symptoms {
       name
       intensity
     }
-    stoolType
+    stoolTypes
     sleepLenght
     sleepQuality
     mood
-    stress
+    stressLevel
     activities {
       type
       moodAfter

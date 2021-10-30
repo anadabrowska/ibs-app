@@ -10,6 +10,12 @@ import {
 } from "typeorm";
 import { Form } from "./form";
 
+export enum Gender {
+  MALE = "MALE",
+  FEMALE = "FEMALE",
+  OTHER = "OTHER",
+}
+
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
@@ -23,11 +29,15 @@ export class User extends BaseEntity {
 
   @Field(() => String)
   @UpdateDateColumn()
-  udpatedAt: Date;
+  updatedAt: Date;
 
   @Field()
   @Column()
   firstName: string;
+
+  @Field()
+  @Column()
+  gender: Gender;
 
   @Field()
   @Column()
