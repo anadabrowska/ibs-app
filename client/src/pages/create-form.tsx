@@ -1,8 +1,9 @@
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
-import { Box, Flex, Heading, HStack, Stack } from "@chakra-ui/layout";
+import { Box, Circle, Flex, Heading, HStack, Stack } from "@chakra-ui/layout";
 import {
   Button,
+  CloseButton,
   Collapse,
   Slider,
   SliderFilledTrack,
@@ -15,7 +16,8 @@ import {
 import { IconName } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Form, Formik } from "formik";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
 import ActivityForm, { IActivity } from "../components/ActivityForm";
 import RadioCard, { RadioType } from "../components/RadioCard";
 import SymptomForm, { ISymptom } from "../components/SymptomForm";
@@ -28,6 +30,7 @@ export type RadioOpiton = {
 };
 
 const CreateForm: React.FC = () => {
+  const router = useRouter();
   const [{ fetching }, createForm] = useCreateFormMutation();
 
   const [activities, setActivities] = useState<IActivity[]>([]);
@@ -168,6 +171,17 @@ const CreateForm: React.FC = () => {
   return (
     <Flex minH={"100vh"} align={"center"} justify={"center"}>
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={[3, 6, 9]}>
+        <Circle
+          position="absolute"
+          top={[3, 5]}
+          left={[3, 5]}
+          borderWidth={2}
+          onClick={() => {
+            router.replace("/");
+          }}
+        >
+          <CloseButton size="md" />
+        </Circle>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"}>How was your day?</Heading>
         </Stack>

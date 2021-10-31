@@ -81,6 +81,16 @@ export class UserResolver {
 
     //TODO: add MUCH better validation
 
+    if (input.gender.length === 0) {
+      return {
+        errors: [
+          {
+            fieldName: "gender",
+            message: "this field can't be empty",
+          },
+        ],
+      };
+    }
     if (input.email.length <= 2) {
       return {
         errors: [
@@ -101,16 +111,7 @@ export class UserResolver {
         ],
       };
     }
-    if (input.gender.length === 0) {
-      return {
-        errors: [
-          {
-            fieldName: "gender",
-            message: "this field can't be empty",
-          },
-        ],
-      };
-    }
+
     const user = await User.create({
       firstName: input.firstName,
       lastName: input.lastName,

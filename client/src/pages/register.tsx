@@ -3,6 +3,7 @@ import {
   Container,
   Divider,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Heading,
   Link,
@@ -10,7 +11,7 @@ import {
   RadioGroup,
   Stack,
 } from "@chakra-ui/react";
-import { Form, Formik, useField } from "formik";
+import { Form, Formik } from "formik";
 import { useRouter } from "next/dist/client/router";
 import React from "react";
 import FormInput from "../components/FormInput";
@@ -27,7 +28,6 @@ export enum Gender {
 
 const Register: React.FC = () => {
   const router = useRouter();
-  const [gender, setGender] = React.useState("");
   const [{}, register] = useRegisterMutation();
   return (
     <Formik
@@ -39,7 +39,6 @@ const Register: React.FC = () => {
         password: "",
       }}
       onSubmit={async (values, { setErrors }) => {
-        values.gender = gender;
         const response = await register(values);
         console.log(response);
         if (response.data?.register.errors) {
@@ -57,15 +56,26 @@ const Register: React.FC = () => {
             </Heading>
             <FormInput name="firstName" label="first name" placeholder="Ann" />
             <FormInput name="lastName" label="last name" placeholder="Smith" />
-            <FormControl my={2} mb={6}>
+            <FormControl
+              my={2}
+              mb={6}
+              isInvalid={(props.errors.gender && props.touched.gender) || false}
+            >
               <FormLabel htmlFor="gender">gender</FormLabel>
-              <RadioGroup onChange={setGender} value={gender} name="gender">
+              <RadioGroup
+                onChange={(e) =>
+                  props.setValues({ ...props.values, gender: e })
+                }
+                value={props.values.gender}
+                name="gender"
+              >
                 <Stack direction="row">
                   <Radio value={Gender.FEMALE}>Female</Radio>
                   <Radio value={Gender.MALE}>Male</Radio>
                   <Radio value={Gender.OTHER}>Other</Radio>
                 </Stack>
               </RadioGroup>
+              <FormErrorMessage>{props.errors.gender}</FormErrorMessage>
             </FormControl>
             <Divider />
             <FormInput
