@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { RadioOpiton } from "../pages/create-form";
+import { RadioOpiton } from "../utils/dailyFormUtils";
 import RadioCard, { RadioType } from "./RadioCard";
 
 export interface IActivity {
