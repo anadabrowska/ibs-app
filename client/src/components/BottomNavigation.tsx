@@ -26,6 +26,7 @@ const BottomNavigation: React.FC = () => {
         </Tab>
         <Circle
           boxSize={16}
+          cursor="pointer"
           transform={"translateX(-50%)"}
           position="fixed"
           left="50%"

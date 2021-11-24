@@ -31,7 +31,7 @@ const SymptomForm: React.FC<ISymptomForm> = ({
   const symptoms = [
     { name: "stomachache", isDangerous: false },
     { name: "headache", isDangerous: false },
-    { name: "nossia", isDangerous: false },
+    { name: "nausea", isDangerous: false },
     { name: "dizziness", isDangerous: false },
   ];
 

@@ -97,6 +97,36 @@ export class FormResolver {
 
     return form;
   }
+  @Query(() => Form, { nullable: true })
+  @UseMiddleware(isAuth)
+  async dayForm(@Arg("date") date: string): Promise<Form | undefined> {
+    const form: Form | undefined = await getConnection()
+      .getRepository(Form)
+      .createQueryBuilder("form")
+      .where(`DATE_TRUNC('day', "createdAt") = :date`, {
+        date: date,
+      })
+      .getOne();
+
+    if (form) {
+      const activities: Activity[] | undefined = await getConnection()
+        .getRepository(Activity)
+        .createQueryBuilder()
+        .where({ formId: form.id })
+        .getMany();
+
+      form.activities = activities;
+
+      const symptoms: Symptom[] | undefined = await getConnection()
+        .getRepository(Symptom)
+        .createQueryBuilder()
+        .where({ formId: form.id })
+        .getMany();
+
+      form.symptoms = symptoms;
+    }
+    return form;
+  }
 
   @Query(() => [Form], { nullable: true })
   @UseMiddleware(isAuth)
@@ -107,11 +137,11 @@ export class FormResolver {
     const forms: Form[] | undefined = await getConnection()
       .getRepository(Form)
       .createQueryBuilder("form")
-      .where("form.createdAt < :before", {
-        before: new Date(before),
+      .where(`DATE_TRUNC('day', "createdAt") <= :before`, {
+        before: before,
       })
-      .andWhere("form.createdAt >= :after", {
-        after: new Date(after),
+      .andWhere(`DATE_TRUNC('day', "createdAt") >= :after`, {
+        after: after,
       })
       .getMany();
 

@@ -1,0 +1,5 @@
+query dayForm($date: String!) {
+  dayForm(date: $date) {
+    ...FormData
+  }
+}

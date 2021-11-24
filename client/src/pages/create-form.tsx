@@ -13,21 +13,14 @@ import {
   Textarea,
   useRadioGroup,
 } from "@chakra-ui/react";
-import { IconName } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import ActivityForm, { IActivity } from "../components/ActivityForm";
 import RadioCard, { RadioType } from "../components/RadioCard";
 import SymptomForm, { ISymptom } from "../components/SymptomForm";
 import { useCreateFormMutation } from "../generated/graphql";
-
-export type RadioOpiton = {
-  title: string;
-  icon: IconName;
-  rate: number;
-};
+import { moodOptions, stressOptions } from "../utils/dailyFormUtils";
 
 const CreateForm: React.FC = () => {
   const router = useRouter();
@@ -83,14 +76,6 @@ const CreateForm: React.FC = () => {
 
   const [addBST, setAddBST] = useState(false);
 
-  const moodOptions: RadioOpiton[] = [
-    { title: "amazing", icon: "grin-stars", rate: 5 },
-    { title: "good", icon: "grin", rate: 4 },
-    { title: "ok", icon: "meh", rate: 3 },
-    { title: "bad", icon: "frown-open", rate: 2 },
-    { title: "terrible", icon: "grimace", rate: 1 },
-  ];
-
   const [generalMood, setGeneralMood] = useState(0);
 
   const getMoodRadioProps = useRadioGroup({
@@ -100,14 +85,6 @@ const CreateForm: React.FC = () => {
         moodOptions.find((option) => option.title === value)?.rate || 0
       ),
   });
-
-  const stressOptions: RadioOpiton[] = [
-    { title: "not stressed", icon: "laugh-beam", rate: 1 },
-    { title: "a bit stressed", icon: "meh-rolling-eyes", rate: 2 },
-    { title: "stressed", icon: "meh", rate: 3 },
-    { title: "very stressed", icon: "frown", rate: 4 },
-    { title: "stress overload", icon: "sad-tear", rate: 5 },
-  ];
 
   const [stressLevel, setStressLevel] = useState(0);
 

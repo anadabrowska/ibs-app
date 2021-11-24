@@ -123,9 +123,15 @@ export type MutationRegisterArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  dayForm?: Maybe<Form>;
   formsFromTimeRange?: Maybe<Array<Form>>;
   me?: Maybe<User>;
   test: Scalars['String'];
+};
+
+
+export type QueryDayFormArgs = {
+  date: Scalars['String'];
 };
 
 
@@ -174,9 +180,11 @@ export type UserResponse = {
   user?: Maybe<User>;
 };
 
+export type FormDataFragment = { __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> };
+
 export type StarndardErrorFragment = { __typename?: 'FieldError', fieldName: string, message: string };
 
-export type StandardUserFragment = { __typename?: 'User', id: number, email: string, firstName: string, lastName: string };
+export type StandardUserFragment = { __typename?: 'User', id: number, firstName: string, lastName: string, email: string, gender: string };
 
 export type ChangePasswordMutationVariables = Exact<{
   token: Scalars['String'];
@@ -184,7 +192,7 @@ export type ChangePasswordMutationVariables = Exact<{
 }>;
 
 
-export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, email: string, firstName: string, lastName: string }> } };
+export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, firstName: string, lastName: string, email: string, gender: string }> } };
 
 export type CreateFormMutationVariables = Exact<{
   input: FormInput;
@@ -206,7 +214,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, email: string, firstName: string, lastName: string }> } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, firstName: string, lastName: string, email: string, gender: string }> } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -222,7 +230,22 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, email: string, firstName: string, lastName: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, firstName: string, lastName: string, email: string, gender: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
+
+export type DatesFromTimeRangeQueryVariables = Exact<{
+  before: Scalars['String'];
+  after: Scalars['String'];
+}>;
+
+
+export type DatesFromTimeRangeQuery = { __typename?: 'Query', formsFromTimeRange?: Maybe<Array<{ __typename?: 'Form', id: number, createdAt: string }>> };
+
+export type DayFormQueryVariables = Exact<{
+  date: Scalars['String'];
+}>;
+
+
+export type DayFormQuery = { __typename?: 'Query', dayForm?: Maybe<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> }> };
 
 export type FormsFromTimeRangeQueryVariables = Exact<{
   before: Scalars['String'];
@@ -230,13 +253,42 @@ export type FormsFromTimeRangeQueryVariables = Exact<{
 }>;
 
 
-export type FormsFromTimeRangeQuery = { __typename?: 'Query', formsFromTimeRange?: Maybe<Array<{ __typename?: 'Form', createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', name: string, intensity: number }>>, activities?: Maybe<Array<{ __typename?: 'Activity', type: string, moodAfter: number, time: number }>> }>> };
+export type FormsFromTimeRangeQuery = { __typename?: 'Query', formsFromTimeRange?: Maybe<Array<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> }>> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: number, email: string, firstName: string, lastName: string }> };
+export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: number, firstName: string, lastName: string, email: string, gender: string }> };
 
+export const FormDataFragmentDoc = gql`
+    fragment FormData on Form {
+  id
+  createdAt
+  dayRate
+  weight
+  symptoms {
+    id
+    name
+    intensity
+  }
+  stoolTypes
+  sleepLenght
+  sleepQuality
+  mood
+  stressLevel
+  activities {
+    id
+    type
+    moodAfter
+    time
+  }
+  inTherapy
+  menstruation
+  migraine
+  pollakiuria
+  notes
+}
+    `;
 export const StarndardErrorFragmentDoc = gql`
     fragment StarndardError on FieldError {
   fieldName
@@ -246,9 +298,10 @@ export const StarndardErrorFragmentDoc = gql`
 export const StandardUserFragmentDoc = gql`
     fragment StandardUser on User {
   id
-  email
   firstName
   lastName
+  email
+  gender
 }
     `;
 export const ChangePasswordDocument = gql`
@@ -361,34 +414,36 @@ ${StarndardErrorFragmentDoc}`;
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
 };
-export const FormsFromTimeRangeDocument = gql`
-    query FormsFromTimeRange($before: String!, $after: String!) {
+export const DatesFromTimeRangeDocument = gql`
+    query DatesFromTimeRange($before: String!, $after: String!) {
   formsFromTimeRange(before: $before, after: $after) {
+    id
     createdAt
-    dayRate
-    weight
-    symptoms {
-      name
-      intensity
-    }
-    stoolTypes
-    sleepLenght
-    sleepQuality
-    mood
-    stressLevel
-    activities {
-      type
-      moodAfter
-      time
-    }
-    inTherapy
-    menstruation
-    migraine
-    pollakiuria
-    notes
   }
 }
     `;
+
+export function useDatesFromTimeRangeQuery(options: Omit<Urql.UseQueryArgs<DatesFromTimeRangeQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<DatesFromTimeRangeQuery>({ query: DatesFromTimeRangeDocument, ...options });
+};
+export const DayFormDocument = gql`
+    query dayForm($date: String!) {
+  dayForm(date: $date) {
+    ...FormData
+  }
+}
+    ${FormDataFragmentDoc}`;
+
+export function useDayFormQuery(options: Omit<Urql.UseQueryArgs<DayFormQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<DayFormQuery>({ query: DayFormDocument, ...options });
+};
+export const FormsFromTimeRangeDocument = gql`
+    query FormsFromTimeRange($before: String!, $after: String!) {
+  formsFromTimeRange(before: $before, after: $after) {
+    ...FormData
+  }
+}
+    ${FormDataFragmentDoc}`;
 
 export function useFormsFromTimeRangeQuery(options: Omit<Urql.UseQueryArgs<FormsFromTimeRangeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<FormsFromTimeRangeQuery>({ query: FormsFromTimeRangeDocument, ...options });

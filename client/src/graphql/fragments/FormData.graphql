@@ -1,0 +1,27 @@
+fragment FormData on Form {
+  id
+  createdAt
+  dayRate
+  weight
+  symptoms {
+    id
+    name
+    intensity
+  }
+  stoolTypes
+  sleepLenght
+  sleepQuality
+  mood
+  stressLevel
+  activities {
+    id
+    type
+    moodAfter
+    time
+  }
+  inTherapy
+  menstruation
+  migraine
+  pollakiuria
+  notes
+}

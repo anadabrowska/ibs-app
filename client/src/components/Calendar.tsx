@@ -1,54 +1,21 @@
-import { Center, Divider, Grid } from "@chakra-ui/react";
+import { Center, Circle, Divider, Grid, Text } from "@chakra-ui/react";
 import React from "react";
 import styles from "./Calendar.module.css";
+import router from "next/router";
+import { useDatesFromTimeRangeQuery } from "../generated/graphql";
+import {
+  daysInMonth,
+  isToday,
+  MonthNames,
+  shortWeekNames,
+} from "../utils/calendarUtils";
 
 const Calendar: React.FC = () => {
-  const isLeapYear = (year: number) => {
-    return (
-      (year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) ||
-      (year % 100 === 0 && year % 400 === 0)
-    );
-  };
-
-  const getFebDays = (year: number) => {
-    return isLeapYear(year) ? 29 : 28;
-  };
-
-  const shortWeekNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
-  const MonthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  const daysInMonth = [
-    31,
-    getFebDays(2021),
-    31,
-    30,
-    31,
-    30,
-    31,
-    31,
-    30,
-    31,
-    30,
-    31,
-  ];
-
   const generateMonthlyCalendar = (
     month: number,
     year: number,
-    current: boolean
+    current: boolean,
+    dates: number[]
   ) => {
     const firstDay = new Date(year, month, 1);
 
@@ -57,12 +24,46 @@ const Calendar: React.FC = () => {
     const monthDays = [];
 
     for (let i = 0; i <= daysInMonth[month] + start - 1; i++) {
+      const day = i - start + 1;
+      const currentDate = new Date(`${year}-${month + 1}-${day}`);
       if (i < start) {
         monthDays.push(<Center className={styles.monthDay}></Center>);
       } else {
-        monthDays.push(
-          <Center className={styles.monthDay}>{i - start + 1}</Center>
-        );
+        if (isToday(day, month, year)) {
+          monthDays.push(
+            <Center
+              cursor="pointer"
+              onClick={() => {
+                router.push(`/day/${day}-${month + 1}-${year}`);
+              }}
+              className={styles.monthDay}
+            >
+              <Circle size={35} bg="teal" color="white">
+                <Text as="b" fontSize="lg">
+                  {day}
+                </Text>
+              </Circle>
+            </Center>
+          );
+        } else {
+          monthDays.push(
+            <Center
+              cursor="pointer"
+              onClick={() => {
+                router.push(`/day/${day}-${month + 1}-${year}`);
+              }}
+              className={styles.monthDay}
+            >
+              {dates.includes(currentDate.setHours(0, 0, 0, 0)) ? (
+                <Circle size={35} bg="gray" opacity={40} color="white">
+                  {day}
+                </Circle>
+              ) : (
+                day
+              )}
+            </Center>
+          );
+        }
       }
     }
 
@@ -72,7 +73,7 @@ const Calendar: React.FC = () => {
           <span>{MonthNames[month]}</span>
           <span>{year}</span>
         </div>
-        <div className={styles.calendarBody}>
+        <div>
           <div className={styles.weekDays}>
             <Grid templateColumns="repeat(7, 1fr)" gap={5}>
               {shortWeekNames.map((day) => (
@@ -94,15 +95,24 @@ const Calendar: React.FC = () => {
   const month = currDate.getMonth();
   const year = currDate.getFullYear();
 
-  const generateYearlyCalendar = (year: number) =>
-    Array(12)
+  const generateYearlyCalendar = (year: number) => {
+    const [{ data }] = useDatesFromTimeRangeQuery({
+      variables: { before: `${year}-12-31`, after: `${year}-01-01` },
+    });
+
+    const dates = data?.formsFromTimeRange?.map((form) =>
+      new Date(Number(form.createdAt)).setHours(0, 0, 0, 0)
+    );
+
+    return Array(12)
       .fill(0)
       .map((_, i) => (
         <>
-          {generateMonthlyCalendar(i, year, i === month)}
+          {generateMonthlyCalendar(i, year, i === month, dates || [])}
           <Divider mt={10} mb={10} />
         </>
       ));
+  };
   return <div className={styles.calendar}>{generateYearlyCalendar(year)}</div>;
 };
 

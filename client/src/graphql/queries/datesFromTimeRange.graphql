@@ -1,0 +1,6 @@
+query DatesFromTimeRange($before: String!, $after: String!) {
+  formsFromTimeRange(before: $before, after: $after) {
+    id
+    createdAt
+  }
+}
