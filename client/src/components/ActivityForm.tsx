@@ -13,6 +13,7 @@ import {
   SliderFilledTrack,
   SliderThumb,
   useRadioGroup,
+  Button,
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
@@ -36,6 +37,7 @@ interface IActivityForm {
 const ActivityForm: React.FC<IActivityForm> = ({
   activity,
   setActivity,
+  removeActivity,
 }: IActivityForm) => {
   React.useEffect(() => {
     setTimeout(() => setActivity({ ...activity, collapse: true }), 100);
@@ -64,6 +66,18 @@ const ActivityForm: React.FC<IActivityForm> = ({
 
   return (
     <Box px={4} py={2} mb={4}>
+      <Box display="flex" justifyContent="end">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            setActivity({ ...activity, collapse: false });
+            setTimeout(() => removeActivity(activity.id), 150);
+          }}
+        >
+          Remove
+        </Button>
+      </Box>
       <FormLabel>Name</FormLabel>
       <Grid templateColumns="repeat(6, 1fr)" gap={3}>
         <GridItem colSpan={5}>

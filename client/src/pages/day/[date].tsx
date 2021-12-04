@@ -44,30 +44,21 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
   const userQuery = useMeQuery();
   const UserData = userQuery[0].data?.me;
 
-  console.log(data);
-
   const getDifferentDayPath = (
-    day: string,
-    month: string,
-    year: string,
+    day: number,
+    month: number,
+    year: number,
     direction: Direction
   ) => {
-    var dateObj = new Date(
-      Number(year),
-      Number(month),
-      Number(day),
-      0,
-      0,
-      0,
-      0
-    );
+    const dateObj = new Date(year, month, day);
     direction === Direction.Prev
       ? dateObj.setDate(dateObj.getDate() - 1)
       : dateObj.setDate(dateObj.getDate() + 1);
     const newDay = dateObj.getDate();
     const newMonth = dateObj.getMonth();
     const newYear = dateObj.getFullYear();
-    return `${newDay}-${newMonth}-${newYear}`;
+    // months in Date are from 0 to 11
+    return `${newDay}-${newMonth + 1}-${newYear}`;
   };
 
   const dayRate = moodOptions.find(
@@ -109,9 +100,9 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
               cursor="pointer"
               onClick={() => {
                 const newDate = getDifferentDayPath(
-                  day,
-                  month,
-                  year,
+                  Number(day),
+                  Number(month) - 1,
+                  Number(year),
                   Direction.Prev
                 );
                 router.push(`/day/${newDate}`);
@@ -120,16 +111,16 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
               <FontAwesomeIcon icon={faChevronLeft} />
             </Box>
             <Text width={[280, 350]} textAlign="center">
-              {day} {MonthNames[Number(month)]} {year}
+              {day} {MonthNames[Number(month) - 1]} {year}
             </Text>
             <Box
               px={2}
               cursor="pointer"
               onClick={() => {
                 const newDate = getDifferentDayPath(
-                  day,
-                  month,
-                  year,
+                  Number(day),
+                  Number(month) - 1,
+                  Number(year),
                   Direction.Next
                 );
                 router.push(`/day/${newDate}`);
@@ -139,7 +130,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
             </Box>
           </Stack>
         </Heading>
-        {fetching ? (
+        {fetching && (
           <Center>
             <Spinner
               thickness="4px"
@@ -149,8 +140,9 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
               size="xl"
             />
           </Center>
-        ) : (
-          <Stack spacing={4} px={3}>
+        )}
+        {data?.dayForm && (
+          <Stack spacing={4} px={3} pt={10}>
             <Box
               borderWidth="1px"
               borderRadius="lg"
@@ -471,6 +463,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                   <Box display="flex" mt="2" alignItems="center">
                     {data?.dayForm?.stoolTypes?.map((type) => (
                       <Circle
+                        marginX={1}
                         key={type}
                         borderWidth={3}
                         borderColor="teal"

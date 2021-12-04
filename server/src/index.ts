@@ -45,11 +45,16 @@ const main = async () => {
   const app = express();
 
   const RedisStore = connectRedis(session);
-  const redis = new Redis(process.env.REDIS_TLS_URL || "127.0.0.1:6379", {
-    tls: {
-      rejectUnauthorized: false,
-    },
-  });
+  const redis = new Redis(
+    process.env.REDIS_TLS_URL || "127.0.0.1:6379",
+    process.env.REDIS_TLS_URL
+      ? {
+          tls: {
+            rejectUnauthorized: false,
+          },
+        }
+      : undefined
+  );
 
   app.set("trust proxy", 1);
 

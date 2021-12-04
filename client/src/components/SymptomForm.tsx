@@ -1,6 +1,6 @@
 import { FormLabel } from "@chakra-ui/form-control";
 import { Box, Grid, GridItem, HStack } from "@chakra-ui/layout";
-import { IconButton, useRadioGroup } from "@chakra-ui/react";
+import { Button, IconButton, useRadioGroup } from "@chakra-ui/react";
 import { Select } from "@chakra-ui/select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
@@ -22,6 +22,7 @@ interface ISymptomForm {
 const SymptomForm: React.FC<ISymptomForm> = ({
   symptom,
   setSymptom,
+  removeSymptom,
 }: ISymptomForm) => {
   React.useEffect(() => {
     setTimeout(() => setSymptom({ ...symptom, collapse: true }), 100);
@@ -36,7 +37,6 @@ const SymptomForm: React.FC<ISymptomForm> = ({
   ];
 
   const getIntensityRadioProps = useRadioGroup({
-    name: "mood after",
     onChange: (value) =>
       setSymptom({
         ...symptom,
@@ -46,6 +46,18 @@ const SymptomForm: React.FC<ISymptomForm> = ({
 
   return (
     <Box px={4} py={2} mb={4}>
+      <Box display="flex" justifyContent="end">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            setSymptom({ ...symptom, collapse: false });
+            setTimeout(() => removeSymptom(symptom.id), 150);
+          }}
+        >
+          Remove
+        </Button>
+      </Box>
       <FormLabel>Name</FormLabel>
       <Grid templateColumns="repeat(6, 1fr)" gap={3}>
         <GridItem colSpan={5}>

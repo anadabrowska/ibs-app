@@ -1,6 +1,14 @@
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
-import { Box, Circle, Flex, Heading, HStack, Stack } from "@chakra-ui/layout";
+import {
+  Box,
+  Circle,
+  Divider,
+  Flex,
+  Heading,
+  HStack,
+  Stack,
+} from "@chakra-ui/layout";
 import {
   Button,
   CloseButton,
@@ -18,6 +26,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import ActivityForm, { IActivity } from "../components/ActivityForm";
 import RadioCard, { RadioType } from "../components/RadioCard";
+import StoolTypeForm, { IStoolType } from "../components/StoolTypeForm";
 import SymptomForm, { ISymptom } from "../components/SymptomForm";
 import { useCreateFormMutation } from "../generated/graphql";
 import { moodOptions, stressOptions } from "../utils/dailyFormUtils";
@@ -25,6 +34,26 @@ import { moodOptions, stressOptions } from "../utils/dailyFormUtils";
 const CreateForm: React.FC = () => {
   const router = useRouter();
   const [{ fetching }, createForm] = useCreateFormMutation();
+
+  const [stoolTypes, setStoolTypes] = useState<IStoolType[]>([]);
+
+  const handleAddStoolType = () => {
+    //TODO: think about using uuid here later
+    const id =
+      stoolTypes.length > 0 ? stoolTypes[stoolTypes.length - 1].id + 1 : 0;
+    const newStoolType: IStoolType = { id, type: 0, collapse: true };
+    setStoolTypes([...stoolTypes, newStoolType]);
+  };
+
+  const handleSetStoolType = (value: IStoolType) => {
+    setStoolTypes(
+      stoolTypes.map((type) => (type.id === value.id ? value : type))
+    );
+  };
+
+  const handleRemoveStoolType = (id: number) => {
+    setStoolTypes(stoolTypes.filter((type) => type.id !== id));
+  };
 
   const [activities, setActivities] = useState<IActivity[]>([]);
 
@@ -35,6 +64,7 @@ const CreateForm: React.FC = () => {
       )
     );
   };
+
   const handleAddActivity = () => {
     //TODO: think about using uuid here later
     const id =
@@ -74,8 +104,6 @@ const CreateForm: React.FC = () => {
     onChange: (value) => setSleepQuality(parseInt(value)),
   });
 
-  const [addBST, setAddBST] = useState(false);
-
   const [generalMood, setGeneralMood] = useState(0);
 
   const getMoodRadioProps = useRadioGroup({
@@ -95,14 +123,6 @@ const CreateForm: React.FC = () => {
         stressOptions.find((option) => option.title === value)?.rate || 0
       ),
   });
-
-  const [BST, setBST] = useState(0);
-
-  const getBSTRadioProps = useRadioGroup({
-    name: "BST",
-    onChange: (value) => setBST(parseInt(value)),
-  });
-
   const [dayRate, setDayRate] = useState(0);
 
   const getDayRateRadioProps = useRadioGroup({
@@ -134,7 +154,9 @@ const CreateForm: React.FC = () => {
           time: activity.duration,
         };
       }),
-      stoolTypes: [BST],
+      stoolTypes: stoolTypes.map((elem) => {
+        return elem.type;
+      }),
       inTherapy: inTherapy,
       menstruation: menstruation,
       migraine: migraine,
@@ -143,6 +165,12 @@ const CreateForm: React.FC = () => {
       notes: notes,
     };
     await createForm({ input: formState });
+
+    const currDate = new Date();
+    const currMonth = currDate.getMonth();
+    const currYear = currDate.getFullYear();
+    const currDay = currDate.getDate();
+    router.push(`/day/${currDay}-${currMonth + 1}-${currYear}`);
   };
 
   return (
@@ -228,8 +256,13 @@ const CreateForm: React.FC = () => {
           <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={8}>
             <FormControl id="symptoms">
               <FormLabel>Symptoms</FormLabel>
-              {symptoms.map((symptom) => (
-                <Collapse startingHeight={0} in={symptom.collapse}>
+              {symptoms.map((symptom, index) => (
+                <Collapse
+                  key={symptom.id}
+                  startingHeight={0}
+                  in={symptom.collapse}
+                >
+                  {index > 0 && <Divider mb={3} />}
                   <SymptomForm
                     symptom={symptom}
                     removeSymptom={handleRemoveSymptom}
@@ -338,8 +371,13 @@ const CreateForm: React.FC = () => {
           <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={8}>
             <FormControl id="symptoms">
               <FormLabel>Activities</FormLabel>
-              {activities.map((activity) => (
-                <Collapse startingHeight={0} in={activity.collapse}>
+              {activities.map((activity, index) => (
+                <Collapse
+                  key={activity.id}
+                  startingHeight={0}
+                  in={activity.collapse}
+                >
+                  {index > 0 && <Divider mb={3} />}
                   <ActivityForm
                     activity={activity}
                     setActivity={handleSetActivity}
@@ -362,39 +400,23 @@ const CreateForm: React.FC = () => {
           <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
             <FormControl id="email">
               <FormLabel>Stool type (Bristol's scale)</FormLabel>
-              <Collapse startingHeight={0} in={addBST}>
-                <Box px={4} py={2} mb={4}>
-                  <HStack
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    {...getBSTRadioProps.getRootProps()}
-                  >
-                    {Array(7)
-                      .fill(0)
-                      .map((_, value) => {
-                        const radio = getBSTRadioProps.getRadioProps({
-                          value: (value + 1).toString(),
-                        });
-                        return (
-                          <RadioCard
-                            radioType={RadioType.NumberRadio}
-                            {...radio}
-                          >
-                            {value + 1}
-                          </RadioCard>
-                        );
-                      })}
-                  </HStack>
-                </Box>
-              </Collapse>
+              {stoolTypes.map((type, index) => (
+                <Collapse key={type.id} startingHeight={0} in={type.collapse}>
+                  {index > 0 && <Divider mb={3} />}
+                  <StoolTypeForm
+                    stoolType={type}
+                    removeStoolType={handleRemoveStoolType}
+                    setStoolType={handleSetStoolType}
+                  />
+                </Collapse>
+              ))}
               <Box display="flex" alignItems="center" justifyContent="center">
                 <Button
-                  onClick={() => setAddBST(!addBST)}
+                  onClick={handleAddStoolType}
                   leftIcon={<FontAwesomeIcon icon="plus" />}
                   variant="outline"
                 >
-                  Add new BST
+                  Add new Stool Type
                 </Button>
               </Box>
             </FormControl>

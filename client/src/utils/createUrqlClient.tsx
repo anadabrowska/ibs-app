@@ -4,6 +4,9 @@ import {
   MeQuery,
   MeDocument,
   RegisterMutation,
+  CreateFormMutation,
+  DayFormQuery,
+  DayFormDocument,
 } from "../generated/graphql";
 import { pipe, tap } from "wonka";
 import { Exchange } from "urql";
@@ -83,6 +86,14 @@ export const urqlClient = createClient({
               { query: MeDocument },
               _result,
               () => ({ me: null })
+            );
+          },
+          createForm: (_result, _, cache, __) => {
+            updateQueryWithTypes<CreateFormMutation, DayFormQuery>(
+              cache,
+              { query: DayFormDocument },
+              _result,
+              (_, query) => ({ dayForm: query.dayForm })
             );
           },
         },
