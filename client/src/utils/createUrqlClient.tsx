@@ -7,6 +7,8 @@ import {
   CreateFormMutation,
   DayFormQuery,
   DayFormDocument,
+  UpdateFormMutation,
+  useDayFormQuery,
 } from "../generated/graphql";
 import { pipe, tap } from "wonka";
 import { Exchange } from "urql";
@@ -88,12 +90,46 @@ export const urqlClient = createClient({
               () => ({ me: null })
             );
           },
-          createForm: (_result, _, cache, __) => {
+          createForm: (result, _, cache, __) => {
+            const currDate = parseInt(
+              (result.createForm as any)?.createdAt as string
+            );
+            const date = currDate ? new Date(currDate) : new Date();
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+
             updateQueryWithTypes<CreateFormMutation, DayFormQuery>(
               cache,
-              { query: DayFormDocument },
-              _result,
-              (_, query) => ({ dayForm: query.dayForm })
+              {
+                query: DayFormDocument,
+                variables: { date: `${year}-${month}-${day}` },
+              },
+              result,
+              (_r, _q) => {
+                return { dayForm: result.createForm } as any;
+              }
+            );
+          },
+          updateForm: (result, _, cache, __) => {
+            const currDate = parseInt(
+              (result.updateForm as any)?.createdAt as string
+            );
+            const date = currDate ? new Date(currDate) : new Date();
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+
+            updateQueryWithTypes<UpdateFormMutation, DayFormQuery>(
+              cache,
+              {
+                query: DayFormDocument,
+                variables: { date: `${year}-${month}-${day}` },
+              },
+              result,
+              (_r, _q) => {
+                return { dayForm: result.updateForm } as any;
+              }
             );
           },
         },

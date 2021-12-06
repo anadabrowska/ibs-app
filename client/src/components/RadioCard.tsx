@@ -20,6 +20,7 @@ const RadioCard: React.FC<RadioCardProps> = (props) => {
 
   const input = getInputProps();
   const checkbox = getCheckboxProps();
+
   return (
     <Box as="label">
       <input {...input} />

@@ -4,7 +4,7 @@ import { Button, IconButton, useRadioGroup } from "@chakra-ui/react";
 import { Select } from "@chakra-ui/select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import RadioCard, { RadioType } from "./RadioCard";
+import RadioCard, { RadioType } from "../RadioCard";
 
 export interface ISymptom {
   id: number;
@@ -37,6 +37,7 @@ const SymptomForm: React.FC<ISymptomForm> = ({
   ];
 
   const getIntensityRadioProps = useRadioGroup({
+    defaultValue: symptom.intensity.toString(),
     onChange: (value) =>
       setSymptom({
         ...symptom,
@@ -64,6 +65,7 @@ const SymptomForm: React.FC<ISymptomForm> = ({
           <Select
             onChange={(e) => setSymptom({ ...symptom, name: e.target.value })}
             mb={4}
+            value={symptom.name}
             placeholder="Select symptom"
           >
             {symptoms.map((symptom) => (
@@ -94,7 +96,11 @@ const SymptomForm: React.FC<ISymptomForm> = ({
               value: (value + 1).toString(),
             });
             return (
-              <RadioCard radioType={RadioType.NumberRadio} {...radio}>
+              <RadioCard
+                key={value}
+                radioType={RadioType.NumberRadio}
+                {...radio}
+              >
                 {value + 1}
               </RadioCard>
             );

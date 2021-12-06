@@ -15,7 +15,7 @@ import { Form, Formik } from "formik";
 import { useRouter } from "next/dist/client/router";
 import React from "react";
 import FormInput from "../components/FormInput";
-import FormWrapper from "../components/FormWrapper";
+import LoginFormWrapper from "../components/LoginFormWrapper";
 import { useRegisterMutation } from "../generated/graphql";
 import { mapErrors } from "../utils/mapErrors";
 import NextLink from "next/link";
@@ -40,7 +40,6 @@ const Register: React.FC = () => {
       }}
       onSubmit={async (values, { setErrors }) => {
         const response = await register(values);
-        console.log(response);
         if (response.data?.register.errors) {
           setErrors(mapErrors(response.data.register.errors));
         } else if (response.data?.register.user) {
@@ -49,7 +48,7 @@ const Register: React.FC = () => {
       }}
     >
       {(props) => (
-        <FormWrapper>
+        <LoginFormWrapper>
           <Form>
             <Heading mb={4} as="h4" size="md">
               Sign up to IBS-App
@@ -104,7 +103,7 @@ const Register: React.FC = () => {
               <Link color="teal.500">Sign in to an existing account</Link>
             </NextLink>
           </Container>
-        </FormWrapper>
+        </LoginFormWrapper>
       )}
     </Formik>
   );

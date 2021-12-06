@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Formik } from "formik";
 import { Button, Container, Heading, Link } from "@chakra-ui/react";
-import FormWrapper from "../components/FormWrapper";
+import LoginFormWrapper from "../components/LoginFormWrapper";
 import FormInput from "../components/FormInput";
 import { useLoginMutation } from "../generated/graphql";
 import { mapErrors } from "../utils/mapErrors";
@@ -25,7 +25,7 @@ const Login: React.FC = () => {
       }}
     >
       {(props) => (
-        <FormWrapper>
+        <LoginFormWrapper>
           <Form>
             <Heading mb={4} as="h4" size="md">
               Sign in to your acconut
@@ -61,7 +61,7 @@ const Login: React.FC = () => {
               <Link color="teal.500">Create new account</Link>
             </NextLink>
           </Container>
-        </FormWrapper>
+        </LoginFormWrapper>
       )}
     </Formik>
   );

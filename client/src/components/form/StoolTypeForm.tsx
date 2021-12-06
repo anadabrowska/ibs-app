@@ -2,7 +2,7 @@ import { Button } from "@chakra-ui/button";
 import { Box, HStack } from "@chakra-ui/layout";
 import { useRadioGroup } from "@chakra-ui/radio";
 import React from "react";
-import RadioCard, { RadioType } from "./RadioCard";
+import RadioCard, { RadioType } from "../RadioCard";
 
 export interface IStoolType {
   id: number;
@@ -26,6 +26,7 @@ const StoolTypeForm: React.FC<IStoolTypeForm> = ({
   }, []);
 
   const getTypeRadioProps = useRadioGroup({
+    defaultValue: stoolType.type.toString(),
     onChange: (value) =>
       setStoolType({
         ...stoolType,

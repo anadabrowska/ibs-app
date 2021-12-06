@@ -1,10 +1,9 @@
-fragment FormData on Form {
+fragment FormInput on Form {
   id
   createdAt
   dayRate
   weight
   symptoms {
-    id
     name
     intensity
     isDangerous
@@ -15,7 +14,6 @@ fragment FormData on Form {
   mood
   stressLevel
   activities {
-    id
     type
     moodAfter
     time

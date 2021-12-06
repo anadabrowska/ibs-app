@@ -10,6 +10,7 @@ import {
   Field,
   UseMiddleware,
   Query,
+  Int,
 } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Activity } from "../entities/activity";
@@ -81,21 +82,80 @@ export class FormResolver {
       creatorId: req.session.userId,
     }).save();
 
-    input.activities?.forEach(async (activity) => {
+    for (let i = 0; i < (activities?.length || 0); i++) {
+      const activity = activities?.at(i);
       await Activity.create({
         ...activity,
         formId: form.id,
       }).save();
-    });
+    }
 
-    input.symptoms?.forEach(async (symptom) => {
+    for (let i = 0; i < (symptoms?.length || 0); i++) {
+      const symptom = symptoms?.at(i);
       await Symptom.create({
         ...symptom,
         formId: form.id,
       }).save();
-    });
+    }
 
     return form;
+  }
+  @Mutation(() => Form)
+  @UseMiddleware(isAuth)
+  async updateForm(
+    @Arg("input") input: FormInput,
+    @Arg("id", () => Int) id: number,
+    @Ctx() { req }: Context
+  ): Promise<Form> {
+    const { symptoms, activities, ...formInput } = input;
+
+    const updatedFrom = await getConnection()
+      .createQueryBuilder()
+      .update(Form)
+      .set({ ...formInput })
+      .where('id = :id and "creatorId" = :creatorId', {
+        id,
+        creatorId: req.session.userId,
+      })
+      .returning("*")
+      .execute();
+
+    const form = updatedFrom.raw[0];
+
+    await Activity.delete({
+      formId: form.id,
+    });
+    await Symptom.delete({
+      formId: form.id,
+    });
+
+    let newActivities = [];
+    for (let i = 0; i < (activities?.length || 0); i++) {
+      const activity = activities?.at(i);
+      newActivities.push(
+        await Activity.create({
+          ...activity,
+          formId: form.id,
+        }).save()
+      );
+    }
+
+    let newSymptoms = [];
+    for (let i = 0; i < (symptoms?.length || 0); i++) {
+      const symptom = symptoms?.at(i);
+      newSymptoms.push(
+        await Symptom.create({
+          ...symptom,
+          formId: form.id,
+        }).save()
+      );
+    }
+
+    return {
+      ...form,
+      symptoms: newSymptoms,
+      activities: newActivities,
+    };
   }
   @Query(() => Form, { nullable: true })
   @UseMiddleware(isAuth)

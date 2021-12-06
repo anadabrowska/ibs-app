@@ -93,6 +93,7 @@ export type Mutation = {
   login: UserResponse;
   logout: Scalars['Boolean'];
   register: UserResponse;
+  updateForm: Form;
 };
 
 
@@ -119,6 +120,12 @@ export type MutationLoginArgs = {
 
 export type MutationRegisterArgs = {
   input: RegisterInput;
+};
+
+
+export type MutationUpdateFormArgs = {
+  id: Scalars['Int'];
+  input: FormInput;
 };
 
 export type Query = {
@@ -180,7 +187,9 @@ export type UserResponse = {
   user?: Maybe<User>;
 };
 
-export type FormDataFragment = { __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> };
+export type FormDataFragment = { __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> };
+
+export type FormInputFragment = { __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', type: string, moodAfter: number, time: number }>> };
 
 export type StarndardErrorFragment = { __typename?: 'FieldError', fieldName: string, message: string };
 
@@ -199,7 +208,7 @@ export type CreateFormMutationVariables = Exact<{
 }>;
 
 
-export type CreateFormMutation = { __typename?: 'Mutation', createForm: { __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', type: string, moodAfter: number, time: number }>> } };
+export type CreateFormMutation = { __typename?: 'Mutation', createForm: { __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> } };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
@@ -232,6 +241,14 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, firstName: string, lastName: string, email: string, gender: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
 
+export type UpdateFormMutationVariables = Exact<{
+  input: FormInput;
+  id: Scalars['Int'];
+}>;
+
+
+export type UpdateFormMutation = { __typename?: 'Mutation', updateForm: { __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> } };
+
 export type DatesFromTimeRangeQueryVariables = Exact<{
   before: Scalars['String'];
   after: Scalars['String'];
@@ -245,7 +262,7 @@ export type DayFormQueryVariables = Exact<{
 }>;
 
 
-export type DayFormQuery = { __typename?: 'Query', dayForm?: Maybe<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> }> };
+export type DayFormQuery = { __typename?: 'Query', dayForm?: Maybe<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> }> };
 
 export type FormsFromTimeRangeQueryVariables = Exact<{
   before: Scalars['String'];
@@ -253,7 +270,7 @@ export type FormsFromTimeRangeQueryVariables = Exact<{
 }>;
 
 
-export type FormsFromTimeRangeQuery = { __typename?: 'Query', formsFromTimeRange?: Maybe<Array<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> }>> };
+export type FormsFromTimeRangeQuery = { __typename?: 'Query', formsFromTimeRange?: Maybe<Array<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> }>> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -270,6 +287,7 @@ export const FormDataFragmentDoc = gql`
     id
     name
     intensity
+    isDangerous
   }
   stoolTypes
   sleepLenght
@@ -278,6 +296,34 @@ export const FormDataFragmentDoc = gql`
   stressLevel
   activities {
     id
+    type
+    moodAfter
+    time
+  }
+  inTherapy
+  menstruation
+  migraine
+  pollakiuria
+  notes
+}
+    `;
+export const FormInputFragmentDoc = gql`
+    fragment FormInput on Form {
+  id
+  createdAt
+  dayRate
+  weight
+  symptoms {
+    name
+    intensity
+    isDangerous
+  }
+  stoolTypes
+  sleepLenght
+  sleepQuality
+  mood
+  stressLevel
+  activities {
     type
     moodAfter
     time
@@ -324,33 +370,10 @@ export function useChangePasswordMutation() {
 export const CreateFormDocument = gql`
     mutation createForm($input: FormInput!) {
   createForm(input: $input) {
-    id
-    createdAt
-    dayRate
-    weight
-    symptoms {
-      name
-      intensity
-      isDangerous
-    }
-    stoolTypes
-    sleepLenght
-    sleepQuality
-    mood
-    stressLevel
-    inTherapy
-    menstruation
-    migraine
-    pollakiuria
-    notes
-    activities {
-      type
-      moodAfter
-      time
-    }
+    ...FormData
   }
 }
-    `;
+    ${FormDataFragmentDoc}`;
 
 export function useCreateFormMutation() {
   return Urql.useMutation<CreateFormMutation, CreateFormMutationVariables>(CreateFormDocument);
@@ -413,6 +436,17 @@ ${StarndardErrorFragmentDoc}`;
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const UpdateFormDocument = gql`
+    mutation updateForm($input: FormInput!, $id: Int!) {
+  updateForm(input: $input, id: $id) {
+    ...FormData
+  }
+}
+    ${FormDataFragmentDoc}`;
+
+export function useUpdateFormMutation() {
+  return Urql.useMutation<UpdateFormMutation, UpdateFormMutationVariables>(UpdateFormDocument);
 };
 export const DatesFromTimeRangeDocument = gql`
     query DatesFromTimeRange($before: String!, $after: String!) {

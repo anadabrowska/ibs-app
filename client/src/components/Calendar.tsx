@@ -27,11 +27,12 @@ const Calendar: React.FC = () => {
       const day = i - start + 1;
       const currentDate = new Date(`${year}-${month + 1}-${day}`);
       if (i < start) {
-        monthDays.push(<Center className={styles.monthDay}></Center>);
+        monthDays.push(<Center key={day} className={styles.monthDay}></Center>);
       } else {
         if (isToday(day, month, year)) {
           monthDays.push(
             <Center
+              key={day}
               cursor="pointer"
               onClick={() => {
                 router.push(`/day/${day}-${month + 1}-${year}`);
@@ -48,6 +49,7 @@ const Calendar: React.FC = () => {
         } else {
           monthDays.push(
             <Center
+              key={day}
               cursor="pointer"
               onClick={() => {
                 router.push(`/day/${day}-${month + 1}-${year}`);
@@ -77,7 +79,7 @@ const Calendar: React.FC = () => {
           <div className={styles.weekDays}>
             <Grid templateColumns="repeat(7, 1fr)" gap={5}>
               {shortWeekNames.map((day) => (
-                <div>{day}</div>
+                <div key={day}>{day}</div>
               ))}
             </Grid>
           </div>
@@ -107,10 +109,10 @@ const Calendar: React.FC = () => {
     return Array(12)
       .fill(0)
       .map((_, i) => (
-        <>
+        <div key={i}>
           {generateMonthlyCalendar(i, year, i === month, dates || [])}
           <Divider mt={10} mb={10} />
-        </>
+        </div>
       ));
   };
   return <div className={styles.calendar}>{generateYearlyCalendar(year)}</div>;

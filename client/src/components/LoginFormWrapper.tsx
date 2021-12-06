@@ -1,9 +1,9 @@
 import { Box, Center } from "@chakra-ui/react";
 import React from "react";
 
-interface FormWrapperProps {}
+interface LoginFormWrapperProps {}
 
-const FormWrapper: React.FC<FormWrapperProps> = ({ children }) => {
+const LoginFormWrapper: React.FC<LoginFormWrapperProps> = ({ children }) => {
   return (
     <Center minHeight="100vh">
       <Box
@@ -21,4 +21,4 @@ const FormWrapper: React.FC<FormWrapperProps> = ({ children }) => {
   );
 };
 
-export default FormWrapper;
+export default LoginFormWrapper;

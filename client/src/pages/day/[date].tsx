@@ -582,7 +582,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                       >
                         Menstruation
                       </Box>
-                      <Box>{data?.dayForm?.migraine ? "Yes" : "No"}</Box>{" "}
+                      <Box>{data?.dayForm?.menstruation ? "Yes" : "No"}</Box>{" "}
                     </GridItem>
                   )}
                 </GridItem>

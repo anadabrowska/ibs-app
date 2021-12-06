@@ -1,0 +1,5 @@
+mutation createForm($input: FormInput!) {
+  createForm(input: $input) {
+    ...FormData
+  }
+}

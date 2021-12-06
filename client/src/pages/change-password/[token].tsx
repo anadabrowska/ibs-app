@@ -14,7 +14,7 @@ import { Form, Formik } from "formik";
 import { NextPage } from "next";
 import React, { useState } from "react";
 import FormInput from "../../components/FormInput";
-import FormWrapper from "../../components/FormWrapper";
+import LoginFormWrapper from "../../components/LoginFormWrapper";
 import { useChangePasswordMutation } from "../../generated/graphql";
 import NextLink from "next/link";
 import { mapErrors } from "../../utils/mapErrors";
@@ -50,7 +50,7 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
       }}
     >
       {(props) => (
-        <FormWrapper>
+        <LoginFormWrapper>
           <VStack>
             {tokenErrorMessage ? (
               <Alert
@@ -124,7 +124,7 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
               </Button>
             </Form>
           </VStack>
-        </FormWrapper>
+        </LoginFormWrapper>
       )}
     </Formik>
   );

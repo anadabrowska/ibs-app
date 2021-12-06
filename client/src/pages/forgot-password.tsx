@@ -12,7 +12,7 @@ import {
 import { Form, Formik } from "formik";
 import React from "react";
 import FormInput from "../components/FormInput";
-import FormWrapper from "../components/FormWrapper";
+import LoginFormWrapper from "../components/LoginFormWrapper";
 import { useForgotPasswordMutation } from "../generated/graphql";
 import { mapErrors } from "../utils/mapErrors";
 
@@ -33,7 +33,7 @@ const ForgotPassword = () => {
       }}
     >
       {(props) => (
-        <FormWrapper>
+        <LoginFormWrapper>
           <VStack>
             <Collapse in={isOpen} animateOpacity>
               <Alert
@@ -75,7 +75,7 @@ const ForgotPassword = () => {
               </Button>
             </Form>
           </VStack>
-        </FormWrapper>
+        </LoginFormWrapper>
       )}
     </Formik>
   );

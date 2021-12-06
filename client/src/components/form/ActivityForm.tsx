@@ -17,8 +17,8 @@ import {
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { RadioOpiton } from "../utils/dailyFormUtils";
-import RadioCard, { RadioType } from "./RadioCard";
+import { RadioOpiton } from "../../utils/dailyFormUtils";
+import RadioCard, { RadioType } from "../RadioCard";
 
 export interface IActivity {
   id: number;
@@ -55,7 +55,9 @@ const ActivityForm: React.FC<IActivityForm> = ({
   const activityNames = ["swimming", "running", "dancing", "biking"];
 
   const getMoodRadioProps = useRadioGroup({
-    name: "mood after",
+    defaultValue:
+      moodOptions.find((option) => option.rate === activity.moodAfter)?.title ||
+      0,
     onChange: (value) =>
       setActivity({
         ...activity,
@@ -84,6 +86,7 @@ const ActivityForm: React.FC<IActivityForm> = ({
           <Select
             onChange={(e) => setActivity({ ...activity, name: e.target.value })}
             mb={4}
+            value={activity.name}
             placeholder="Select activity"
           >
             {activityNames.map((name) => (
@@ -112,6 +115,7 @@ const ActivityForm: React.FC<IActivityForm> = ({
           });
           return (
             <RadioCard
+              key={option.rate}
               radioType={RadioType.IconRadio}
               icon={option.icon}
               title={option.title}

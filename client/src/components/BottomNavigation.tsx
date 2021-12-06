@@ -3,12 +3,23 @@ import {
   faCalendarAlt,
   faPlus,
   faCogs,
+  faPen,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import router from "next/router";
 import React from "react";
+import { useDayFormQuery } from "../generated/graphql";
 
 const BottomNavigation: React.FC = () => {
+  const today = new Date();
+  const month = today.getMonth();
+  const year = today.getFullYear();
+  const day = today.getDate();
+
+  const [{ fetching, data }] = useDayFormQuery({
+    variables: { date: `${year}-${month + 1}-${day}` },
+  });
+
   return (
     <Box
       position="fixed"
@@ -35,10 +46,15 @@ const BottomNavigation: React.FC = () => {
           borderColor="teal.300"
           borderWidth={5}
           onClick={() => {
-            router.push("/create-form");
+            !fetching && data?.dayForm != null
+              ? router.push(`/update-form/${day}-${month + 1}-${year}`)
+              : router.push(`/create-form/${day}-${month + 1}-${year}`);
           }}
         >
-          <FontAwesomeIcon color="gray" icon={faPlus} />
+          <FontAwesomeIcon
+            color="gray"
+            icon={!fetching && data?.dayForm != null ? faPen : faPlus}
+          />
         </Circle>
         <Tab>
           <FontAwesomeIcon icon={faCogs} />
