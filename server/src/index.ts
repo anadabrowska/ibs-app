@@ -38,7 +38,7 @@ const main = async () => {
     entities: [User, Form, Symptom, Activity],
   });
 
-  // await conn.runMigrations();
+  await conn.runMigrations();
 
   console.log("migrations finished");
 
