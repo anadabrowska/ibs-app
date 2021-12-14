@@ -4,6 +4,7 @@ import { Button, IconButton, useRadioGroup } from "@chakra-ui/react";
 import { Select } from "@chakra-ui/select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { FormattedMessage } from "react-intl";
 import RadioCard, { RadioType } from "../RadioCard";
 
 export interface ISymptom {
@@ -56,10 +57,12 @@ const SymptomForm: React.FC<ISymptomForm> = ({
             setTimeout(() => removeSymptom(symptom.id), 150);
           }}
         >
-          Remove
+          <FormattedMessage id="general.remove" />
         </Button>
       </Box>
-      <FormLabel>Name</FormLabel>
+      <FormLabel>
+        <FormattedMessage id="general.name" />
+      </FormLabel>
       <Grid templateColumns="repeat(6, 1fr)" gap={3}>
         <GridItem colSpan={5}>
           <Select
@@ -82,7 +85,9 @@ const SymptomForm: React.FC<ISymptomForm> = ({
           icon={<FontAwesomeIcon icon="plus" />}
         />
       </Grid>
-      <FormLabel>Intensity</FormLabel>
+      <FormLabel>
+        <FormattedMessage id="DailyForm.intensity" />
+      </FormLabel>
       <HStack
         display="flex"
         alignItems="center"

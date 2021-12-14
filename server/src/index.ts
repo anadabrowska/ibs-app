@@ -34,6 +34,8 @@ const main = async () => {
       ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : undefined,
     },
     logging: true,
+    // comment for deployment
+    // synchronize: true,
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [User, Form, Symptom, Activity],
   });

@@ -1,6 +1,7 @@
 import { Flex, Stack, Circle, CloseButton, Heading } from "@chakra-ui/react";
 import router from "next/router";
 import React from "react";
+import { FormattedMessage } from "react-intl";
 
 const DailyFormWrapper: React.FC = ({ children }) => {
   return (
@@ -18,7 +19,9 @@ const DailyFormWrapper: React.FC = ({ children }) => {
           <CloseButton size="md" />
         </Circle>
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"}>How was your day?</Heading>
+          <Heading fontSize={"4xl"}>
+            <FormattedMessage id="DailyForm.header" />
+          </Heading>
         </Stack>
         {children}
       </Stack>

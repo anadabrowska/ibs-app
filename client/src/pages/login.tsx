@@ -7,9 +7,11 @@ import { useLoginMutation } from "../generated/graphql";
 import { mapErrors } from "../utils/mapErrors";
 import { useRouter } from "next/dist/client/router";
 import NextLink from "next/link";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const Login: React.FC = () => {
   const router = useRouter();
+  const intl = useIntl();
   const [{}, login] = useLoginMutation();
   return (
     <Formik
@@ -28,22 +30,32 @@ const Login: React.FC = () => {
         <LoginFormWrapper>
           <Form>
             <Heading mb={4} as="h4" size="md">
-              Sign in to your acconut
+              <FormattedMessage id="Login.sign-in" />
             </Heading>
             <FormInput
               name="email"
-              label="email"
-              placeholder="test@example.com"
+              label={intl.formatMessage({
+                id: "Register.email",
+              })}
+              placeholder={intl.formatMessage({
+                id: "Register.email-placeholder",
+              })}
             />
             <FormInput
               name="password"
-              label="password"
-              placeholder="password"
+              label={intl.formatMessage({
+                id: "Register.password",
+              })}
+              placeholder={intl.formatMessage({
+                id: "Register.password-placeholder",
+              })}
               type="password"
             />
             <Container textAlign="right">
               <NextLink href="/forgot-password">
-                <Link color="teal.500">Forgot password?</Link>
+                <Link color="teal.500">
+                  <FormattedMessage id="Login.forgot-password" />
+                </Link>
               </NextLink>
             </Container>
             <Button
@@ -52,13 +64,17 @@ const Login: React.FC = () => {
               isLoading={props.isSubmitting}
               type="submit"
             >
-              Submit
+              <FormattedMessage id="general.submit" />
             </Button>
           </Form>
           <Container mt={4} textAlign="center">
-            <p>New to IBS-App?</p>
+            <p>
+              <FormattedMessage id="Login.new-to-ibs" />
+            </p>
             <NextLink href="/register">
-              <Link color="teal.500">Create new account</Link>
+              <Link color="teal.500">
+                <FormattedMessage id="Login.create-new-account" />
+              </Link>
             </NextLink>
           </Container>
         </LoginFormWrapper>

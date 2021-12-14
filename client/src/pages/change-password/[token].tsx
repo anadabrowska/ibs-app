@@ -18,6 +18,7 @@ import LoginFormWrapper from "../../components/LoginFormWrapper";
 import { useChangePasswordMutation } from "../../generated/graphql";
 import NextLink from "next/link";
 import { mapErrors } from "../../utils/mapErrors";
+import { FormattedMessage } from "react-intl";
 
 const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
   const [{}, changePassword] = useChangePasswordMutation();
@@ -65,7 +66,7 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
               >
                 <AlertIcon boxSize="30px" mr={0} />
                 <AlertTitle mt={4} mb={1} fontSize="lg">
-                  Invalid token
+                  <FormattedMessage id="ChangePassword.invalid-token" />
                 </AlertTitle>
                 <AlertDescription maxWidth="sm">
                   {tokenErrorMessage}
@@ -85,22 +86,24 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
               >
                 <AlertIcon boxSize="30px" mr={0} />
                 <AlertTitle mt={4} mb={1} fontSize="lg">
-                  Password successfully changed!
+                  <FormattedMessage id="ChangePassword.success" />
                 </AlertTitle>
                 <AlertDescription maxWidth="sm">
-                  Go to
+                  <FormattedMessage id="ChangePassword.go-to-login-pt1" />
                   {
                     <NextLink href="/login">
-                      <Link color="teal.500"> sign in </Link>
+                      <Link color="teal.500">
+                        <FormattedMessage id="ChangePassword.go-to-login-pt2" />
+                      </Link>
                     </NextLink>
                   }
-                  page to login to your account.
+                  <FormattedMessage id="ChangePassword.go-to-login-pt3" />
                 </AlertDescription>
               </Alert>
             </Collapse>
             <Form>
               <Heading mb={4} as="h4" size="md">
-                Change password
+                <FormattedMessage id="ChangePassword.change-password" />
               </Heading>
               <FormInput
                 name="newPassword"
@@ -120,7 +123,7 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
                 isLoading={props.isSubmitting}
                 type="submit"
               >
-                Confirm
+                <FormattedMessage id="general.confirm" />
               </Button>
             </Form>
           </VStack>

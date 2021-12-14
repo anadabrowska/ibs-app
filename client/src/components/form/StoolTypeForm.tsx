@@ -2,6 +2,7 @@ import { Button } from "@chakra-ui/button";
 import { Box, HStack } from "@chakra-ui/layout";
 import { useRadioGroup } from "@chakra-ui/radio";
 import React from "react";
+import { FormattedMessage } from "react-intl";
 import RadioCard, { RadioType } from "../RadioCard";
 
 export interface IStoolType {
@@ -45,7 +46,7 @@ const StoolTypeForm: React.FC<IStoolTypeForm> = ({
             setTimeout(() => removeStoolType(stoolType.id), 150);
           }}
         >
-          Remove
+          <FormattedMessage id="general.remove" />
         </Button>
       </Box>
       <HStack

@@ -17,6 +17,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import React from "react";
+import { FormattedMessage } from "react-intl";
 import { useLogoutMutation, useMeQuery } from "../generated/graphql";
 
 const SettingsPanel: React.FC = () => {
@@ -41,26 +42,32 @@ const SettingsPanel: React.FC = () => {
             <Circle size={20} borderWidth={3}>
               <FontAwesomeIcon color="gray" size="3x" icon={faUserAstronaut} />
             </Circle>
-            <div>
-              Hi {data?.me?.firstName} {data?.me?.lastName}!
-            </div>
+            <FormattedMessage
+              id="SettingsPanel.hello"
+              values={{
+                firstName: data?.me?.firstName,
+                lastName: data?.me?.lastName,
+              }}
+            />
           </Stack>
         </Box>
       </Center>
-      <Heading>Settings</Heading>
+      <Heading>
+        <FormattedMessage id="SettingsPanel.settings" />
+      </Heading>
       <List>
         <ListItem display="flex" justifyContent="space-between" py={3}>
-          <div>Change Language</div>
+          <FormattedMessage id="SettingsPanel.change-language" />
           <FontAwesomeIcon icon={faChevronRight} />
         </ListItem>
         <Divider />
         <ListItem display="flex" justifyContent="space-between" py={3}>
-          <div>FAQ</div>
+          <FormattedMessage id="SettingsPanel.faq" />
           <FontAwesomeIcon icon={faChevronRight} />
         </ListItem>
         <Divider />
         <ListItem display="flex" justifyContent="space-between" py={3}>
-          <div>O nas</div>
+          <FormattedMessage id="SettingsPanel.about-us" />
           <FontAwesomeIcon icon={faChevronRight} />
         </ListItem>
         <Divider mb={10} />
@@ -77,7 +84,7 @@ const SettingsPanel: React.FC = () => {
             router.replace("/login");
           }}
         >
-          Logout
+          <FormattedMessage id="logout" />
         </Button>
       </Center>
     </Stack>

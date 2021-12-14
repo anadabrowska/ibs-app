@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import React from "react";
+import { FormattedMessage } from "react-intl";
 import FormInput from "../components/FormInput";
 import LoginFormWrapper from "../components/LoginFormWrapper";
 import { useForgotPasswordMutation } from "../generated/graphql";
@@ -48,17 +49,16 @@ const ForgotPassword = () => {
               >
                 <AlertIcon boxSize="30px" mr={0} />
                 <AlertTitle mt={4} mb={1} fontSize="lg">
-                  Request submitted!
+                  <FormattedMessage id="ForgotPassword.submitted" />
                 </AlertTitle>
                 <AlertDescription maxWidth="sm">
-                  Soon you should receive an email with a link that will allow
-                  you to change the password.
+                  <FormattedMessage id="ForgotPassword.submitted-description" />
                 </AlertDescription>
               </Alert>
             </Collapse>
             <Form>
               <Heading mb={4} as="h4" size="md">
-                Enter your email to change the password
+                <FormattedMessage id="ForgotPassword.header" />
               </Heading>
               <FormInput
                 name="email"
@@ -71,7 +71,7 @@ const ForgotPassword = () => {
                 isLoading={props.isSubmitting}
                 type="submit"
               >
-                Submit
+                <FormattedMessage id="general.submit" />
               </Button>
             </Form>
           </VStack>

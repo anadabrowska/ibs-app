@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 import { RadioOpiton } from "../../utils/dailyFormUtils";
 import RadioCard, { RadioType } from "../RadioCard";
 
@@ -42,6 +43,8 @@ const ActivityForm: React.FC<IActivityForm> = ({
   React.useEffect(() => {
     setTimeout(() => setActivity({ ...activity, collapse: true }), 100);
   }, []);
+
+  const intl = useIntl();
 
   const moodOptions: RadioOpiton[] = [
     { title: "amazing", icon: "grin-stars", rate: 5 },
@@ -77,17 +80,21 @@ const ActivityForm: React.FC<IActivityForm> = ({
             setTimeout(() => removeActivity(activity.id), 150);
           }}
         >
-          Remove
+          <FormattedMessage id="general.remove" />
         </Button>
       </Box>
-      <FormLabel>Name</FormLabel>
+      <FormLabel>
+        <FormattedMessage id="general.name" />
+      </FormLabel>
       <Grid templateColumns="repeat(6, 1fr)" gap={3}>
         <GridItem colSpan={5}>
           <Select
             onChange={(e) => setActivity({ ...activity, name: e.target.value })}
             mb={4}
             value={activity.name}
-            placeholder="Select activity"
+            placeholder={intl.formatMessage({
+              id: "DailyForm.select-activity-placeholder",
+            })}
           >
             {activityNames.map((name) => (
               <option key={name} value={name}>
@@ -102,7 +109,9 @@ const ActivityForm: React.FC<IActivityForm> = ({
           icon={<FontAwesomeIcon icon="plus" />}
         />
       </Grid>
-      <FormLabel>Mood after</FormLabel>
+      <FormLabel>
+        <FormattedMessage id="DailyForm.mood-after" />
+      </FormLabel>
       <HStack
         display="flex"
         alignItems="center"
@@ -127,7 +136,9 @@ const ActivityForm: React.FC<IActivityForm> = ({
           );
         })}
       </HStack>
-      <FormLabel>Duration</FormLabel>
+      <FormLabel>
+        <FormattedMessage id="DailyForm.duration" />
+      </FormLabel>
       <Flex mb="1rem">
         <Input
           maxW="70px"

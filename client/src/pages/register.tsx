@@ -19,6 +19,7 @@ import LoginFormWrapper from "../components/LoginFormWrapper";
 import { useRegisterMutation } from "../generated/graphql";
 import { mapErrors } from "../utils/mapErrors";
 import NextLink from "next/link";
+import { FormattedMessage, useIntl } from "react-intl";
 
 export enum Gender {
   MALE = "MALE",
@@ -28,6 +29,7 @@ export enum Gender {
 
 const Register: React.FC = () => {
   const router = useRouter();
+  const intl = useIntl();
   const [{}, register] = useRegisterMutation();
   return (
     <Formik
@@ -51,16 +53,34 @@ const Register: React.FC = () => {
         <LoginFormWrapper>
           <Form>
             <Heading mb={4} as="h4" size="md">
-              Sign up to IBS-App
+              <FormattedMessage id="Register.sign-up" />
             </Heading>
-            <FormInput name="firstName" label="first name" placeholder="Ann" />
-            <FormInput name="lastName" label="last name" placeholder="Smith" />
+            <FormInput
+              name="firstName"
+              label={intl.formatMessage({
+                id: "Register.first-name",
+              })}
+              placeholder={intl.formatMessage({
+                id: "Register.first-name-placeholder",
+              })}
+            />
+            <FormInput
+              name="lastName"
+              label={intl.formatMessage({
+                id: "Register.last-name",
+              })}
+              placeholder={intl.formatMessage({
+                id: "Register.last-name-placeholder",
+              })}
+            />
             <FormControl
               my={2}
               mb={6}
               isInvalid={(props.errors.gender && props.touched.gender) || false}
             >
-              <FormLabel htmlFor="gender">gender</FormLabel>
+              <FormLabel htmlFor="gender">
+                <FormattedMessage id="Register.gender" />
+              </FormLabel>
               <RadioGroup
                 onChange={(e) =>
                   props.setValues({ ...props.values, gender: e })
@@ -69,9 +89,15 @@ const Register: React.FC = () => {
                 name="gender"
               >
                 <Stack direction="row">
-                  <Radio value={Gender.FEMALE}>Female</Radio>
-                  <Radio value={Gender.MALE}>Male</Radio>
-                  <Radio value={Gender.OTHER}>Other</Radio>
+                  <Radio value={Gender.FEMALE}>
+                    <FormattedMessage id="Register.female" />
+                  </Radio>
+                  <Radio value={Gender.MALE}>
+                    <FormattedMessage id="Register.male" />
+                  </Radio>
+                  <Radio value={Gender.OTHER}>
+                    <FormattedMessage id="Register.other" />
+                  </Radio>
                 </Stack>
               </RadioGroup>
               <FormErrorMessage>{props.errors.gender}</FormErrorMessage>
@@ -79,13 +105,21 @@ const Register: React.FC = () => {
             <Divider />
             <FormInput
               name="email"
-              label="email"
-              placeholder="test@example.com"
+              label={intl.formatMessage({
+                id: "Register.email",
+              })}
+              placeholder={intl.formatMessage({
+                id: "Register.email-placeholder",
+              })}
             />
             <FormInput
               name="password"
-              label="password"
-              placeholder="password"
+              label={intl.formatMessage({
+                id: "Register.password",
+              })}
+              placeholder={intl.formatMessage({
+                id: "Register.password-placeholder",
+              })}
               type="password"
             />
             <Button
@@ -94,13 +128,17 @@ const Register: React.FC = () => {
               isLoading={props.isSubmitting}
               type="submit"
             >
-              Submit
+              <FormattedMessage id="general.submit" />
             </Button>
           </Form>
           <Container mt={4} textAlign="center">
-            <p>Already have an account?</p>
+            <p>
+              <FormattedMessage id="Register.have-an-account" />
+            </p>
             <NextLink href="/login">
-              <Link color="teal.500">Sign in to an existing account</Link>
+              <Link color="teal.500">
+                <FormattedMessage id="Register.sign-in" />
+              </Link>
             </NextLink>
           </Container>
         </LoginFormWrapper>

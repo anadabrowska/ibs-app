@@ -27,6 +27,8 @@ import { MonthNames } from "../../utils/calendarUtils";
 import { Circle, CloseButton, Spinner, Textarea } from "@chakra-ui/react";
 import { moodOptions, stressOptions } from "../../utils/dailyFormUtils";
 import { Gender } from "../register";
+import { FormattedMessage } from "react-intl";
+import { formatMessage } from "@formatjs/intl";
 
 enum Direction {
   Prev,
@@ -164,7 +166,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                     lineHeight="tight"
                     color="teal"
                   >
-                    General day rate
+                    <FormattedMessage id="DayPage.general-day-rate" />
                   </Box>
 
                   <Box>{dayRate?.title}</Box>
@@ -178,7 +180,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                 </GridItem>
                 <GridItem colSpan={4}>
                   <Box mt={1} fontWeight="bold" lineHeight="tight" color="teal">
-                    Mood
+                    <FormattedMessage id="DayPage.mood" />
                   </Box>
 
                   <Box>{mood?.title}</Box>
@@ -192,14 +194,14 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                 </GridItem>
                 <GridItem colSpan={4}>
                   <Box mt={1} fontWeight="bold" lineHeight="tight" color="teal">
-                    Stress level
+                    <FormattedMessage id="DayPage.stress-level" />
                   </Box>
 
                   <Box>{stress?.title}</Box>
                 </GridItem>
               </Grid>
               <Box mt={1} fontWeight="bold" lineHeight="tight" color="teal">
-                Notes
+                <FormattedMessage id="DailyForm.notes" />
               </Box>
               <Box mt={1} borderWidth="1px" borderRadius="lg" padding={3}>
                 {data?.dayForm?.notes || "No notes"}
@@ -222,7 +224,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                     lineHeight="tight"
                     color="teal"
                   >
-                    Sleep
+                    <FormattedMessage id="DailyForm.sleep" />
                   </Box>
                 </GridItem>
                 <GridItem
@@ -233,7 +235,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                   justifyContent="space-between"
                 >
                   <Box mt={1} fontWeight="bold" lineHeight="tight" color="teal">
-                    Sleep length
+                    <FormattedMessage id="DayPage.sleep-length" />
                   </Box>
 
                   <Box>{data?.dayForm?.sleepLenght}</Box>
@@ -246,7 +248,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                   justifyContent="space-between"
                 >
                   <Box mt={1} fontWeight="bold" lineHeight="tight" color="teal">
-                    Sleep quality
+                    <FormattedMessage id="DayPage.sleep-quality" />
                   </Box>
 
                   <Box display="flex" mt="2" alignItems="center">
@@ -288,7 +290,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                       lineHeight="tight"
                       color="teal"
                     >
-                      Symptoms
+                      <FormattedMessage id="DailyForm.symptoms" />
                     </Box>
                   </GridItem>
                   {data?.dayForm?.symptoms?.map((symptom, index) => (
@@ -306,7 +308,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                             lineHeight="tight"
                             color="teal.400"
                           >
-                            Name
+                            <FormattedMessage id="general.name" />
                           </Box>
                           <Box>{symptom.name}</Box>
                         </Box>
@@ -321,7 +323,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                             lineHeight="tight"
                             color="teal.400"
                           >
-                            Intensity
+                            <FormattedMessage id="DailyForm.intensity" />
                           </Box>
                           <Box display="flex" mt="2" alignItems="center">
                             {Array(5)
@@ -364,7 +366,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                       color="teal"
                       fontSize={25}
                     >
-                      Activities
+                      <FormattedMessage id="DayPage.activities" />
                     </Box>
                   </GridItem>
                   {data?.dayForm?.activities?.map((activity, index) => (
@@ -382,7 +384,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                             lineHeight="tight"
                             color="teal.400"
                           >
-                            Name
+                            <FormattedMessage id="general.name" />
                           </Box>
                           <Box>{activity.type}</Box>
                         </Box>
@@ -397,7 +399,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                             lineHeight="tight"
                             color="teal.400"
                           >
-                            Duration
+                            <FormattedMessage id="DailyForm.duration" />
                           </Box>
                           <Box>{activity.time}</Box>
                         </Box>
@@ -412,7 +414,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                             lineHeight="tight"
                             color="teal.400"
                           >
-                            Mood after
+                            <FormattedMessage id="DailyForm.mood-after" />
                           </Box>
 
                           <Box display="flex" mt="2" alignItems="center">
@@ -456,7 +458,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                     lineHeight="tight"
                     color="teal"
                   >
-                    Stool types
+                    <FormattedMessage id="DayPage.stool-types" />
                   </Box>
                 </GridItem>
                 <GridItem colStart={2} colSpan={4}>
@@ -496,7 +498,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                     color="teal"
                     fontSize={25}
                   >
-                    Other
+                    <FormattedMessage id="DayPage.other" />
                   </Box>
                   <GridItem
                     colStart={2}
@@ -511,7 +513,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                       lineHeight="tight"
                       color="teal"
                     >
-                      Weight
+                      <FormattedMessage id="DailyForm.weight" />
                     </Box>
                     <Box>{data?.dayForm?.weight}</Box>
                   </GridItem>
@@ -528,7 +530,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                       lineHeight="tight"
                       color="teal"
                     >
-                      Migraine
+                      <FormattedMessage id="DayPage.migraine" />
                     </Box>
                     <Box>{data?.dayForm?.migraine ? "Yes" : "No"}</Box>
                   </GridItem>
@@ -545,7 +547,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                       lineHeight="tight"
                       color="teal"
                     >
-                      In thereapy
+                      <FormattedMessage id="DayPage.in-therapy" />
                     </Box>
                     <Box>{data?.dayForm?.inTherapy ? "Yes" : "No"}</Box>
                   </GridItem>
@@ -562,7 +564,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                       lineHeight="tight"
                       color="teal"
                     >
-                      Pollakuria
+                      <FormattedMessage id="DayPage.pollakiuria" />
                     </Box>
                     <Box>{data?.dayForm?.pollakiuria ? "Yes" : "No"}</Box>
                   </GridItem>
@@ -580,7 +582,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                         lineHeight="tight"
                         color="teal"
                       >
-                        Menstruation
+                        <FormattedMessage id="DayPage.menstruation" />
                       </Box>
                       <Box>{data?.dayForm?.menstruation ? "Yes" : "No"}</Box>{" "}
                     </GridItem>

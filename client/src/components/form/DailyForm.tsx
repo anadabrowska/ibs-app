@@ -19,6 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { FormattedMessage, useIntl } from "react-intl";
 
 import { moodOptions, stressOptions } from "../../utils/dailyFormUtils";
 import RadioCard, { RadioType } from "../RadioCard";
@@ -93,6 +94,8 @@ const DailyForm: React.FC<DailyFormProps> = ({
   setStoolTypes,
   onSubmit,
 }) => {
+  const intl = useIntl();
+
   const getSleepQualityRadioProps = useRadioGroup({
     value: sleepQuality.toString(),
     onChange: (value) => setSleepQuality(parseInt(value)),
@@ -189,7 +192,9 @@ const DailyForm: React.FC<DailyFormProps> = ({
       <Stack spacing={4}>
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
           <FormControl id="generalMood">
-            <FormLabel>General mood</FormLabel>
+            <FormLabel>
+              <FormattedMessage id="DailyForm.general-mood-label" />
+            </FormLabel>
             <HStack
               display="flex"
               alignItems="center"
@@ -218,7 +223,9 @@ const DailyForm: React.FC<DailyFormProps> = ({
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={8}>
           <FormControl id="weight">
-            <FormLabel>Weight</FormLabel>
+            <FormLabel>
+              <FormattedMessage id="DailyForm.weight" />
+            </FormLabel>
             <Flex>
               <Input
                 maxW="60px"
@@ -252,7 +259,9 @@ const DailyForm: React.FC<DailyFormProps> = ({
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={8}>
           <FormControl id="symptoms">
-            <FormLabel>Symptoms</FormLabel>
+            <FormLabel>
+              <FormattedMessage id="DailyForm.symptoms" />
+            </FormLabel>
             {symptoms.map((symptom, index) => (
               <Collapse
                 key={symptom.id}
@@ -273,7 +282,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
                 leftIcon={<FontAwesomeIcon icon="plus" />}
                 variant="outline"
               >
-                Add symptom
+                <FormattedMessage id="DailyForm.add-symptom-button" />
               </Button>
             </Box>
           </FormControl>
@@ -281,8 +290,12 @@ const DailyForm: React.FC<DailyFormProps> = ({
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
           <FormControl id="sleep">
-            <FormLabel>Sleep</FormLabel>
-            <FormLabel>Duration</FormLabel>
+            <FormLabel>
+              <FormattedMessage id="DailyForm.sleep" />
+            </FormLabel>
+            <FormLabel>
+              <FormattedMessage id="DailyForm.duration" />
+            </FormLabel>
             <Flex mb="1rem">
               <Input
                 maxW="70px"
@@ -314,7 +327,9 @@ const DailyForm: React.FC<DailyFormProps> = ({
                 />
               </Slider>
             </Flex>
-            <FormLabel>Quality</FormLabel>
+            <FormLabel>
+              <FormattedMessage id="DailyForm.quality" />
+            </FormLabel>
             <HStack
               display="flex"
               alignItems="center"
@@ -343,7 +358,9 @@ const DailyForm: React.FC<DailyFormProps> = ({
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
           <FormControl id="stress">
-            <FormLabel>Stress</FormLabel>
+            <FormLabel>
+              <FormattedMessage id="DailyForm.stress" />
+            </FormLabel>
             <HStack
               display="flex"
               alignItems="center"
@@ -372,7 +389,9 @@ const DailyForm: React.FC<DailyFormProps> = ({
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={8}>
           <FormControl id="symptoms">
-            <FormLabel>Activities</FormLabel>
+            <FormLabel>
+              <FormattedMessage id="DailyForm.activities" />
+            </FormLabel>
             {activities.map((activity, index) => (
               <Collapse
                 key={activity.id}
@@ -393,7 +412,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
                 leftIcon={<FontAwesomeIcon icon="plus" />}
                 variant="outline"
               >
-                Add activity
+                <FormattedMessage id="DailyForm.add-activity-button" />
               </Button>
             </Box>
           </FormControl>
@@ -401,7 +420,9 @@ const DailyForm: React.FC<DailyFormProps> = ({
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
           <FormControl id="email">
-            <FormLabel>Stool type (Bristol's scale)</FormLabel>
+            <FormLabel>
+              <FormattedMessage id="DailyForm.stool-type-label" />
+            </FormLabel>
             {stoolTypes.map((type, index) => (
               <Collapse key={type.id} startingHeight={0} in={type.collapse}>
                 {index > 0 && <Divider mb={3} />}
@@ -418,7 +439,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
                 leftIcon={<FontAwesomeIcon icon="plus" />}
                 variant="outline"
               >
-                Add new Stool Type
+                <FormattedMessage id="DailyForm.add-stool-type-button" />
               </Button>
             </Box>
           </FormControl>
@@ -430,7 +451,9 @@ const DailyForm: React.FC<DailyFormProps> = ({
             alignItems="center"
             justifyContent="space-between"
           >
-            <FormLabel htmlFor="therapy">In therapy?</FormLabel>
+            <FormLabel htmlFor="therapy">
+              <FormattedMessage id="DailyForm.in-therapy" />
+            </FormLabel>
             <Switch
               onChange={(e) => setInTherapy(e.target.checked)}
               isChecked={inTherapy}
@@ -445,7 +468,9 @@ const DailyForm: React.FC<DailyFormProps> = ({
             alignItems="center"
             justifyContent="space-between"
           >
-            <FormLabel htmlFor="menstruation">Menstruation?</FormLabel>
+            <FormLabel htmlFor="menstruation">
+              <FormattedMessage id="DailyForm.menstruation" />
+            </FormLabel>
             <Switch
               onChange={(e) => setMenstruation(e.target.checked)}
               isChecked={menstruation || false}
@@ -459,7 +484,9 @@ const DailyForm: React.FC<DailyFormProps> = ({
             alignItems="center"
             justifyContent="space-between"
           >
-            <FormLabel htmlFor="migraine">Migraine?</FormLabel>
+            <FormLabel htmlFor="migraine">
+              <FormattedMessage id="DailyForm.migraine" />
+            </FormLabel>
             <Switch
               onChange={(e) => setMigraine(e.target.checked)}
               isChecked={migraine}
@@ -473,7 +500,9 @@ const DailyForm: React.FC<DailyFormProps> = ({
             alignItems="center"
             justifyContent="space-between"
           >
-            <FormLabel htmlFor="pollakiuria">Pollakiuria?</FormLabel>
+            <FormLabel htmlFor="pollakiuria">
+              <FormattedMessage id="DailyForm.pollakiuria" />
+            </FormLabel>
             <Switch
               onChange={(e) => setPollakiuria(e.target.checked)}
               isChecked={pollakiuria}
@@ -485,7 +514,9 @@ const DailyForm: React.FC<DailyFormProps> = ({
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
           <FormControl id="email">
-            <FormLabel>General rate of the day</FormLabel>
+            <FormLabel>
+              <FormattedMessage id="DailyForm.general-day-rate" />
+            </FormLabel>
             <HStack
               display="flex"
               alignItems="center"
@@ -514,11 +545,15 @@ const DailyForm: React.FC<DailyFormProps> = ({
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={8}>
           <FormControl id="email">
-            <FormLabel>Notes</FormLabel>
+            <FormLabel>
+              <FormattedMessage id="DailyForm.notes" />
+            </FormLabel>
             <Textarea
               onChange={(e) => setNotes(e.target.value)}
               value={notes || ""}
-              placeholder="Here is a sample placeholder"
+              placeholder={intl.formatMessage({
+                id: "DailyForm.notes-placeholder",
+              })}
             />
           </FormControl>
         </Box>
@@ -530,7 +565,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
           isLoading={fetching}
           type="submit"
         >
-          Submit
+          <FormattedMessage id="general.submit" />
         </Button>
       </Stack>
     </DailyFormWrapper>
