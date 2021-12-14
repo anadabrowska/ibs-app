@@ -79,7 +79,7 @@ export class FormResolver {
     const { symptoms, activities, ...formInput } = input;
     const form = await Form.create({
       ...formInput,
-      creatorId: req.session.userId,
+      creatorId: (req.session as any).userId,
     }).save();
 
     for (let i = 0; i < (activities?.length || 0); i++) {
@@ -115,7 +115,7 @@ export class FormResolver {
       .set({ ...formInput })
       .where('id = :id and "creatorId" = :creatorId', {
         id,
-        creatorId: req.session.userId,
+        creatorId: (req.session as any).userId,
       })
       .returning("*")
       .execute();

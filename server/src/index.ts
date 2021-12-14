@@ -18,12 +18,6 @@ import { Form } from "./entities/form";
 import { Activity } from "./entities/activity";
 import { Symptom } from "./entities/symptom";
 
-declare module "express-session" {
-  export interface SessionData {
-    userId: number;
-  }
-}
-
 const main = async () => {
   const dbUrl = "postgres://postgres:postgres@localhost:5432/ibs-app";
 
@@ -40,23 +34,16 @@ const main = async () => {
     entities: [User, Form, Symptom, Activity],
   });
 
-  await conn.runMigrations();
+  if (process.env.NODE_ENV === "production") {
+    await conn.runMigrations();
 
-  console.log("migrations finished");
+    console.log("migrations finished");
+  }
 
   const app = express();
 
   const RedisStore = connectRedis(session);
-  const redis = new Redis(
-    process.env.REDIS_TLS_URL || "127.0.0.1:6379",
-    process.env.REDIS_TLS_URL
-      ? {
-          tls: {
-            rejectUnauthorized: false,
-          },
-        }
-      : undefined
-  );
+  const redis = new Redis(process.env.REDIS_URL || "127.0.0.1:6379");
 
   app.set("trust proxy", 1);
 
@@ -74,15 +61,15 @@ const main = async () => {
       name: COOKIE_NAME,
       store: new RedisStore({
         client: redis as any,
-        //TODO: think of session length, now it's forever
         disableTouch: true,
       }),
       cookie: {
         //year
         maxAge: 1000 * 60 * 60 * 24 * 365,
         httpOnly: true,
-        //TODO: make prod https
+        sameSite: "none",
         secure: __prod__,
+        domain: __prod__ ? "staging-ibs-app-server.herokuapp.com" : undefined,
       },
       saveUninitialized: false,
       //TODO:  make this Env variable

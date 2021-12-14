@@ -13,6 +13,7 @@ import { pipe, tap } from "wonka";
 import { Exchange } from "urql";
 import Router from "next/router";
 import { Cache, cacheExchange, QueryInput } from "@urql/exchange-graphcache";
+import { NextPageContext } from "next";
 
 const errorExchange: Exchange =
   ({ forward }) =>
@@ -42,7 +43,7 @@ function updateQueryWithTypes<Result, Query>(
 export const urqlClient = createClient({
   url: process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/graphql",
   fetchOptions: {
-    credentials: "include",
+    credentials: "include" as const,
   },
   exchanges: [
     dedupExchange,

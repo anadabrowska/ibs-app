@@ -84,7 +84,7 @@ const SettingsPanel: React.FC = () => {
             router.replace("/login");
           }}
         >
-          <FormattedMessage id="logout" />
+          <FormattedMessage id="general.logout" />
         </Button>
       </Center>
     </Stack>

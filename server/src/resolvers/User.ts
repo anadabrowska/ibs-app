@@ -68,10 +68,10 @@ export class UserResolver {
   @Query(() => User, { nullable: true })
   @UseMiddleware(isAuth)
   async me(@Ctx() { req }: Context) {
-    if (!req.session.userId) {
+    if (!(req.session as any).userId) {
       return null;
     }
-    const user = await User.findOne({ id: req.session.userId });
+    const user = await User.findOne({ id: (req.session as any).userId });
     return user;
   }
 
@@ -156,7 +156,7 @@ export class UserResolver {
       };
     }
 
-    req.session.userId = user.id;
+    (req.session as any).userId = user.id;
 
     return {
       user,
