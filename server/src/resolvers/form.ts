@@ -82,21 +82,34 @@ export class FormResolver {
       creatorId: (req.session as any).userId,
     }).save();
 
-    for (let i = 0; i < (activities?.length || 0); i++) {
-      const activity = activities?.at(i);
-      await Activity.create({
-        ...activity,
-        formId: form.id,
-      }).save();
+    let newActivities: Activity[] = [];
+    if (activities) {
+      const activityPromises = await activities?.map(async (activity) => {
+        newActivities.push(
+          await Activity.create({
+            ...activity,
+            formId: form.id,
+          }).save()
+        );
+      });
+      await Promise.all(activityPromises);
     }
 
-    for (let i = 0; i < (symptoms?.length || 0); i++) {
-      const symptom = symptoms?.at(i);
-      await Symptom.create({
-        ...symptom,
-        formId: form.id,
-      }).save();
+    let newSymptoms: Symptom[] = [];
+    if (symptoms) {
+      const symptomPromises = await symptoms?.map(async (symptom) => {
+        newSymptoms.push(
+          await Symptom.create({
+            ...symptom,
+            formId: form.id,
+          }).save()
+        );
+      });
+      await Promise.all(symptomPromises);
     }
+
+    form.activities = newActivities;
+    form.symptoms = newSymptoms;
 
     return form;
   }
@@ -120,7 +133,7 @@ export class FormResolver {
       .returning("*")
       .execute();
 
-    const form = updatedFrom.raw[0];
+    const form: Form = updatedFrom.raw[0];
 
     await Activity.delete({
       formId: form.id,
@@ -129,33 +142,36 @@ export class FormResolver {
       formId: form.id,
     });
 
-    let newActivities = [];
-    for (let i = 0; i < (activities?.length || 0); i++) {
-      const activity = activities?.at(i);
-      newActivities.push(
-        await Activity.create({
-          ...activity,
-          formId: form.id,
-        }).save()
-      );
+    let newActivities: Activity[] = [];
+    if (activities) {
+      const activityPromises = await activities?.map(async (activity) => {
+        newActivities.push(
+          await Activity.create({
+            ...activity,
+            formId: form.id,
+          }).save()
+        );
+      });
+      await Promise.all(activityPromises);
     }
 
-    let newSymptoms = [];
-    for (let i = 0; i < (symptoms?.length || 0); i++) {
-      const symptom = symptoms?.at(i);
-      newSymptoms.push(
-        await Symptom.create({
-          ...symptom,
-          formId: form.id,
-        }).save()
-      );
+    let newSymptoms: Symptom[] = [];
+    if (symptoms) {
+      const symptomPromises = await symptoms?.map(async (symptom) => {
+        newSymptoms.push(
+          await Symptom.create({
+            ...symptom,
+            formId: form.id,
+          }).save()
+        );
+      });
+      await Promise.all(symptomPromises);
     }
 
-    return {
-      ...form,
-      symptoms: newSymptoms,
-      activities: newActivities,
-    };
+    form.activities = newActivities;
+    form.symptoms = newSymptoms;
+
+    return form;
   }
   @Query(() => Form, { nullable: true })
   @UseMiddleware(isAuth)

@@ -63,7 +63,11 @@ const StoolTypeForm: React.FC<IStoolTypeForm> = ({
               value: (value + 1).toString(),
             });
             return (
-              <RadioCard radioType={RadioType.NumberRadio} {...radio}>
+              <RadioCard
+                key={value}
+                radioType={RadioType.NumberRadio}
+                {...radio}
+              >
                 {value + 1}
               </RadioCard>
             );
