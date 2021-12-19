@@ -24,11 +24,10 @@ import React from "react";
 import router from "next/router";
 import { useDayFormQuery, useMeQuery } from "../../generated/graphql";
 import { MonthNames } from "../../utils/calendarUtils";
-import { Circle, CloseButton, Spinner, Textarea } from "@chakra-ui/react";
+import { Circle, CloseButton, Spinner } from "@chakra-ui/react";
 import { moodOptions, stressOptions } from "../../utils/dailyFormUtils";
 import { Gender } from "../register";
 import { FormattedMessage } from "react-intl";
-import { formatMessage } from "@formatjs/intl";
 
 enum Direction {
   Prev,
@@ -95,43 +94,46 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
         >
           <CloseButton size="md" />
         </Circle>
-        <Heading mb={5}>
-          <Stack direction="row">
-            <Box
-              px={2}
-              cursor="pointer"
-              onClick={() => {
-                const newDate = getDifferentDayPath(
-                  Number(day),
-                  Number(month) - 1,
-                  Number(year),
-                  Direction.Prev
-                );
-                router.push(`/day/${newDate}`);
-              }}
-            >
-              <FontAwesomeIcon icon={faChevronLeft} />
-            </Box>
-            <Text width={[280, 350]} textAlign="center">
-              {day} {MonthNames[Number(month) - 1]} {year}
-            </Text>
-            <Box
-              px={2}
-              cursor="pointer"
-              onClick={() => {
-                const newDate = getDifferentDayPath(
-                  Number(day),
-                  Number(month) - 1,
-                  Number(year),
-                  Direction.Next
-                );
-                router.push(`/day/${newDate}`);
-              }}
-            >
-              <FontAwesomeIcon icon={faChevronRight} />
-            </Box>
-          </Stack>
-        </Heading>
+        <Center p={5}>
+          <Heading>
+            <Stack my={5} direction="row">
+              <Box
+                px={2}
+                cursor="pointer"
+                onClick={() => {
+                  const newDate = getDifferentDayPath(
+                    Number(day),
+                    Number(month) - 1,
+                    Number(year),
+                    Direction.Prev
+                  );
+                  router.push(`/day/${newDate}`);
+                }}
+              >
+                <FontAwesomeIcon icon={faChevronLeft} />
+              </Box>
+              <Text width={[200, 260, 350]} textAlign="center">
+                {day} <FormattedMessage id={MonthNames[Number(month) - 1]} />{" "}
+                {year}
+              </Text>
+              <Box
+                px={2}
+                cursor="pointer"
+                onClick={() => {
+                  const newDate = getDifferentDayPath(
+                    Number(day),
+                    Number(month) - 1,
+                    Number(year),
+                    Direction.Next
+                  );
+                  router.push(`/day/${newDate}`);
+                }}
+              >
+                <FontAwesomeIcon icon={faChevronRight} />
+              </Box>
+            </Stack>
+          </Heading>
+        </Center>
         {fetching && (
           <Center>
             <Spinner
@@ -169,7 +171,9 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                     <FormattedMessage id="DayPage.general-day-rate" />
                   </Box>
 
-                  <Box>{dayRate?.title}</Box>
+                  <Box>
+                    <FormattedMessage id={dayRate?.title} />
+                  </Box>
                 </GridItem>
                 <GridItem>
                   <FontAwesomeIcon
@@ -183,7 +187,9 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                     <FormattedMessage id="DayPage.mood" />
                   </Box>
 
-                  <Box>{mood?.title}</Box>
+                  <Box>
+                    <FormattedMessage id={mood?.title} />
+                  </Box>
                 </GridItem>
                 <GridItem>
                   <FontAwesomeIcon
@@ -197,7 +203,9 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                     <FormattedMessage id="DayPage.stress-level" />
                   </Box>
 
-                  <Box>{stress?.title}</Box>
+                  <Box>
+                    <FormattedMessage id={stress?.title} />
+                  </Box>
                 </GridItem>
               </Grid>
               <Box mt={1} fontWeight="bold" lineHeight="tight" color="teal">
@@ -419,11 +427,14 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
 
                           <Box display="flex" mt="2" alignItems="center">
                             <Box px={2}>
-                              {
-                                moodOptions.find(
-                                  (option) => option.rate === activity.moodAfter
-                                )?.title
-                              }
+                              <FormattedMessage
+                                id={
+                                  moodOptions.find(
+                                    (option) =>
+                                      option.rate === activity.moodAfter
+                                  )?.title
+                                }
+                              />
                             </Box>
                             <FontAwesomeIcon
                               icon={

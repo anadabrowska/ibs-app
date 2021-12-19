@@ -18,7 +18,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { RadioOpiton } from "../../utils/dailyFormUtils";
+import { moodOptions } from "../../utils/dailyFormUtils";
 import RadioCard, { RadioType } from "../RadioCard";
 
 export interface IActivity {
@@ -45,14 +45,6 @@ const ActivityForm: React.FC<IActivityForm> = ({
   }, []);
 
   const intl = useIntl();
-
-  const moodOptions: RadioOpiton[] = [
-    { title: "amazing", icon: "grin-stars", rate: 5 },
-    { title: "good", icon: "grin", rate: 4 },
-    { title: "ok", icon: "meh", rate: 3 },
-    { title: "bad", icon: "frown-open", rate: 2 },
-    { title: "terrible", icon: "grimace", rate: 1 },
-  ];
 
   //TODO: this should come from the database
   const activityNames = ["swimming", "running", "dancing", "biking"];

@@ -18,12 +18,13 @@ import LoginFormWrapper from "../../components/LoginFormWrapper";
 import { useChangePasswordMutation } from "../../generated/graphql";
 import NextLink from "next/link";
 import { mapErrors } from "../../utils/mapErrors";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
   const [{}, changePassword] = useChangePasswordMutation();
   const { isOpen, onOpen } = useDisclosure();
   const [tokenErrorMessage, setTokenErrorMessage] = useState("");
+  const intl = useIntl();
 
   return (
     <Formik
@@ -89,14 +90,14 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
                   <FormattedMessage id="ChangePassword.success" />
                 </AlertTitle>
                 <AlertDescription maxWidth="sm">
-                  <FormattedMessage id="ChangePassword.go-to-login-pt1" />
+                  <FormattedMessage id="ChangePassword.go-to-login-pt1" />{" "}
                   {
                     <NextLink href="/login">
                       <Link color="teal.500">
                         <FormattedMessage id="ChangePassword.go-to-login-pt2" />
                       </Link>
                     </NextLink>
-                  }
+                  }{" "}
                   <FormattedMessage id="ChangePassword.go-to-login-pt3" />
                 </AlertDescription>
               </Alert>
@@ -107,14 +108,22 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
               </Heading>
               <FormInput
                 name="newPassword"
-                label="newPassword"
-                placeholder="new password"
+                label={intl.formatMessage({
+                  id: "ChangePassword.new-password",
+                })}
+                placeholder={intl.formatMessage({
+                  id: "ChangePassword.new-password",
+                })}
                 type="password"
               />
               <FormInput
                 name="confirmPassword"
-                label="confirm password"
-                placeholder="confirm password"
+                label={intl.formatMessage({
+                  id: "ChangePassword.confirm-password",
+                })}
+                placeholder={intl.formatMessage({
+                  id: "ChangePassword.confirm-password",
+                })}
                 type="password"
               />
               <Button

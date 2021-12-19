@@ -2,6 +2,7 @@ import { Box, Circle, useRadio, UseRadioProps, VStack } from "@chakra-ui/react";
 import { IconName } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { FormattedMessage } from "react-intl";
 
 export enum RadioType {
   IconRadio,
@@ -43,7 +44,7 @@ const RadioCard: React.FC<RadioCardProps> = (props) => {
             textAlign="center"
             color={state.isChecked ? "teal" : "white"}
           >
-            {props.title}
+            <FormattedMessage id={props.title} />
           </Box>
         </VStack>
       )}

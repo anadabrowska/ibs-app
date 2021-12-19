@@ -175,13 +175,20 @@ export class FormResolver {
   }
   @Query(() => Form, { nullable: true })
   @UseMiddleware(isAuth)
-  async dayForm(@Arg("date") date: string): Promise<Form | undefined> {
+  async dayForm(
+    @Arg("date") date: string,
+    @Ctx() { req }: Context
+  ): Promise<Form | undefined> {
     const form: Form | undefined = await getConnection()
       .getRepository(Form)
       .createQueryBuilder("form")
-      .where(`DATE_TRUNC('day', "createdAt") = :date`, {
-        date: date,
-      })
+      .where(
+        `DATE_TRUNC('day', "createdAt") = :date and "creatorId" = :creatorId`,
+        {
+          date: date,
+          creatorId: (req.session as any).userId,
+        }
+      )
       .getOne();
 
     if (form) {
@@ -208,7 +215,8 @@ export class FormResolver {
   @UseMiddleware(isAuth)
   async formsFromTimeRange(
     @Arg("before") before: string,
-    @Arg("after") after: string
+    @Arg("after") after: string,
+    @Ctx() { req }: Context
   ): Promise<Form[] | undefined> {
     const forms: Form[] | undefined = await getConnection()
       .getRepository(Form)
@@ -218,6 +226,9 @@ export class FormResolver {
       })
       .andWhere(`DATE_TRUNC('day', "createdAt") >= :after`, {
         after: after,
+      })
+      .andWhere('"creatorId" = :creatorId', {
+        creatorId: (req.session as any).userId,
       })
       .getMany();
 

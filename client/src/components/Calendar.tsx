@@ -9,6 +9,7 @@ import {
   MonthNames,
   shortWeekNames,
 } from "../utils/calendarUtils";
+import { FormattedMessage } from "react-intl";
 
 const Calendar: React.FC = () => {
   const generateMonthlyCalendar = (
@@ -72,14 +73,18 @@ const Calendar: React.FC = () => {
     return (
       <div id={current ? "current" : undefined}>
         <div className={styles.calendarHeader}>
-          <span>{MonthNames[month]}</span>
+          <span>
+            <FormattedMessage id={MonthNames[month]} />
+          </span>
           <span>{year}</span>
         </div>
         <div>
           <div className={styles.weekDays}>
             <Grid templateColumns="repeat(7, 1fr)" gap={5}>
               {shortWeekNames.map((day) => (
-                <div key={day}>{day}</div>
+                <div key={day}>
+                  <FormattedMessage id={day} />
+                </div>
               ))}
             </Grid>
           </div>

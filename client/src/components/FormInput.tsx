@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { FieldHookConfig, useField } from "formik";
 import React from "react";
+import { FormattedMessage } from "react-intl";
 
 type FieldProps = FieldHookConfig<string> & {
   name: string;
@@ -35,7 +36,7 @@ const FormInput: React.FC<FieldProps> = (props) => {
         {props.type === "password" && (
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleClick}>
-              {show ? "Hide" : "Show"}
+              <FormattedMessage id={show ? "Password.show" : "Password.hide"} />
             </Button>
           </InputRightElement>
         )}

@@ -7,17 +7,17 @@ export type RadioOpiton = {
 };
 
 export const stressOptions: RadioOpiton[] = [
-  { title: "not stressed", icon: "laugh-beam", rate: 1 },
-  { title: "a bit stressed", icon: "meh-rolling-eyes", rate: 2 },
-  { title: "stressed", icon: "meh", rate: 3 },
-  { title: "very stressed", icon: "frown", rate: 4 },
-  { title: "stress overload", icon: "sad-tear", rate: 5 },
+  { title: "stressOptions.not-stressed", icon: "laugh-beam", rate: 1 },
+  { title: "stressOptions.a-bit-stressed", icon: "meh-rolling-eyes", rate: 2 },
+  { title: "stressOptions.stressed", icon: "meh", rate: 3 },
+  { title: "stressOptions.very-stressed", icon: "frown", rate: 4 },
+  { title: "stressOptions.stress-overload", icon: "sad-tear", rate: 5 },
 ];
 
 export const moodOptions: RadioOpiton[] = [
-  { title: "amazing", icon: "grin-stars", rate: 5 },
-  { title: "good", icon: "grin", rate: 4 },
-  { title: "ok", icon: "meh", rate: 3 },
-  { title: "bad", icon: "frown-open", rate: 2 },
-  { title: "terrible", icon: "grimace", rate: 1 },
+  { title: "moodOptions.amazing", icon: "grin-stars", rate: 5 },
+  { title: "moodOptions.good", icon: "grin", rate: 4 },
+  { title: "moodOptions.ok", icon: "meh", rate: 3 },
+  { title: "moodOptions.bad", icon: "frown-open", rate: 2 },
+  { title: "moodOptions.terrible", icon: "grimace", rate: 1 },
 ];
