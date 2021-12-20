@@ -21,7 +21,7 @@ import { mapErrors } from "../../utils/mapErrors";
 import { FormattedMessage, useIntl } from "react-intl";
 
 const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
-  const [{}, changePassword] = useChangePasswordMutation();
+  const [changePassword] = useChangePasswordMutation();
   const { isOpen, onOpen } = useDisclosure();
   const [tokenErrorMessage, setTokenErrorMessage] = useState("");
   const intl = useIntl();
@@ -34,8 +34,10 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
           setErrors({ confirmPassword: "passwords are not same" });
         } else {
           const response = await changePassword({
-            newPassword: values.newPassword,
-            token: token,
+            variables: {
+              newPassword: values.newPassword,
+              token: token,
+            },
           });
 
           if (response.data?.changePassword.errors) {

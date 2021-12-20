@@ -103,7 +103,7 @@ const Calendar: React.FC = () => {
   const year = currDate.getFullYear();
 
   const generateYearlyCalendar = (year: number) => {
-    const [{ data }] = useDatesFromTimeRangeQuery({
+    const { data } = useDatesFromTimeRangeQuery({
       variables: { before: `${year}-12-31`, after: `${year}-01-01` },
     });
 

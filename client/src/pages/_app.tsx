@@ -2,15 +2,15 @@ import { ChakraProvider } from "@chakra-ui/react";
 
 import theme from "../theme";
 import { AppProps } from "next/app";
-import { Provider } from "urql";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
-import { urqlClient } from "../utils/createUrqlClient";
 import I18nProvider from "../i18n/provider";
 import { LOCALES } from "../i18n/locales";
 import { useEffect, useState } from "react";
 import { LangChangeEvent } from "../components/SettingsPanel";
+import { ApolloProvider } from "@apollo/client";
+import { createApolloClient } from "../utils/createApolloClient";
 
 library.add(far, fas);
 
@@ -39,13 +39,15 @@ function MyApp({ Component, pageProps }: AppProps) {
     document.addEventListener("languageChange", localStorageLangHandler, false);
   }, []);
 
+  const client = createApolloClient();
+
   return (
     <I18nProvider locale={locale}>
-      <Provider value={urqlClient}>
+      <ApolloProvider client={client}>
         <ChakraProvider resetCSS theme={theme}>
           <Component {...pageProps} />
         </ChakraProvider>
-      </Provider>
+      </ApolloProvider>
     </I18nProvider>
   );
 }

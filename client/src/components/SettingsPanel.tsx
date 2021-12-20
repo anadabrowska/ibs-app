@@ -1,3 +1,4 @@
+import { useApolloClient } from "@apollo/client";
 import {
   Stack,
   Center,
@@ -34,9 +35,10 @@ export interface LangChangeEvent extends Event {
 }
 
 const SettingsPanel: React.FC = () => {
-  const [{ data }] = useMeQuery();
+  const { data } = useMeQuery();
   const router = useRouter();
-  const [{ fetching }, logout] = useLogoutMutation();
+  const apolloClient = useApolloClient();
+  const [logout, { loading }] = useLogoutMutation();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [language, setLanguage] = useState(LOCALES.ENGLISH);
@@ -175,13 +177,14 @@ const SettingsPanel: React.FC = () => {
       <Center>
         <Button
           width={100}
-          isLoading={fetching}
+          isLoading={loading}
           rightIcon={<FontAwesomeIcon icon={faArrowRight} />}
           colorScheme="teal"
           variant="outline"
-          onClick={() => {
-            logout();
-            router.replace("/login");
+          onClick={async () => {
+            await logout();
+            await apolloClient.clearStore();
+            await router.replace("/login");
           }}
         >
           <FormattedMessage id="general.logout" />

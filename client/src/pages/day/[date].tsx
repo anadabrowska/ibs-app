@@ -38,12 +38,12 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
   //TODO make this global
   const [day, month, year] = date.split("-");
 
-  const [{ fetching, data }] = useDayFormQuery({
+  const { loading, data } = useDayFormQuery({
     variables: { date: `${year}-${month}-${day}` },
   });
 
   const userQuery = useMeQuery();
-  const UserData = userQuery[0].data?.me;
+  const UserData = userQuery.data?.me;
 
   const getDifferentDayPath = (
     day: number,
@@ -134,7 +134,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
             </Stack>
           </Heading>
         </Center>
-        {fetching && (
+        {loading && (
           <Center>
             <Spinner
               thickness="4px"

@@ -18,14 +18,14 @@ import { useForgotPasswordMutation } from "../generated/graphql";
 import { mapErrors } from "../utils/mapErrors";
 
 const ForgotPassword = () => {
-  const [{}, forgotPassword] = useForgotPasswordMutation();
+  const [forgotPassword] = useForgotPasswordMutation();
   const { isOpen, onOpen } = useDisclosure();
 
   return (
     <Formik
       initialValues={{ email: "" }}
       onSubmit={async (values, { setErrors }) => {
-        const response = await forgotPassword(values);
+        const response = await forgotPassword({ variables: values });
         if (response.data?.forgotPassword.errors) {
           setErrors(mapErrors(response.data.forgotPassword.errors));
         } else if (response.data?.forgotPassword.success) {

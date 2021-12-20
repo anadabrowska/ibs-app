@@ -12,12 +12,12 @@ import { FormattedMessage, useIntl } from "react-intl";
 const Login: React.FC = () => {
   const router = useRouter();
   const intl = useIntl();
-  const [{}, login] = useLoginMutation();
+  const [login] = useLoginMutation();
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
       onSubmit={async (values, { setErrors }) => {
-        const response = await login(values);
+        const response = await login({ variables: values });
 
         if (response.data?.login.errors) {
           setErrors(mapErrors(response.data.login.errors));

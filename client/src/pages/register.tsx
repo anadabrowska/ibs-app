@@ -30,7 +30,7 @@ export enum Gender {
 const Register: React.FC = () => {
   const router = useRouter();
   const intl = useIntl();
-  const [{}, register] = useRegisterMutation();
+  const [register] = useRegisterMutation();
   return (
     <Formik
       initialValues={{
@@ -41,7 +41,7 @@ const Register: React.FC = () => {
         password: "",
       }}
       onSubmit={async (values, { setErrors }) => {
-        const response = await register(values);
+        const response = await register({ variables: values });
         if (response.data?.register.errors) {
           setErrors(mapErrors(response.data.register.errors));
         } else if (response.data?.register.user) {

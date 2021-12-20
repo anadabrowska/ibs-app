@@ -29,7 +29,7 @@ import StoolTypeForm, { IStoolType } from "./StoolTypeForm";
 import SymptomForm, { ISymptom } from "./SymptomForm";
 
 interface DailyFormProps {
-  fetching?: boolean;
+  loading?: boolean;
   weight: number;
   dayRate: number;
   generalMood: number;
@@ -69,7 +69,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
   stressLevel,
   sleepQuality,
   sleepDuration,
-  fetching,
+  loading,
   migraine,
   inTherapy,
   pollakiuria,
@@ -562,7 +562,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
           mt={4}
           colorScheme="teal"
           onClick={onSubmit}
-          isLoading={fetching}
+          isLoading={loading}
           type="submit"
         >
           <FormattedMessage id="general.submit" />

@@ -16,7 +16,7 @@ const BottomNavigation: React.FC = () => {
   const year = today.getFullYear();
   const day = today.getDate();
 
-  const [{ fetching, data }] = useDayFormQuery({
+  const { loading, data } = useDayFormQuery({
     variables: { date: `${year}-${month + 1}-${day}` },
   });
 
@@ -46,14 +46,14 @@ const BottomNavigation: React.FC = () => {
           borderColor="teal.300"
           borderWidth={5}
           onClick={() => {
-            !fetching && data?.dayForm != null
+            !loading && data?.dayForm != null
               ? router.push(`/update-form/${day}-${month + 1}-${year}`)
               : router.push(`/create-form/${day}-${month + 1}-${year}`);
           }}
         >
           <FontAwesomeIcon
             color="gray"
-            icon={!fetching && data?.dayForm != null ? faPen : faPlus}
+            icon={!loading && data?.dayForm != null ? faPen : faPlus}
           />
         </Circle>
         <Tab>

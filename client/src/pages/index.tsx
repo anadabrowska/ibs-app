@@ -6,7 +6,7 @@ import SettingsPanel from "../components/SettingsPanel";
 import { useMeQuery } from "../generated/graphql";
 
 const Index = () => {
-  const [{ data }] = useMeQuery();
+  const { data } = useMeQuery();
 
   useEffect(() => {
     var scrollDiv = document?.getElementById("current")?.offsetTop;

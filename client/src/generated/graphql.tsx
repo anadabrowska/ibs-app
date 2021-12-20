@@ -1,10 +1,10 @@
-import gql from 'graphql-tag';
-import * as Urql from 'urql';
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+const defaultOptions =  {}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -363,10 +363,33 @@ export const ChangePasswordDocument = gql`
 }
     ${StarndardErrorFragmentDoc}
 ${StandardUserFragmentDoc}`;
+export type ChangePasswordMutationFn = Apollo.MutationFunction<ChangePasswordMutation, ChangePasswordMutationVariables>;
 
-export function useChangePasswordMutation() {
-  return Urql.useMutation<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument);
-};
+/**
+ * __useChangePasswordMutation__
+ *
+ * To run a mutation, you first call `useChangePasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangePasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changePasswordMutation, { data, loading, error }] = useChangePasswordMutation({
+ *   variables: {
+ *      token: // value for 'token'
+ *      newPassword: // value for 'newPassword'
+ *   },
+ * });
+ */
+export function useChangePasswordMutation(baseOptions?: Apollo.MutationHookOptions<ChangePasswordMutation, ChangePasswordMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ChangePasswordMutation, ChangePasswordMutationVariables>(ChangePasswordDocument, options);
+      }
+export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>;
+export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>;
+export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
 export const CreateFormDocument = gql`
     mutation createForm($input: FormInput!) {
   createForm(input: $input) {
@@ -374,10 +397,32 @@ export const CreateFormDocument = gql`
   }
 }
     ${FormDataFragmentDoc}`;
+export type CreateFormMutationFn = Apollo.MutationFunction<CreateFormMutation, CreateFormMutationVariables>;
 
-export function useCreateFormMutation() {
-  return Urql.useMutation<CreateFormMutation, CreateFormMutationVariables>(CreateFormDocument);
-};
+/**
+ * __useCreateFormMutation__
+ *
+ * To run a mutation, you first call `useCreateFormMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateFormMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createFormMutation, { data, loading, error }] = useCreateFormMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateFormMutation(baseOptions?: Apollo.MutationHookOptions<CreateFormMutation, CreateFormMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateFormMutation, CreateFormMutationVariables>(CreateFormDocument, options);
+      }
+export type CreateFormMutationHookResult = ReturnType<typeof useCreateFormMutation>;
+export type CreateFormMutationResult = Apollo.MutationResult<CreateFormMutation>;
+export type CreateFormMutationOptions = Apollo.BaseMutationOptions<CreateFormMutation, CreateFormMutationVariables>;
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
   forgotPassword(email: $email) {
@@ -388,10 +433,32 @@ export const ForgotPasswordDocument = gql`
   }
 }
     ${StarndardErrorFragmentDoc}`;
+export type ForgotPasswordMutationFn = Apollo.MutationFunction<ForgotPasswordMutation, ForgotPasswordMutationVariables>;
 
-export function useForgotPasswordMutation() {
-  return Urql.useMutation<ForgotPasswordMutation, ForgotPasswordMutationVariables>(ForgotPasswordDocument);
-};
+/**
+ * __useForgotPasswordMutation__
+ *
+ * To run a mutation, you first call `useForgotPasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useForgotPasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [forgotPasswordMutation, { data, loading, error }] = useForgotPasswordMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useForgotPasswordMutation(baseOptions?: Apollo.MutationHookOptions<ForgotPasswordMutation, ForgotPasswordMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ForgotPasswordMutation, ForgotPasswordMutationVariables>(ForgotPasswordDocument, options);
+      }
+export type ForgotPasswordMutationHookResult = ReturnType<typeof useForgotPasswordMutation>;
+export type ForgotPasswordMutationResult = Apollo.MutationResult<ForgotPasswordMutation>;
+export type ForgotPasswordMutationOptions = Apollo.BaseMutationOptions<ForgotPasswordMutation, ForgotPasswordMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(input: {email: $email, password: $password}) {
@@ -405,19 +472,63 @@ export const LoginDocument = gql`
 }
     ${StarndardErrorFragmentDoc}
 ${StandardUserFragmentDoc}`;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
-export function useLoginMutation() {
-  return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
-};
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const LogoutDocument = gql`
     mutation Logout {
   logout
 }
     `;
+export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>;
 
-export function useLogoutMutation() {
-  return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
-};
+/**
+ * __useLogoutMutation__
+ *
+ * To run a mutation, you first call `useLogoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLogoutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [logoutMutation, { data, loading, error }] = useLogoutMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, options);
+      }
+export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
+export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
+export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const RegisterDocument = gql`
     mutation Register($firstName: String!, $lastName: String!, $gender: String!, $email: String!, $password: String!) {
   register(
@@ -433,10 +544,36 @@ export const RegisterDocument = gql`
 }
     ${StandardUserFragmentDoc}
 ${StarndardErrorFragmentDoc}`;
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
-export function useRegisterMutation() {
-  return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
-};
+/**
+ * __useRegisterMutation__
+ *
+ * To run a mutation, you first call `useRegisterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerMutation, { data, loading, error }] = useRegisterMutation({
+ *   variables: {
+ *      firstName: // value for 'firstName'
+ *      lastName: // value for 'lastName'
+ *      gender: // value for 'gender'
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, options);
+      }
+export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
+export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const UpdateFormDocument = gql`
     mutation updateForm($input: FormInput!, $id: Int!) {
   updateForm(input: $input, id: $id) {
@@ -444,10 +581,33 @@ export const UpdateFormDocument = gql`
   }
 }
     ${FormDataFragmentDoc}`;
+export type UpdateFormMutationFn = Apollo.MutationFunction<UpdateFormMutation, UpdateFormMutationVariables>;
 
-export function useUpdateFormMutation() {
-  return Urql.useMutation<UpdateFormMutation, UpdateFormMutationVariables>(UpdateFormDocument);
-};
+/**
+ * __useUpdateFormMutation__
+ *
+ * To run a mutation, you first call `useUpdateFormMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateFormMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateFormMutation, { data, loading, error }] = useUpdateFormMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUpdateFormMutation(baseOptions?: Apollo.MutationHookOptions<UpdateFormMutation, UpdateFormMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateFormMutation, UpdateFormMutationVariables>(UpdateFormDocument, options);
+      }
+export type UpdateFormMutationHookResult = ReturnType<typeof useUpdateFormMutation>;
+export type UpdateFormMutationResult = Apollo.MutationResult<UpdateFormMutation>;
+export type UpdateFormMutationOptions = Apollo.BaseMutationOptions<UpdateFormMutation, UpdateFormMutationVariables>;
 export const DatesFromTimeRangeDocument = gql`
     query DatesFromTimeRange($before: String!, $after: String!) {
   formsFromTimeRange(before: $before, after: $after) {
@@ -457,9 +617,34 @@ export const DatesFromTimeRangeDocument = gql`
 }
     `;
 
-export function useDatesFromTimeRangeQuery(options: Omit<Urql.UseQueryArgs<DatesFromTimeRangeQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<DatesFromTimeRangeQuery>({ query: DatesFromTimeRangeDocument, ...options });
-};
+/**
+ * __useDatesFromTimeRangeQuery__
+ *
+ * To run a query within a React component, call `useDatesFromTimeRangeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDatesFromTimeRangeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDatesFromTimeRangeQuery({
+ *   variables: {
+ *      before: // value for 'before'
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useDatesFromTimeRangeQuery(baseOptions: Apollo.QueryHookOptions<DatesFromTimeRangeQuery, DatesFromTimeRangeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<DatesFromTimeRangeQuery, DatesFromTimeRangeQueryVariables>(DatesFromTimeRangeDocument, options);
+      }
+export function useDatesFromTimeRangeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DatesFromTimeRangeQuery, DatesFromTimeRangeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<DatesFromTimeRangeQuery, DatesFromTimeRangeQueryVariables>(DatesFromTimeRangeDocument, options);
+        }
+export type DatesFromTimeRangeQueryHookResult = ReturnType<typeof useDatesFromTimeRangeQuery>;
+export type DatesFromTimeRangeLazyQueryHookResult = ReturnType<typeof useDatesFromTimeRangeLazyQuery>;
+export type DatesFromTimeRangeQueryResult = Apollo.QueryResult<DatesFromTimeRangeQuery, DatesFromTimeRangeQueryVariables>;
 export const DayFormDocument = gql`
     query dayForm($date: String!) {
   dayForm(date: $date) {
@@ -468,9 +653,33 @@ export const DayFormDocument = gql`
 }
     ${FormDataFragmentDoc}`;
 
-export function useDayFormQuery(options: Omit<Urql.UseQueryArgs<DayFormQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<DayFormQuery>({ query: DayFormDocument, ...options });
-};
+/**
+ * __useDayFormQuery__
+ *
+ * To run a query within a React component, call `useDayFormQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDayFormQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDayFormQuery({
+ *   variables: {
+ *      date: // value for 'date'
+ *   },
+ * });
+ */
+export function useDayFormQuery(baseOptions: Apollo.QueryHookOptions<DayFormQuery, DayFormQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<DayFormQuery, DayFormQueryVariables>(DayFormDocument, options);
+      }
+export function useDayFormLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DayFormQuery, DayFormQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<DayFormQuery, DayFormQueryVariables>(DayFormDocument, options);
+        }
+export type DayFormQueryHookResult = ReturnType<typeof useDayFormQuery>;
+export type DayFormLazyQueryHookResult = ReturnType<typeof useDayFormLazyQuery>;
+export type DayFormQueryResult = Apollo.QueryResult<DayFormQuery, DayFormQueryVariables>;
 export const FormsFromTimeRangeDocument = gql`
     query FormsFromTimeRange($before: String!, $after: String!) {
   formsFromTimeRange(before: $before, after: $after) {
@@ -479,9 +688,34 @@ export const FormsFromTimeRangeDocument = gql`
 }
     ${FormDataFragmentDoc}`;
 
-export function useFormsFromTimeRangeQuery(options: Omit<Urql.UseQueryArgs<FormsFromTimeRangeQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<FormsFromTimeRangeQuery>({ query: FormsFromTimeRangeDocument, ...options });
-};
+/**
+ * __useFormsFromTimeRangeQuery__
+ *
+ * To run a query within a React component, call `useFormsFromTimeRangeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFormsFromTimeRangeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFormsFromTimeRangeQuery({
+ *   variables: {
+ *      before: // value for 'before'
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useFormsFromTimeRangeQuery(baseOptions: Apollo.QueryHookOptions<FormsFromTimeRangeQuery, FormsFromTimeRangeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FormsFromTimeRangeQuery, FormsFromTimeRangeQueryVariables>(FormsFromTimeRangeDocument, options);
+      }
+export function useFormsFromTimeRangeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FormsFromTimeRangeQuery, FormsFromTimeRangeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FormsFromTimeRangeQuery, FormsFromTimeRangeQueryVariables>(FormsFromTimeRangeDocument, options);
+        }
+export type FormsFromTimeRangeQueryHookResult = ReturnType<typeof useFormsFromTimeRangeQuery>;
+export type FormsFromTimeRangeLazyQueryHookResult = ReturnType<typeof useFormsFromTimeRangeLazyQuery>;
+export type FormsFromTimeRangeQueryResult = Apollo.QueryResult<FormsFromTimeRangeQuery, FormsFromTimeRangeQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -490,6 +724,29 @@ export const MeDocument = gql`
 }
     ${StandardUserFragmentDoc}`;
 
-export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
-};
+/**
+ * __useMeQuery__
+ *
+ * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+      }
+export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+        }
+export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
+export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
+export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;

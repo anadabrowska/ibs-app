@@ -12,7 +12,7 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
   const [day, month, year] = date.split("-");
 
   const router = useRouter();
-  const [{ fetching }, createForm] = useCreateFormMutation();
+  const [createForm, { loading }] = useCreateFormMutation();
 
   const [stoolTypes, setStoolTypes] = useState<IStoolType[]>([]);
   const [activities, setActivities] = useState<IActivity[]>([]);
@@ -59,7 +59,7 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
       dayRate: dayRate,
       notes: notes,
     };
-    await createForm({ input: formState });
+    await createForm({ variables: { input: formState } });
 
     router.push(`/day/${day}-${month}-${year}`);
   };
@@ -72,7 +72,7 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
       stressLevel={stressLevel}
       sleepQuality={sleepQuality}
       sleepDuration={sleepDuration}
-      fetching={fetching}
+      loading={loading}
       migraine={migraine}
       inTherapy={inTherapy}
       pollakiuria={pollakiuria}

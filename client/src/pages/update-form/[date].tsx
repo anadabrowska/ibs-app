@@ -13,11 +13,11 @@ import DailyForm from "../../components/form/DailyForm";
 const updateForm: NextPage<{ date: string }> = ({ date }) => {
   const [day, month, year] = date.split("-");
 
-  const [{ fetching, data }] = useDayFormQuery({
+  const { loading, data } = useDayFormQuery({
     variables: { date: `${year}-${month}-${day}` },
   });
 
-  const [_, updateForm] = useUpdateFormMutation();
+  const [updateForm] = useUpdateFormMutation();
 
   const [weight, setWeight] = useState(0);
   const [dayRate, setDayRate] = useState(0);
@@ -109,7 +109,9 @@ const updateForm: NextPage<{ date: string }> = ({ date }) => {
       dayRate: dayRate,
       notes: notes,
     };
-    await updateForm({ input: formState, id: data?.dayForm?.id || 0 });
+    await updateForm({
+      variables: { input: formState, id: data?.dayForm?.id || 0 },
+    });
 
     router.push(`/day/${day}-${month}-${year}`);
   };
@@ -122,7 +124,7 @@ const updateForm: NextPage<{ date: string }> = ({ date }) => {
       stressLevel={stressLevel}
       sleepQuality={sleepQuality}
       sleepDuration={sleepDuration}
-      fetching={fetching}
+      loading={loading}
       migraine={migraine}
       inTherapy={inTherapy}
       pollakiuria={pollakiuria}
