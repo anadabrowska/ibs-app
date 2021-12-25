@@ -48,7 +48,6 @@ const SettingsPanel: React.FC = () => {
     const localeCached = localStorage.getItem("locale");
     localeCached ? setLanguage(localeCached) : null;
     const originalSetItem = localStorage.setItem;
-    console.log(window.innerWidth);
     setScreenWidth(window.innerWidth);
 
     localStorage.setItem = function (key, value) {
