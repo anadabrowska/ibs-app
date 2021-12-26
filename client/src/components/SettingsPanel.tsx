@@ -16,6 +16,7 @@ import {
   DrawerCloseButton,
   DrawerContent,
   DrawerHeader,
+  useColorMode,
 } from "@chakra-ui/react";
 import {
   faUserAstronaut,
@@ -40,7 +41,10 @@ const SettingsPanel: React.FC = () => {
   const apolloClient = useApolloClient();
   const [logout, { loading }] = useLogoutMutation();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const langDrawer = useDisclosure();
+  const colorDrawer = useDisclosure();
+  const { colorMode, toggleColorMode } = useColorMode();
+
   const [language, setLanguage] = useState(LOCALES.ENGLISH);
   const [screenWidth, setScreenWidth] = useState(1024);
 
@@ -96,44 +100,61 @@ const SettingsPanel: React.FC = () => {
         <FormattedMessage id="SettingsPanel.settings" />
       </Heading>
       <List>
-        <ListItem
-          cursor={"pointer"}
-          alignItems="center"
-          onClick={onOpen}
-          display="flex"
-          justifyContent="space-between"
-          py={3}
-        >
-          <FormattedMessage id="SettingsPanel.change-language" />
-          <FontAwesomeIcon icon={faChevronRight} />
+        <ListItem as="button" width="100%" onClick={langDrawer.onOpen}>
+          <Box
+            alignItems="center"
+            display="flex"
+            justifyContent="space-between"
+            py={3}
+          >
+            <FormattedMessage id="SettingsPanel.change-language" />
+            <FontAwesomeIcon icon={faChevronRight} />
+          </Box>
+          <Divider />
         </ListItem>
-        <Divider />
-        <ListItem
-          alignItems="center"
-          display="flex"
-          justifyContent="space-between"
-          py={3}
-        >
-          <FormattedMessage id="SettingsPanel.faq" />
-          <FontAwesomeIcon icon={faChevronRight} />
+
+        <ListItem as="button" width="100%" onClick={colorDrawer.onOpen}>
+          <Box
+            alignItems="center"
+            display="flex"
+            justifyContent="space-between"
+            py={3}
+          >
+            <FormattedMessage id="SettingsPanel.color-mode" />
+            <FontAwesomeIcon icon={faChevronRight} />
+          </Box>
+          <Divider />
         </ListItem>
-        <Divider />
-        <ListItem
-          alignItems="center"
-          display="flex"
-          justifyContent="space-between"
-          py={3}
-        >
-          <FormattedMessage id="SettingsPanel.about-us" />
-          <FontAwesomeIcon icon={faChevronRight} />
+        <ListItem>
+          <Box
+            alignItems="center"
+            display="flex"
+            justifyContent="space-between"
+            py={3}
+          >
+            <FormattedMessage id="SettingsPanel.faq" />
+            <FontAwesomeIcon icon={faChevronRight} />
+          </Box>
+          <Divider />
         </ListItem>
-        <Divider mb={10} />
+        <ListItem>
+          <Box
+            alignItems="center"
+            display="flex"
+            justifyContent="space-between"
+            py={3}
+          >
+            <FormattedMessage id="SettingsPanel.about-us" />
+            <FontAwesomeIcon icon={faChevronRight} />
+          </Box>
+          <Divider mb={10} />
+        </ListItem>
       </List>
       <Drawer
         size={screenWidth > 425 ? "md" : "full"}
-        isOpen={isOpen}
+        isOpen={langDrawer.isOpen}
         placement="right"
-        onClose={onClose}
+        onClose={langDrawer.onClose}
       >
         <DrawerOverlay />
         <DrawerContent>
@@ -145,10 +166,15 @@ const SettingsPanel: React.FC = () => {
           <DrawerBody>
             <List>
               <ListItem
+                as="button"
+                width="100%"
                 padding={3}
-                cursor={"pointer"}
                 backgroundColor={
-                  language === LOCALES.ENGLISH ? "whiteAlpha.100" : ""
+                  language === LOCALES.ENGLISH
+                    ? colorMode === "dark"
+                      ? "gray.500"
+                      : "gray.200"
+                    : ""
                 }
                 onClick={() => setLocale(LOCALES.ENGLISH)}
                 display="flex"
@@ -159,15 +185,66 @@ const SettingsPanel: React.FC = () => {
               <Divider />
               <ListItem
                 backgroundColor={
-                  language === LOCALES.POLISH ? "whiteAlpha.100" : ""
+                  language === LOCALES.POLISH
+                    ? colorMode === "dark"
+                      ? "gray.500"
+                      : "gray.200"
+                    : ""
                 }
-                cursor={"pointer"}
+                as="button"
+                width="100%"
                 onClick={() => setLocale(LOCALES.POLISH)}
                 padding={3}
                 display="flex"
                 justifyContent="space-between"
               >
                 Polski
+              </ListItem>
+            </List>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+      <Drawer
+        size={screenWidth > 425 ? "md" : "full"}
+        isOpen={colorDrawer.isOpen}
+        placement="right"
+        onClose={colorDrawer.onClose}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>
+            <FormattedMessage id="SettingsPanel.change-color-mode" />
+          </DrawerHeader>
+
+          <DrawerBody>
+            <List>
+              <ListItem
+                padding={3}
+                as="button"
+                width="100%"
+                backgroundColor={colorMode === "dark" ? "gray.500" : ""}
+                onClick={() => {
+                  colorMode === "dark" ? null : toggleColorMode();
+                }}
+                display="flex"
+                justifyContent="space-between"
+              >
+                <FormattedMessage id="SettingsPanel.color-mode.dark" />
+              </ListItem>
+              <Divider />
+              <ListItem
+                backgroundColor={colorMode === "light" ? "gray.200" : ""}
+                as="button"
+                width="100%"
+                onClick={() => {
+                  colorMode === "light" ? null : toggleColorMode();
+                }}
+                padding={3}
+                display="flex"
+                justifyContent="space-between"
+              >
+                <FormattedMessage id="SettingsPanel.color-mode.light" />
               </ListItem>
             </List>
           </DrawerBody>

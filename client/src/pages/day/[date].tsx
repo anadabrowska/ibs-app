@@ -27,7 +27,7 @@ import { MonthNames } from "../../utils/calendarUtils";
 import { Circle, CloseButton, Spinner } from "@chakra-ui/react";
 import { moodOptions, stressOptions } from "../../utils/dailyFormUtils";
 import { Gender } from "../register";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 
 enum Direction {
   Prev,
@@ -36,6 +36,8 @@ enum Direction {
 
 const DayPage: NextPage<{ date: string }> = ({ date }) => {
   //TODO make this global
+  const intl = useIntl();
+
   const [day, month, year] = date.split("-");
 
   const { loading, data } = useDayFormQuery({
@@ -99,7 +101,8 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
             <Stack my={5} direction="row">
               <Box
                 px={2}
-                cursor="pointer"
+                as="button"
+                role="button"
                 onClick={() => {
                   const newDate = getDifferentDayPath(
                     Number(day),
@@ -118,7 +121,8 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
               </Text>
               <Box
                 px={2}
-                cursor="pointer"
+                as="button"
+                role="button"
                 onClick={() => {
                   const newDate = getDifferentDayPath(
                     Number(day),
@@ -543,7 +547,11 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                     >
                       <FormattedMessage id="DayPage.migraine" />
                     </Box>
-                    <Box>{data?.dayForm?.migraine ? "Yes" : "No"}</Box>
+                    <Box>
+                      {data?.dayForm?.migraine
+                        ? intl.formatMessage({ id: "general.yes" })
+                        : intl.formatMessage({ id: "general.no" })}
+                    </Box>
                   </GridItem>
                   <GridItem
                     colStart={2}
@@ -560,7 +568,11 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                     >
                       <FormattedMessage id="DayPage.in-therapy" />
                     </Box>
-                    <Box>{data?.dayForm?.inTherapy ? "Yes" : "No"}</Box>
+                    <Box>
+                      {data?.dayForm?.inTherapy
+                        ? intl.formatMessage({ id: "general.yes" })
+                        : intl.formatMessage({ id: "general.no" })}
+                    </Box>
                   </GridItem>
                   <GridItem
                     colStart={2}
@@ -577,7 +589,11 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                     >
                       <FormattedMessage id="DayPage.pollakiuria" />
                     </Box>
-                    <Box>{data?.dayForm?.pollakiuria ? "Yes" : "No"}</Box>
+                    <Box>
+                      {data?.dayForm?.pollakiuria
+                        ? intl.formatMessage({ id: "general.yes" })
+                        : intl.formatMessage({ id: "general.no" })}
+                    </Box>
                   </GridItem>
                   {UserData?.gender == (Gender.FEMALE || Gender.MALE) && (
                     <GridItem
@@ -595,7 +611,11 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                       >
                         <FormattedMessage id="DayPage.menstruation" />
                       </Box>
-                      <Box>{data?.dayForm?.menstruation ? "Yes" : "No"}</Box>{" "}
+                      <Box>
+                        {data?.dayForm?.menstruation
+                          ? intl.formatMessage({ id: "general.yes" })
+                          : intl.formatMessage({ id: "general.no" })}
+                      </Box>{" "}
                     </GridItem>
                   )}
                 </GridItem>

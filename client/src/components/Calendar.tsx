@@ -1,5 +1,12 @@
-import { Center, Circle, Divider, Grid, Text } from "@chakra-ui/react";
-import React from "react";
+import {
+  Center,
+  Circle,
+  Divider,
+  Grid,
+  Text,
+  useColorMode,
+} from "@chakra-ui/react";
+import React, { useEffect } from "react";
 import styles from "./Calendar.module.css";
 import router from "next/router";
 import { useDatesFromTimeRangeQuery } from "../generated/graphql";
@@ -12,6 +19,13 @@ import {
 import { FormattedMessage } from "react-intl";
 
 const Calendar: React.FC = () => {
+  useEffect(() => {
+    var scrollDiv = document?.getElementById("current")?.offsetTop;
+    window.scrollTo({ top: scrollDiv, behavior: "auto" });
+  }, []);
+
+  const { colorMode } = useColorMode();
+
   const generateMonthlyCalendar = (
     month: number,
     year: number,
@@ -27,6 +41,7 @@ const Calendar: React.FC = () => {
     for (let i = 0; i <= daysInMonth[month] + start - 1; i++) {
       const day = i - start + 1;
       const currentDate = new Date(`${year}-${month + 1}-${day}`);
+      const hasForm = dates.includes(currentDate.setHours(0, 0, 0, 0));
       if (i < start) {
         monthDays.push(<Center key={day} className={styles.monthDay}></Center>);
       } else {
@@ -34,7 +49,9 @@ const Calendar: React.FC = () => {
           monthDays.push(
             <Center
               key={day}
-              cursor="pointer"
+              as="button"
+              role="button"
+              aria-label={`${day} current day`}
               onClick={() => {
                 router.push(`/day/${day}-${month + 1}-${year}`);
               }}
@@ -51,14 +68,23 @@ const Calendar: React.FC = () => {
           monthDays.push(
             <Center
               key={day}
-              cursor="pointer"
+              as="button"
+              role="button"
+              aria-label={
+                hasForm ? `${day} day with form` : `${day} day without form`
+              }
               onClick={() => {
                 router.push(`/day/${day}-${month + 1}-${year}`);
               }}
               className={styles.monthDay}
             >
-              {dates.includes(currentDate.setHours(0, 0, 0, 0)) ? (
-                <Circle size={35} bg="gray" opacity={40} color="white">
+              {hasForm ? (
+                <Circle
+                  size={35}
+                  bg={colorMode === "dark" ? "gray.600" : "gray.200"}
+                  opacity={40}
+                  color={colorMode === "dark" ? "white" : "black"}
+                >
                   {day}
                 </Circle>
               ) : (
@@ -72,14 +98,14 @@ const Calendar: React.FC = () => {
 
     return (
       <div id={current ? "current" : undefined}>
-        <div className={styles.calendarHeader}>
+        <h1 className={styles.calendarHeader}>
           <span>
             <FormattedMessage id={MonthNames[month]} />
           </span>
           <span>{year}</span>
-        </div>
+        </h1>
         <div>
-          <div className={styles.weekDays}>
+          <div role="group" className={styles.weekDays}>
             <Grid templateColumns="repeat(7, 1fr)" gap={5}>
               {shortWeekNames.map((day) => (
                 <div key={day}>
@@ -116,7 +142,7 @@ const Calendar: React.FC = () => {
       .map((_, i) => (
         <div key={i}>
           {generateMonthlyCalendar(i, year, i === month, dates || [])}
-          <Divider mt={10} mb={10} />
+          {i < 11 ? <Divider mt={10} mb={10} /> : null}
         </div>
       ));
   };

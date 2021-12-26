@@ -7,6 +7,8 @@ export default {
     "general.submit": "Submit",
     "general.logout": "Logout",
     "general.confirm": "Confirm",
+    "general.yes": "Yes",
+    "general.no": "No",
 
     "DailyForm.notes": "Notes",
     "DailyForm.sleep": "Sleep",
@@ -49,6 +51,10 @@ export default {
     "SettingsPanel.hello": "Hi {firstName} {lastName}!",
     "SettingsPanel.settings": "Settings",
     "SettingsPanel.change-language": "Change Language",
+    "SettingsPanel.change-color-mode": "Change color mode",
+    "SettingsPanel.color-mode": "Color mode",
+    "SettingsPanel.color-mode.light": "Light",
+    "SettingsPanel.color-mode.dark": "Dark",
     "SettingsPanel.faq": "FAQ",
     "SettingsPanel.about-us": "About us",
 

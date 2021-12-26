@@ -32,12 +32,14 @@ const BottomNavigation: React.FC = () => {
       py={2}
     >
       <TabList py={4} display="flex" justifyContent="space-between">
-        <Tab>
+        <Tab aria-label="calendar">
           <FontAwesomeIcon icon={faCalendarAlt} />
         </Tab>
         <Circle
-          boxSize={16}
-          cursor="pointer"
+          role="button"
+          as="button"
+          aria-label="daily form"
+          size={16}
           transform={"translateX(-50%)"}
           position="fixed"
           left="50%"
@@ -56,7 +58,7 @@ const BottomNavigation: React.FC = () => {
             icon={!loading && data?.dayForm != null ? faPen : faPlus}
           />
         </Circle>
-        <Tab>
+        <Tab aria-label="settings">
           <FontAwesomeIcon icon={faCogs} />
         </Tab>
       </TabList>
