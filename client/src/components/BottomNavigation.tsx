@@ -32,7 +32,7 @@ const BottomNavigation: React.FC = () => {
       py={2}
     >
       <TabList py={4} display="flex" justifyContent="space-between">
-        <Tab aria-label="calendar">
+        <Tab>
           <FontAwesomeIcon icon={faCalendarAlt} />
         </Tab>
         <Circle
@@ -58,7 +58,7 @@ const BottomNavigation: React.FC = () => {
             icon={!loading && data?.dayForm != null ? faPen : faPlus}
           />
         </Circle>
-        <Tab aria-label="settings">
+        <Tab>
           <FontAwesomeIcon icon={faCogs} />
         </Tab>
       </TabList>

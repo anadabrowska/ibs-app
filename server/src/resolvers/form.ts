@@ -11,10 +11,13 @@ import {
   UseMiddleware,
   Query,
   Int,
+  ObjectType,
 } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Activity } from "../entities/activity";
 import { Symptom } from "../entities/symptom";
+import { validateForm } from "../utils/formValidation";
+import { FieldError } from "./User";
 
 @InputType()
 class ActivityInput {
@@ -37,7 +40,7 @@ class SymptomInput {
 }
 
 @InputType()
-class FormInput {
+export class FormInput {
   @Field()
   dayRate: number;
   @Field()
@@ -68,15 +71,29 @@ class FormInput {
   notes?: string;
 }
 
+@ObjectType()
+class FormResponse {
+  @Field(() => [FieldError], { nullable: true })
+  errors?: FieldError[];
+  @Field(() => Form, { nullable: true })
+  form?: Form;
+}
+
 @Resolver()
 export class FormResolver {
-  @Mutation(() => Form)
+  @Mutation(() => FormResponse)
   @UseMiddleware(isAuth)
   async createForm(
     @Arg("input") input: FormInput,
     @Ctx() { req }: Context
-  ): Promise<Form> {
+  ): Promise<FormResponse> {
     const { symptoms, activities, ...formInput } = input;
+
+    const errors = validateForm(input);
+    if (errors) {
+      return errors;
+    }
+
     const form = await Form.create({
       ...formInput,
       creatorId: (req.session as any).userId,
@@ -111,16 +128,21 @@ export class FormResolver {
     form.activities = newActivities;
     form.symptoms = newSymptoms;
 
-    return form;
+    return { form };
   }
-  @Mutation(() => Form)
+  @Mutation(() => FormResponse)
   @UseMiddleware(isAuth)
   async updateForm(
     @Arg("input") input: FormInput,
     @Arg("id", () => Int) id: number,
     @Ctx() { req }: Context
-  ): Promise<Form> {
+  ): Promise<FormResponse> {
     const { symptoms, activities, ...formInput } = input;
+
+    const errors = validateForm(input);
+    if (errors) {
+      return errors;
+    }
 
     const updatedFrom = await getConnection()
       .createQueryBuilder()
@@ -171,7 +193,7 @@ export class FormResolver {
     form.activities = newActivities;
     form.symptoms = newSymptoms;
 
-    return form;
+    return { form };
   }
   @Query(() => Form, { nullable: true })
   @UseMiddleware(isAuth)

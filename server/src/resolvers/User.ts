@@ -40,7 +40,7 @@ class LoginInput {
 }
 
 @ObjectType()
-class FieldError {
+export class FieldError {
   @Field()
   fieldName: string;
   @Field()

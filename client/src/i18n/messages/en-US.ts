@@ -9,6 +9,7 @@ export default {
     "general.confirm": "Confirm",
     "general.yes": "Yes",
     "general.no": "No",
+    "general.dangerous": "Dangerous",
 
     "DailyForm.notes": "Notes",
     "DailyForm.sleep": "Sleep",
@@ -27,8 +28,27 @@ export default {
     "DailyForm.header": "How was your day?",
     "DailyForm.general-mood-label": "General mood",
     "DailyForm.add-symptom-button": "Add symptom",
+    "DailyForm.alert.dangerous-symptom": "Dangerous symptom!",
+    "DailyForm.alert.dangerous-symptom-description":
+      "At least one of the selected symptoms is marked as dangerous. Please contact a doctor as soon as possible!",
+    "DailyForm.popover.dangerous-symptom": "This is a dangerous symptom!",
+    "DailyForm.popover.dangerous-symptom-description":
+      "Contact a doctor as soon as possible.",
     "DailyForm.add-activity-button": "Add activity",
     "DailyForm.stool-type-label": "Stool type (Bristol's scale)",
+    "DailyForm.popover.stool-types-header": "The seven types of stool are:",
+    "DailyForm.popover.stool-type-1":
+      "Type 1: Separate hard lumps, like nuts (difficult to pass and can be black)",
+    "DailyForm.popover.stool-type-2": "Type 2: Sausage-shaped, but lumpy",
+    "DailyForm.popover.stool-type-3":
+      "Type 3: Like a sausage but with cracks on its surface (can be black)",
+    "DailyForm.popover.stool-type-4":
+      "Type 4: Like a sausage or snake, smooth and soft (average stool)",
+    "DailyForm.popover.stool-type-5": "Type 5: Soft blobs with clear cut edges",
+    "DailyForm.popover.stool-type-6":
+      "Type 6: Fluffy pieces with ragged edges, a mushy stool (diarrhoea)",
+    "DailyForm.popover.stool-type-7":
+      "Type 7: Watery, no solid pieces, entirely liquid (diarrhoea)",
     "DailyForm.add-stool-type-button": "Add new Stool Type",
     "DailyForm.general-day-rate": "General rate of the day",
     "DailyForm.notes-placeholder": "Put your notes here",
@@ -128,5 +148,11 @@ export default {
     "moodOptions.ok": "ok",
     "moodOptions.bad": "bad",
     "moodOptions.terrible": "terrible",
+
+    "predefinedSymptom.stomach-ache": "stomach ache",
+    "predefinedSymptom.headache": "headache",
+    "predefinedSymptom.nausea": "nausea",
+    "predefinedSymptom.dizziness": "dizziness",
+    "predefinedSymptom.heartburn": "heartburn",
   },
 };

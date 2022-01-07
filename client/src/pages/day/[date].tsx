@@ -83,7 +83,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
     data?.dayForm?.activities && data.dayForm.activities.length > 0;
 
   return (
-    <Center p={5}>
+    <Center>
       <Stack>
         <Circle
           position="absolute"

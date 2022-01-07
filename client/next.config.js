@@ -10,3 +10,10 @@ module.exports = withPWA({
     sw: "sw.js",
   },
 });
+
+module.exports = {
+  i18n: {
+    locales: ["pl-PL", "en-US"],
+    defaultLocale: "pl-PL",
+  },
+};

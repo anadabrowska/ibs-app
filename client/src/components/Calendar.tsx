@@ -106,7 +106,7 @@ const Calendar: React.FC = () => {
         </h1>
         <div>
           <div role="group" className={styles.weekDays}>
-            <Grid templateColumns="repeat(7, 1fr)" gap={5}>
+            <Grid templateColumns="repeat(7, 1fr)" gap={{ base: 3, mobile: 5 }}>
               {shortWeekNames.map((day) => (
                 <div key={day}>
                   <FormattedMessage id={day} />
@@ -115,7 +115,7 @@ const Calendar: React.FC = () => {
             </Grid>
           </div>
           <div className={styles.monthDays}>
-            <Grid templateColumns="repeat(7, 1fr)" gap={5}>
+            <Grid templateColumns="repeat(7, 1fr)" gap={{ base: 3, mobile: 5 }}>
               {monthDays}
             </Grid>
           </div>

@@ -9,6 +9,7 @@ const config: ThemeConfig = {
 const fonts = { mono: `'Menlo', monospace` };
 
 const breakpoints = createBreakpoints({
+  mobile: "25em",
   sm: "40em",
   md: "52em",
   lg: "64em",

@@ -9,6 +9,7 @@ export default {
     "general.confirm": "Zatwierdź",
     "general.yes": "Tak",
     "general.no": "Nie",
+    "general.dangerous": "Niebezpieczny",
 
     "DailyForm.notes": "Notatki",
     "DailyForm.sleep": "Sen",
@@ -28,8 +29,30 @@ export default {
     "DailyForm.header": "Jak minął Ci dzień?",
     "DailyForm.general-mood-label": "Nastrój",
     "DailyForm.add-symptom-button": "Dodaj symptom",
+    "DailyForm.alert.dangerous-symptom": "Niebezpieczny symptom!",
+    "DailyForm.alert.dangerous-symptom-description":
+      "Przynajmniej jeden z wybranych symptomów oznaczony jest jako niebezpieczny. Skontaktuj się z lekarzem tak szybko jak to możliwe!",
+    "DailyForm.popover.dangerous-symptom": "To jest niebezpieczny symptom!",
+    "DailyForm.popover.dangerous-symptom-description":
+      "Skontaktuj się z lekarzem tak szybko jak to możliwe.",
     "DailyForm.add-activity-button": "Dodaj aktywność",
     "DailyForm.stool-type-label": "Typ stolca (skala Bristolska)",
+    "DailyForm.popover.stool-types-header":
+      "Siedem typów stolca według bristolskiej skali uformowania stolca:",
+    "DailyForm.popover.stool-type-1":
+      "Typ 1: Oddzielne zbite grudki podobne do orzechów, trudne do wydalenia",
+    "DailyForm.popover.stool-type-2":
+      "Typ 2: Stolec o wydłużonym kształcie, grudkowaty",
+    "DailyForm.popover.stool-type-3":
+      "Typ 3: Stolec wydłużony, z pęknięciami na powierzchni",
+    "DailyForm.popover.stool-type-4":
+      "Typ 4: Smukłe, wężowate kawałki stolca, gładkie i miękkie",
+    "DailyForm.popover.stool-type-5":
+      "Typ 5: Miękkie drobiny z wyraźnymi krawędziami (łatwo wydalane)",
+    "DailyForm.popover.stool-type-6":
+      "Typ 6: Stolec papkowaty, kłaczaste kawałki z postrzępionymi krawędziami",
+    "DailyForm.popover.stool-type-7":
+      "Typ 7: Wodnisty, bez stałych elementów (ciecz)",
     "DailyForm.add-stool-type-button": "Dodaj typ stolca",
     "DailyForm.general-day-rate": "Generalna ocena dnia",
     "DailyForm.notes-placeholder": "Twoje miejsce na notatki",
@@ -129,5 +152,11 @@ export default {
     "moodOptions.ok": "ok",
     "moodOptions.bad": "zły",
     "moodOptions.terrible": "okropny",
+
+    "predefinedSymptom.stomach-ache": "ból brzucha",
+    "predefinedSymptom.headache": "ból głowy",
+    "predefinedSymptom.nausea": "mdłości",
+    "predefinedSymptom.dizziness": "zawroty głowy",
+    "predefinedSymptom.heartburn": "zgaga",
   },
 };

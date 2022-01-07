@@ -4,11 +4,14 @@ import { IActivity } from "../../components/form/ActivityForm";
 import { IStoolType } from "../../components/form/StoolTypeForm";
 import { ISymptom } from "../../components/form/SymptomForm";
 import {
+  FormInput,
   useDayFormQuery,
   useUpdateFormMutation,
 } from "../../generated/graphql";
 import router from "next/router";
 import DailyForm from "../../components/form/DailyForm";
+import { Formik } from "formik";
+import { mapErrors } from "../../utils/mapErrors";
 
 const updateForm: NextPage<{ date: string }> = ({ date }) => {
   const [day, month, year] = date.split("-");
@@ -53,6 +56,7 @@ const updateForm: NextPage<{ date: string }> = ({ date }) => {
           id: symptom.id,
           name: symptom.name || "",
           intensity: symptom.intensity || 0,
+          isDangerous: symptom.isDangerous || false,
           collapse: true,
         })) || [];
       setSymptoms(symptomsData);
@@ -82,73 +86,106 @@ const updateForm: NextPage<{ date: string }> = ({ date }) => {
     }
   }, [data]);
 
-  const onSubmit = async () => {
-    const formState = {
-      mood: generalMood,
-      weight: weight,
-      symptoms: symptoms.map((symptom) => {
-        return { name: symptom.name, intensity: symptom.intensity };
-      }),
-      sleepLenght: sleepDuration,
-      sleepQuality: sleepQuality,
-      stressLevel: stressLevel,
-      activities: activities.map((activity) => {
-        return {
-          type: activity.name,
-          moodAfter: activity.moodAfter,
-          time: activity.duration,
-        };
-      }),
-      stoolTypes: stoolTypes.map((elem) => {
-        return elem.type;
-      }),
-      inTherapy: inTherapy,
-      menstruation: menstruation,
-      migraine: migraine,
-      pollakiuria: pollakiuria,
-      dayRate: dayRate,
-      notes: notes,
-    };
-    await updateForm({
-      variables: { input: formState, id: data?.dayForm?.id || 0 },
-    });
-
-    router.push(`/day/${day}-${month}-${year}`);
+  const initialValues: FormInput = {
+    mood: 0,
+    weight: 0,
+    symptoms: [],
+    sleepLenght: 0,
+    sleepQuality: 0,
+    stressLevel: 0,
+    activities: [],
+    stoolTypes: [],
+    inTherapy: false,
+    pollakiuria: false,
+    menstruation: false,
+    migraine: false,
+    dayRate: 0,
+    notes: "",
   };
 
   return (
-    <DailyForm
-      weight={weight}
-      dayRate={dayRate}
-      generalMood={generalMood}
-      stressLevel={stressLevel}
-      sleepQuality={sleepQuality}
-      sleepDuration={sleepDuration}
-      loading={loading}
-      migraine={migraine}
-      inTherapy={inTherapy}
-      pollakiuria={pollakiuria}
-      menstruation={menstruation}
-      notes={notes}
-      symptoms={symptoms}
-      activities={activities}
-      stoolTypes={stoolTypes}
-      setWeight={setWeight}
-      setGeneralMood={setGeneralMood}
-      setDayRate={setDayRate}
-      setStressLevel={setStressLevel}
-      setSleepQuality={setSleepQuality}
-      setSleepDuration={setSleepDuration}
-      setMigraine={setMigraine}
-      setInTherapy={setInTherapy}
-      setPollakiuria={setPollakiuria}
-      setMenstruation={setMenstruation}
-      setNotes={setNotes}
-      setSymptoms={setSymptoms}
-      setActivities={setActivities}
-      setStoolTypes={setStoolTypes}
-      onSubmit={onSubmit}
-    />
+    <Formik
+      initialValues={initialValues}
+      onSubmit={async (values, { setErrors }) => {
+        const formState = {
+          mood: generalMood,
+          weight: weight,
+          symptoms: symptoms.map((symptom) => {
+            return {
+              name: symptom.name,
+              intensity: symptom.intensity,
+              isDangerous: symptom.isDangerous,
+            };
+          }),
+          sleepLenght: sleepDuration,
+          sleepQuality: sleepQuality,
+          stressLevel: stressLevel,
+          activities: activities.map((activity) => {
+            return {
+              type: activity.name,
+              moodAfter: activity.moodAfter,
+              time: activity.duration,
+            };
+          }),
+          stoolTypes: stoolTypes.map((elem) => {
+            return elem.type;
+          }),
+          inTherapy: inTherapy,
+          menstruation: menstruation,
+          migraine: migraine,
+          pollakiuria: pollakiuria,
+          dayRate: dayRate,
+          notes: notes,
+        };
+        const response = await updateForm({
+          variables: { input: formState, id: data?.dayForm?.id || 0 },
+        });
+
+        if (response.data?.updateForm.errors) {
+          setErrors(mapErrors(response.data.updateForm.errors));
+        } else {
+          router.push(`/day/${day}-${month}-${year}`);
+        }
+      }}
+    >
+      {({ errors, touched, handleSubmit, handleBlur }) => (
+        <DailyForm
+          errors={errors}
+          touched={touched}
+          weight={weight}
+          dayRate={dayRate}
+          generalMood={generalMood}
+          stressLevel={stressLevel}
+          sleepQuality={sleepQuality}
+          sleepDuration={sleepDuration}
+          loading={loading}
+          migraine={migraine}
+          inTherapy={inTherapy}
+          pollakiuria={pollakiuria}
+          menstruation={menstruation}
+          notes={notes}
+          symptoms={symptoms}
+          activities={activities}
+          stoolTypes={stoolTypes}
+          setWeight={setWeight}
+          setGeneralMood={setGeneralMood}
+          setDayRate={setDayRate}
+          setStressLevel={setStressLevel}
+          setSleepQuality={setSleepQuality}
+          setSleepDuration={setSleepDuration}
+          setMigraine={setMigraine}
+          setInTherapy={setInTherapy}
+          setPollakiuria={setPollakiuria}
+          setMenstruation={setMenstruation}
+          setNotes={setNotes}
+          setSymptoms={setSymptoms}
+          setActivities={setActivities}
+          setStoolTypes={setStoolTypes}
+          onSubmit={handleSubmit}
+          onBlur={handleBlur}
+        />
+      )}
+    </Formik>
   );
 };
 

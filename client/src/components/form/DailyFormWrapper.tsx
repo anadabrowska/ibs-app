@@ -1,16 +1,27 @@
-import { Flex, Stack, Circle, CloseButton, Heading } from "@chakra-ui/react";
+import {
+  Flex,
+  Stack,
+  Circle,
+  CloseButton,
+  Heading,
+  Center,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import router from "next/router";
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
 const DailyFormWrapper: React.FC = ({ children }) => {
   return (
-    <Flex minH={"100vh"} align={"center"} justify={"center"}>
-      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={[3, 6, 9]}>
+    <Center
+      transformOrigin="top"
+      transform={{ base: "scale(.7)", mobile: "scale(1)" }}
+    >
+      <Stack>
         <Circle
           position="absolute"
-          top={[3, 5]}
-          left={[3, 5]}
+          top={{ base: 3, mobile: 5 }}
+          left={{ base: -10, mobile: 5 }}
           borderWidth={2}
           onClick={() => {
             router.replace("/");
@@ -18,14 +29,14 @@ const DailyFormWrapper: React.FC = ({ children }) => {
         >
           <CloseButton size="md" />
         </Circle>
-        <Stack align={"center"}>
+        <Center paddingTop={16}>
           <Heading fontSize={"4xl"}>
             <FormattedMessage id="DailyForm.header" />
           </Heading>
-        </Stack>
+        </Center>
         {children}
       </Stack>
-    </Flex>
+    </Center>
   );
 };
 

@@ -15,12 +15,14 @@ interface IStoolTypeForm {
   stoolType: IStoolType;
   setStoolType: (value: IStoolType) => void;
   removeStoolType: (id: number) => void;
+  onBlur: (e: React.FocusEvent<any>) => void;
 }
 
 const StoolTypeForm: React.FC<IStoolTypeForm> = ({
   stoolType,
   setStoolType,
   removeStoolType,
+  onBlur,
 }: IStoolTypeForm) => {
   React.useEffect(() => {
     setTimeout(() => setStoolType({ ...stoolType, collapse: true }), 100);
@@ -37,7 +39,7 @@ const StoolTypeForm: React.FC<IStoolTypeForm> = ({
 
   return (
     <Box px={4} py={2} mb={4}>
-      <Box display="flex" justifyContent="end">
+      <Box display="flex" justifyContent="flex-end">
         <Button
           variant="outline"
           size="sm"
@@ -66,6 +68,8 @@ const StoolTypeForm: React.FC<IStoolTypeForm> = ({
               <RadioCard
                 key={value}
                 radioType={RadioType.NumberRadio}
+                onBlur={onBlur}
+                radioName="stoolTypes"
                 {...radio}
               >
                 {value + 1}

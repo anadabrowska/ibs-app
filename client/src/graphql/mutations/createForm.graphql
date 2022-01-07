@@ -1,5 +1,10 @@
 mutation createForm($input: FormInput!) {
   createForm(input: $input) {
-    ...FormData
+    form {
+      ...FormData
+    }
+    errors {
+      ...StarndardError
+    }
   }
 }

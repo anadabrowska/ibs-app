@@ -80,6 +80,12 @@ export type FormInput = {
   weight: Scalars['Float'];
 };
 
+export type FormResponse = {
+  __typename?: 'FormResponse';
+  errors?: Maybe<Array<FieldError>>;
+  form?: Maybe<Form>;
+};
+
 export type LoginInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -88,12 +94,12 @@ export type LoginInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   changePassword: UserResponse;
-  createForm: Form;
+  createForm: FormResponse;
   forgotPassword: ActionResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
   register: UserResponse;
-  updateForm: Form;
+  updateForm: FormResponse;
 };
 
 
@@ -208,7 +214,7 @@ export type CreateFormMutationVariables = Exact<{
 }>;
 
 
-export type CreateFormMutation = { __typename?: 'Mutation', createForm: { __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> } };
+export type CreateFormMutation = { __typename?: 'Mutation', createForm: { __typename?: 'FormResponse', form?: Maybe<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
@@ -247,7 +253,7 @@ export type UpdateFormMutationVariables = Exact<{
 }>;
 
 
-export type UpdateFormMutation = { __typename?: 'Mutation', updateForm: { __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> } };
+export type UpdateFormMutation = { __typename?: 'Mutation', updateForm: { __typename?: 'FormResponse', form?: Maybe<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
 
 export type DatesFromTimeRangeQueryVariables = Exact<{
   before: Scalars['String'];
@@ -393,10 +399,16 @@ export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePas
 export const CreateFormDocument = gql`
     mutation createForm($input: FormInput!) {
   createForm(input: $input) {
-    ...FormData
+    form {
+      ...FormData
+    }
+    errors {
+      ...StarndardError
+    }
   }
 }
-    ${FormDataFragmentDoc}`;
+    ${FormDataFragmentDoc}
+${StarndardErrorFragmentDoc}`;
 export type CreateFormMutationFn = Apollo.MutationFunction<CreateFormMutation, CreateFormMutationVariables>;
 
 /**
@@ -577,10 +589,16 @@ export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutatio
 export const UpdateFormDocument = gql`
     mutation updateForm($input: FormInput!, $id: Int!) {
   updateForm(input: $input, id: $id) {
-    ...FormData
+    form {
+      ...FormData
+    }
+    errors {
+      ...StarndardError
+    }
   }
 }
-    ${FormDataFragmentDoc}`;
+    ${FormDataFragmentDoc}
+${StarndardErrorFragmentDoc}`;
 export type UpdateFormMutationFn = Apollo.MutationFunction<UpdateFormMutation, UpdateFormMutationVariables>;
 
 /**

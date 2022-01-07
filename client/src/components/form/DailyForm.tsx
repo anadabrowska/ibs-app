@@ -16,20 +16,34 @@ import {
   Switch,
   Textarea,
   useRadioGroup,
+  Popover,
+  PopoverTrigger,
+  Alert,
+  useDisclosure,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  FormErrorMessage,
 } from "@chakra-ui/react";
+import { faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { moodOptions, stressOptions } from "../../utils/dailyFormUtils";
 import RadioCard, { RadioType } from "../RadioCard";
 import ActivityForm, { IActivity } from "./ActivityForm";
 import DailyFormWrapper from "./DailyFormWrapper";
+import StoolTypePopoverContent from "./StoolTypePopoverContent";
 import StoolTypeForm, { IStoolType } from "./StoolTypeForm";
 import SymptomForm, { ISymptom } from "./SymptomForm";
+import { FormikErrors, FormikTouched } from "formik";
+import { FormInput } from "../../generated/graphql";
 
 interface DailyFormProps {
   loading?: boolean;
+  errors?: FormikErrors<FormInput>;
+  touched?: FormikTouched<FormInput>;
   weight: number;
   dayRate: number;
   generalMood: number;
@@ -59,10 +73,13 @@ interface DailyFormProps {
   setSymptoms: (value: ISymptom[]) => void;
   setActivities: (value: IActivity[]) => void;
   setStoolTypes: (value: IStoolType[]) => void;
-  onSubmit: () => Promise<void>;
+  onSubmit: (e?: React.FormEvent<HTMLFormElement> | undefined) => void;
+  onBlur: (e: React.FocusEvent<any>) => void;
 }
 
 const DailyForm: React.FC<DailyFormProps> = ({
+  errors,
+  touched,
   weight,
   dayRate,
   generalMood,
@@ -93,8 +110,14 @@ const DailyForm: React.FC<DailyFormProps> = ({
   setActivities,
   setStoolTypes,
   onSubmit,
+  onBlur,
 }) => {
+  useEffect(() => {
+    symptoms.find((symptom) => symptom.isDangerous) ? onOpen() : onClose();
+  }, [symptoms]);
   const intl = useIntl();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const getSleepQualityRadioProps = useRadioGroup({
     value: sleepQuality.toString(),
@@ -175,6 +198,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
     const newSymptom: ISymptom = {
       id,
       name: name || "",
+      isDangerous: false,
       intensity: intensity || 0,
     };
     setSymptoms([...symptoms, newSymptom]);
@@ -189,9 +213,12 @@ const DailyForm: React.FC<DailyFormProps> = ({
   });
   return (
     <DailyFormWrapper>
-      <Stack spacing={4}>
+      <Stack spacing={4} px={3} pt={10}>
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
-          <FormControl id="generalMood">
+          <FormControl
+            id="generalMood"
+            isInvalid={(errors?.mood && touched?.mood) || false}
+          >
             <FormLabel>
               <FormattedMessage id="DailyForm.general-mood-label" />
             </FormLabel>
@@ -211,6 +238,8 @@ const DailyForm: React.FC<DailyFormProps> = ({
                     radioType={RadioType.IconRadio}
                     icon={option.icon}
                     title={option.title}
+                    onBlur={onBlur}
+                    radioName="mood"
                     {...radio}
                   >
                     {option}
@@ -218,11 +247,15 @@ const DailyForm: React.FC<DailyFormProps> = ({
                 );
               })}
             </HStack>
+            <FormErrorMessage>{errors?.mood}</FormErrorMessage>
           </FormControl>
         </Box>
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={8}>
-          <FormControl id="weight">
+          <FormControl
+            id="weight"
+            isInvalid={(errors?.weight && touched?.weight) || false}
+          >
             <FormLabel>
               <FormattedMessage id="DailyForm.weight" />
             </FormLabel>
@@ -232,6 +265,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
                 mr="2rem"
                 value={weight}
                 onChange={(event) => setWeight(parseInt(event.target.value))}
+                onBlur={onBlur}
                 type="weight"
               />
               <Slider
@@ -239,9 +273,18 @@ const DailyForm: React.FC<DailyFormProps> = ({
                 min={20}
                 max={150}
                 flex="1"
-                focusThumbOnChange={false}
+                className="weight"
                 value={weight}
                 onChange={(value) => setWeight(value)}
+                onFocus={(e) => {
+                  onBlur({
+                    ...e,
+                    target: {
+                      ...e.target,
+                      id: "weight",
+                    },
+                  });
+                }}
               >
                 <SliderTrack>
                   <SliderFilledTrack />
@@ -254,6 +297,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
                 />
               </Slider>
             </Flex>
+            <FormErrorMessage>{errors?.weight}</FormErrorMessage>
           </FormControl>
         </Box>
 
@@ -262,6 +306,26 @@ const DailyForm: React.FC<DailyFormProps> = ({
             <FormLabel>
               <FormattedMessage id="DailyForm.symptoms" />
             </FormLabel>
+            <Collapse in={isOpen} animateOpacity>
+              <Alert
+                status="warning"
+                variant="subtle"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                textAlign="center"
+                borderRadius={5}
+                mb={5}
+              >
+                <AlertIcon boxSize="20px" mr={0} />
+                <AlertTitle mt={4} mb={1} fontSize="lg">
+                  <FormattedMessage id="DailyForm.alert.dangerous-symptom" />
+                </AlertTitle>
+                <AlertDescription maxWidth="280px">
+                  <FormattedMessage id="DailyForm.alert.dangerous-symptom-description" />
+                </AlertDescription>
+              </Alert>
+            </Collapse>
             {symptoms.map((symptom, index) => (
               <Collapse
                 key={symptom.id}
@@ -289,7 +353,10 @@ const DailyForm: React.FC<DailyFormProps> = ({
         </Box>
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
-          <FormControl id="sleep">
+          <FormControl
+            id="sleepLenght"
+            isInvalid={(errors?.sleepLenght && touched?.sleepLenght) || false}
+          >
             <FormLabel>
               <FormattedMessage id="DailyForm.sleep" />
             </FormLabel>
@@ -301,10 +368,11 @@ const DailyForm: React.FC<DailyFormProps> = ({
                 maxW="70px"
                 mr="2rem"
                 value={sleepDuration}
+                onBlur={onBlur}
                 onChange={(event) =>
                   setSleepDuration(parseInt(event.target.value))
                 }
-                type="weight"
+                type="sleepLenght"
               />
               <Slider
                 defaultValue={8}
@@ -312,9 +380,17 @@ const DailyForm: React.FC<DailyFormProps> = ({
                 max={24}
                 step={0.5}
                 flex="1"
-                focusThumbOnChange={false}
                 value={sleepDuration}
                 onChange={(value) => setSleepDuration(value)}
+                onFocus={(e) => {
+                  onBlur({
+                    ...e,
+                    target: {
+                      ...e.target,
+                      id: "sleepLenght",
+                    },
+                  });
+                }}
               >
                 <SliderTrack>
                   <SliderFilledTrack />
@@ -327,6 +403,12 @@ const DailyForm: React.FC<DailyFormProps> = ({
                 />
               </Slider>
             </Flex>
+            <FormErrorMessage>{errors?.sleepLenght}</FormErrorMessage>
+          </FormControl>
+          <FormControl
+            id="sleepQuality"
+            isInvalid={(errors?.sleepQuality && touched?.sleepQuality) || false}
+          >
             <FormLabel>
               <FormattedMessage id="DailyForm.quality" />
             </FormLabel>
@@ -346,6 +428,8 @@ const DailyForm: React.FC<DailyFormProps> = ({
                     <RadioCard
                       key={value}
                       radioType={RadioType.NumberRadio}
+                      onBlur={onBlur}
+                      radioName="sleepQuality"
                       {...radio}
                     >
                       {value + 1}
@@ -353,11 +437,15 @@ const DailyForm: React.FC<DailyFormProps> = ({
                   );
                 })}
             </HStack>
+            <FormErrorMessage>{errors?.sleepQuality}</FormErrorMessage>
           </FormControl>
         </Box>
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
-          <FormControl id="stress">
+          <FormControl
+            id="stress"
+            isInvalid={(errors?.stressLevel && touched?.stressLevel) || false}
+          >
             <FormLabel>
               <FormattedMessage id="DailyForm.stress" />
             </FormLabel>
@@ -377,6 +465,8 @@ const DailyForm: React.FC<DailyFormProps> = ({
                     radioType={RadioType.IconRadio}
                     icon={option.icon}
                     title={option.title}
+                    onBlur={onBlur}
+                    radioName="stressLevel"
                     {...radio}
                   >
                     {option}
@@ -384,6 +474,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
                 );
               })}
             </HStack>
+            <FormErrorMessage>{errors?.stressLevel}</FormErrorMessage>
           </FormControl>
         </Box>
 
@@ -419,17 +510,31 @@ const DailyForm: React.FC<DailyFormProps> = ({
         </Box>
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
-          <FormControl id="email">
+          <FormControl id="stool-type">
             <FormLabel>
-              <FormattedMessage id="DailyForm.stool-type-label" />
+              <FormattedMessage id="DailyForm.stool-type-label" />{" "}
+              <Popover>
+                <PopoverTrigger>
+                  <Box as="button">
+                    <FontAwesomeIcon icon={faQuestionCircle} size="lg" />
+                  </Box>
+                </PopoverTrigger>
+                <StoolTypePopoverContent />
+              </Popover>
             </FormLabel>
             {stoolTypes.map((type, index) => (
-              <Collapse key={type.id} startingHeight={0} in={type.collapse}>
+              <Collapse
+                onBlur={onBlur}
+                key={type.id}
+                startingHeight={0}
+                in={type.collapse}
+              >
                 {index > 0 && <Divider mb={3} />}
                 <StoolTypeForm
                   stoolType={type}
                   removeStoolType={handleRemoveStoolType}
                   setStoolType={handleSetStoolType}
+                  onBlur={onBlur}
                 />
               </Collapse>
             ))}
@@ -513,7 +618,10 @@ const DailyForm: React.FC<DailyFormProps> = ({
         </Box>
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
-          <FormControl id="email">
+          <FormControl
+            id="dayRate"
+            isInvalid={(errors?.dayRate && touched?.dayRate) || false}
+          >
             <FormLabel>
               <FormattedMessage id="DailyForm.general-day-rate" />
             </FormLabel>
@@ -533,6 +641,8 @@ const DailyForm: React.FC<DailyFormProps> = ({
                     <RadioCard
                       key={value}
                       radioType={RadioType.NumberRadio}
+                      onBlur={onBlur}
+                      radioName="dayRate"
                       {...radio}
                     >
                       {value + 1}
@@ -540,6 +650,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
                   );
                 })}
             </HStack>
+            <FormErrorMessage>{errors?.dayRate}</FormErrorMessage>
           </FormControl>
         </Box>
 
@@ -561,7 +672,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
         <Button
           mt={4}
           colorScheme="teal"
-          onClick={onSubmit}
+          onClick={onSubmit as any}
           isLoading={loading}
           type="submit"
         >

@@ -1,16 +1,29 @@
 import { FormLabel } from "@chakra-ui/form-control";
 import { Box, Grid, GridItem, HStack } from "@chakra-ui/layout";
-import { Button, IconButton, useRadioGroup } from "@chakra-ui/react";
+import {
+  Button,
+  IconButton,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
+  useRadioGroup,
+} from "@chakra-ui/react";
 import { Select } from "@chakra-ui/select";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import RadioCard, { RadioType } from "../RadioCard";
 
 export interface ISymptom {
   id: number;
   name: string;
   intensity: number;
+  isDangerous: boolean;
   collapse?: boolean;
 }
 
@@ -29,12 +42,15 @@ const SymptomForm: React.FC<ISymptomForm> = ({
     setTimeout(() => setSymptom({ ...symptom, collapse: true }), 100);
   }, []);
 
+  const intl = useIntl();
+
   //TODO: this should come from the database
   const symptoms = [
-    { name: "stomachache", isDangerous: false },
-    { name: "headache", isDangerous: false },
-    { name: "nausea", isDangerous: false },
-    { name: "dizziness", isDangerous: false },
+    { name: "predefinedSymptom.stomach-ache", isDangerous: false },
+    { name: "predefinedSymptom.headache", isDangerous: false },
+    { name: "predefinedSymptom.nausea", isDangerous: false },
+    { name: "predefinedSymptom.dizziness", isDangerous: true },
+    { name: "predefinedSymptom.heartburn", isDangerous: false },
   ];
 
   const getIntensityRadioProps = useRadioGroup({
@@ -46,9 +62,33 @@ const SymptomForm: React.FC<ISymptomForm> = ({
       }),
   });
 
+  const dangerousPopover = (
+    <Popover>
+      <PopoverTrigger>
+        <Box as="button">
+          <FontAwesomeIcon icon={faExclamationTriangle} />
+        </Box>
+      </PopoverTrigger>
+      <PopoverContent>
+        <PopoverArrow />
+        <PopoverCloseButton />
+        <PopoverHeader>
+          <FormattedMessage id="DailyForm.popover.dangerous-symptom" />
+        </PopoverHeader>
+        <PopoverBody>
+          <FormattedMessage id="DailyForm.popover.dangerous-symptom-description" />
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
+  );
+
   return (
     <Box px={4} py={2} mb={4}>
-      <Box display="flex" justifyContent="end">
+      <Box
+        display="flex"
+        justifyContent={symptom.isDangerous ? "space-between" : "flex-end"}
+      >
+        {symptom.isDangerous ? dangerousPopover : null}
         <Button
           variant="outline"
           size="sm"
@@ -66,15 +106,38 @@ const SymptomForm: React.FC<ISymptomForm> = ({
       <Grid templateColumns="repeat(6, 1fr)" gap={3}>
         <GridItem colSpan={5}>
           <Select
-            onChange={(e) => setSymptom({ ...symptom, name: e.target.value })}
+            onChange={(e) => {
+              setSymptom({
+                ...symptom,
+                name: e.target.value,
+                isDangerous: e.target.value.includes(
+                  `[${intl.formatMessage({ id: "general.dangerous" })}]`
+                ),
+              });
+            }}
             mb={4}
             value={symptom.name}
             placeholder="Select symptom"
           >
             {symptoms.map((symptom) => (
-              <option key={symptom.name} value={symptom.name}>
-                {symptom.name}
-                {symptom.isDangerous ? "[Dangerous]" : ""}
+              <option
+                key={intl.formatMessage({
+                  id: symptom.name,
+                })}
+                value={`${intl.formatMessage({
+                  id: symptom.name,
+                })} ${
+                  symptom.isDangerous
+                    ? `[${intl.formatMessage({ id: "general.dangerous" })}]`
+                    : ""
+                }`}
+              >
+                {intl.formatMessage({
+                  id: symptom.name,
+                })}
+                {symptom.isDangerous
+                  ? ` [${intl.formatMessage({ id: "general.dangerous" })}]`
+                  : ""}
               </option>
             ))}
           </Select>
@@ -104,6 +167,7 @@ const SymptomForm: React.FC<ISymptomForm> = ({
               <RadioCard
                 key={value}
                 radioType={RadioType.NumberRadio}
+                radioName="intensity"
                 {...radio}
               >
                 {value + 1}

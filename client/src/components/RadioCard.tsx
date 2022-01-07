@@ -13,7 +13,9 @@ type RadioCardProps = UseRadioProps & {
   radioType: RadioType;
   rate?: number;
   title?: string;
+  radioName: string;
   icon?: IconName;
+  onBlur?: (e: React.FocusEvent<any>) => void;
 };
 
 const RadioCard: React.FC<RadioCardProps> = (props) => {
@@ -24,12 +26,25 @@ const RadioCard: React.FC<RadioCardProps> = (props) => {
 
   return (
     <Box as="label">
-      <input {...input} />
+      <input
+        {...input}
+        onFocus={(e) => {
+          props.onBlur
+            ? props.onBlur({
+                ...e,
+                target: {
+                  ...e.target,
+                  id: props.radioName,
+                },
+              })
+            : null;
+        }}
+      />
       {props.radioType === RadioType.IconRadio && (
         <VStack
           {...checkbox}
           cursor="pointer"
-          px={[1, 2, 3]}
+          // px={[1, 2, 3]}
           py={2}
           display="flex"
           alignItems="center"
@@ -42,7 +57,7 @@ const RadioCard: React.FC<RadioCardProps> = (props) => {
           <Box
             fontSize={10}
             textAlign="center"
-            color={state.isChecked ? "teal" : "white"}
+            color={state.isChecked ? "teal" : "gray.700"}
           >
             <FormattedMessage id={props.title} />
           </Box>
@@ -58,7 +73,7 @@ const RadioCard: React.FC<RadioCardProps> = (props) => {
             color: "white",
             borderColor: "teal.600",
           }}
-          px={2}
+          // px={2}
           py={2}
           borderWidth={2}
         >

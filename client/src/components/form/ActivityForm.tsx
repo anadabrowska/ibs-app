@@ -121,6 +121,7 @@ const ActivityForm: React.FC<IActivityForm> = ({
               icon={option.icon}
               title={option.title}
               rate={option.rate}
+              radioName="moodAfter"
               {...radio}
             >
               {option}
