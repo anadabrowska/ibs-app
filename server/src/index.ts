@@ -49,7 +49,7 @@ const main = async () => {
 
   app.use(
     cors({
-      origin: process.env.FRONTEND_URL || "http://localhost:3000",
+      origin: process.env.FRONTEND_URL || "https://ibs-monitor.ddns.net",
       credentials: true,
     })
   );
@@ -67,9 +67,6 @@ const main = async () => {
         //year
         maxAge: 1000 * 60 * 60 * 24 * 365,
         httpOnly: true,
-        sameSite: __prod__ ? "none" : undefined,
-        secure: __prod__,
-        domain: __prod__ ? "staging-ibs-app-server.herokuapp.com" : undefined,
       },
       saveUninitialized: false,
       //TODO:  make this Env variable

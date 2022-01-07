@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "start": "sudo local-ssl-proxy --key /etc/letsencrypt/live/ibs-monitor.ddns.net/privkey.pem --cert /etc/letsencrypt/live/ibs-monitor.ddns.net/fullchain.pem --config config.json"
+  },
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}

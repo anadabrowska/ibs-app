@@ -1,0 +1,10 @@
+{
+  "client": {
+    "source": 3001,
+    "target": 3000
+  },
+  "server": {
+    "source": 4001,
+    "target": 4000
+  }
+}

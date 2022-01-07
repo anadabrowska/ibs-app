@@ -3,6 +3,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
+    "build-pi": "NODE_OPTIONS=--max_old_space_size=1024 yarn build",
     "start": "next start -p $PORT",
     "start-local": "next start",
     "codegen": "graphql-codegen --config codegen.yml"
