@@ -17,6 +17,9 @@ import { FormResolver } from "./resolvers/form";
 import { Form } from "./entities/form";
 import { Activity } from "./entities/activity";
 import { Symptom } from "./entities/symptom";
+import { ExperimentResover } from "./resolvers/experiment";
+import { Experiment } from "./entities/experiment";
+import { ExperimentForm } from "./entities/experimentForm";
 
 const main = async () => {
   const dbUrl = "postgres://postgres:postgres@localhost:5432/ibs-app";
@@ -31,7 +34,7 @@ const main = async () => {
     // comment for deployment
     // synchronize: true,
     migrations: [path.join(__dirname, "./migrations/*")],
-    entities: [User, Form, Symptom, Activity],
+    entities: [User, Form, Symptom, Activity, Experiment, ExperimentForm],
   });
 
   if (process.env.NODE_ENV === "production") {
@@ -80,7 +83,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [TestResover, UserResolver, FormResolver],
+      resolvers: [TestResover, UserResolver, FormResolver, ExperimentResover],
       validate: false,
     }),
     context: ({ req, res }): Context => ({ req, res, redis }),

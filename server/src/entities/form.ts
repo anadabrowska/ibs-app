@@ -12,6 +12,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { User } from "./User";
+import { ExperimentForm } from "./experimentForm";
 
 @ObjectType()
 @Entity()
@@ -83,6 +84,10 @@ export class Form extends BaseEntity {
   @Field()
   @Column()
   pollakiuria: boolean;
+
+  @Field(() => [ExperimentForm], { nullable: true })
+  @OneToMany(() => ExperimentForm, (experiment) => experiment.form)
+  experiments?: ExperimentForm[];
 
   @Field({ nullable: true })
   @Column()

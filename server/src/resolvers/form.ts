@@ -18,6 +18,7 @@ import { Activity } from "../entities/activity";
 import { Symptom } from "../entities/symptom";
 import { validateForm } from "../utils/formValidation";
 import { FieldError } from "./User";
+import { ExperimentForm } from "../entities/experimentForm";
 
 @InputType()
 class ActivityInput {
@@ -37,6 +38,16 @@ class SymptomInput {
   intensity: number;
   @Field({ nullable: true })
   isDangerous?: boolean;
+}
+
+@InputType()
+class ExperimentInput {
+  @Field()
+  experimentId: number;
+  @Field()
+  quantity: string;
+  @Field()
+  generalSensation: number;
 }
 
 @InputType()
@@ -67,6 +78,8 @@ export class FormInput {
   migraine: boolean;
   @Field()
   pollakiuria: boolean;
+  @Field(() => [ExperimentInput], { nullable: true })
+  experiments?: ExperimentInput[];
   @Field({ nullable: true })
   notes?: string;
 }
@@ -87,7 +100,7 @@ export class FormResolver {
     @Arg("input") input: FormInput,
     @Ctx() { req }: Context
   ): Promise<FormResponse> {
-    const { symptoms, activities, ...formInput } = input;
+    const { experiments, symptoms, activities, ...formInput } = input;
 
     const errors = validateForm(input);
     if (errors) {
@@ -125,8 +138,22 @@ export class FormResolver {
       await Promise.all(symptomPromises);
     }
 
+    let newExperiments: ExperimentForm[] = [];
+    if (experiments) {
+      const experimentPromises = await experiments?.map(async (experiment) => {
+        newExperiments.push(
+          await ExperimentForm.create({
+            ...experiment,
+            formId: form.id,
+          }).save()
+        );
+      });
+      await Promise.all(experimentPromises);
+    }
+
     form.activities = newActivities;
     form.symptoms = newSymptoms;
+    form.experiments = newExperiments;
 
     return { form };
   }
@@ -137,7 +164,7 @@ export class FormResolver {
     @Arg("id", () => Int) id: number,
     @Ctx() { req }: Context
   ): Promise<FormResponse> {
-    const { symptoms, activities, ...formInput } = input;
+    const { experiments, symptoms, activities, ...formInput } = input;
 
     const errors = validateForm(input);
     if (errors) {
@@ -161,6 +188,9 @@ export class FormResolver {
       formId: form.id,
     });
     await Symptom.delete({
+      formId: form.id,
+    });
+    await ExperimentForm.delete({
       formId: form.id,
     });
 
@@ -190,8 +220,22 @@ export class FormResolver {
       await Promise.all(symptomPromises);
     }
 
+    let newExperiments: ExperimentForm[] = [];
+    if (experiments) {
+      const experimentPromises = await experiments?.map(async (experiment) => {
+        newExperiments.push(
+          await ExperimentForm.create({
+            ...experiment,
+            formId: form.id,
+          }).save()
+        );
+      });
+      await Promise.all(experimentPromises);
+    }
+
     form.activities = newActivities;
     form.symptoms = newSymptoms;
+    form.experiments = newExperiments;
 
     return { form };
   }
@@ -229,6 +273,14 @@ export class FormResolver {
         .getMany();
 
       form.symptoms = symptoms;
+
+      const experiemnts: ExperimentForm[] | undefined = await getConnection()
+        .getRepository(ExperimentForm)
+        .createQueryBuilder()
+        .where({ formId: form.id })
+        .getMany();
+
+      form.experiments = experiemnts;
     }
     return form;
   }
@@ -270,6 +322,14 @@ export class FormResolver {
         .getMany();
 
       form.symptoms = symptoms;
+
+      const experiemnts: ExperimentForm[] | undefined = await getConnection()
+        .getRepository(ExperimentForm)
+        .createQueryBuilder()
+        .where({ formId: form.id })
+        .getMany();
+
+      form.experiments = experiemnts;
     }
     return forms;
   }
