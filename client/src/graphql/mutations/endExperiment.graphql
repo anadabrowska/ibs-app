@@ -1,0 +1,16 @@
+mutation EndExperiment($input: EndExperimentInput!, $id: Int!) {
+  endExperiment(input: $input, id: $id) {
+    experiment {
+      id
+      productName
+      startDate
+      endDate
+      notes
+      quantity
+      isTolerable
+    }
+    errors {
+      ...StarndardError
+    }
+  }
+}

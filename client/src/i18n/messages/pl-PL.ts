@@ -25,6 +25,7 @@ export default {
     "DailyForm.menstruation": "Menstruacja?",
     "DailyForm.migraine": "Migrena?",
     "DailyForm.pollakiuria": "Częstomocz?",
+    "DailyForm.experiemnts": "Eksperymenty",
 
     "DailyForm.header": "Jak minął Ci dzień?",
     "DailyForm.general-mood-label": "Nastrój",
@@ -58,6 +59,9 @@ export default {
     "DailyForm.notes-placeholder": "Twoje miejsce na notatki",
     "DailyForm.select-activity-placeholder": "Wybierz aktywność",
     "DailyForm.mood-after": "Nastrój po",
+    "DailyForm.quantity": "Ilość",
+    "DailyForm.quantity-placeholder": "2 szklanki / 20 gram/ 1 sztuka",
+    "DailyForm.general-sensation": "Samopoczucie",
 
     "DayPage.general-day-rate": "Generalna ocena dnia",
     "DayPage.mood": "Nastrój",
@@ -71,6 +75,9 @@ export default {
     "DayPage.menstruation": "Menstruacja",
     "DayPage.migraine": "Migrena",
     "DayPage.pollakiuria": "Częstomocz",
+    "DayPage.experiemnts": "Eksperymenty",
+    "DayPage.quantity": "Ilość",
+    "DayPage.general-sensation": "Samopoczucie",
 
     "SettingsPanel.hello": "Cześć {firstName} {lastName}!",
     "SettingsPanel.settings": "Ustawienia",
@@ -81,6 +88,18 @@ export default {
     "SettingsPanel.color-mode.dark": "Ciemny",
     "SettingsPanel.faq": "FAQ",
     "SettingsPanel.about-us": "O nas",
+
+    "OpenExperiments.open-experiments": "Otwarte Eksperymenty",
+    "OpenExperiments.start-date": "Data rozpoczęcia",
+    "OpenExperiments.details": "Szczegóły",
+    "OpenExperiments.new-experiment": "Rozpocznij nowy eksperyment",
+
+    "ClosedExperiments.closed-experiments": "Zakończone eksperymenty",
+    "ClosedExperiments.start-date": "Data rozpoczęcia",
+    "ClosedExperiments.end-date": "Data zakończenia",
+    "ClosedExperiments.details": "Szczegóły",
+
+    "ExperimentDetails.experiment-details": "Szczegóły eksperymentu",
 
     "ChangePassword.invalid-token": "Nieprawidłowy token",
     "ChangePassword.success": "Pomyślnie zmieniono hasło!",

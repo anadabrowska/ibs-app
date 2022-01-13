@@ -1,13 +1,18 @@
 import { Formik } from "formik";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IActivity } from "../../components/form/ActivityForm";
-import DailyForm from "../../components/form/DailyForm";
 import { IStoolType } from "../../components/form/StoolTypeForm";
 import { ISymptom } from "../../components/form/SymptomForm";
-import { FormInput, useCreateFormMutation } from "../../generated/graphql";
+import {
+  FormInput,
+  useCreateFormMutation,
+  useOpenExperimentsQuery,
+} from "../../generated/graphql";
 import { mapErrors } from "../../utils/mapErrors";
+import { IExperiment } from "../../components/form/ExperimentFrom";
+import DailyForm from "../../components/form/DailyForm";
 
 const CreateForm: NextPage<{ date: string }> = ({ date }) => {
   // TODO: we need date to create form for past dates in the future
@@ -19,6 +24,7 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
   const [stoolTypes, setStoolTypes] = useState<IStoolType[]>([]);
   const [activities, setActivities] = useState<IActivity[]>([]);
   const [symptoms, setSymptoms] = useState<ISymptom[]>([]);
+  const [experiments, setExperiments] = useState<IExperiment[]>([]);
 
   //TODO: default weight needs to come from the form from yesterday
   const [weight, setWeight] = useState(0);
@@ -33,6 +39,31 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
   const [pollakiuria, setPollakiuria] = useState(false);
   const [notes, setNotes] = useState("");
 
+  const { data } = useOpenExperimentsQuery();
+
+  useEffect(() => {
+    handleExperiments();
+  }, [data]);
+
+  const handleExperiments = () => {
+    const newExperiments: IExperiment[] = [];
+    data?.openExperiments?.map((openExperiment) => {
+      const id =
+        newExperiments.length > 0
+          ? newExperiments[newExperiments.length - 1].id + 1
+          : 0;
+      const newExperimentForm: IExperiment = {
+        id,
+        experimentId: openExperiment.id,
+        productName: openExperiment.productName,
+        generalSensation: 0,
+        quantity: "",
+      };
+      newExperiments.push(newExperimentForm);
+    });
+    setExperiments([...experiments, ...newExperiments]);
+  };
+
   const initialValues: FormInput = {
     mood: 0,
     weight: 0,
@@ -42,6 +73,7 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
     stressLevel: 0,
     activities: [],
     stoolTypes: [],
+    experiments: [],
     inTherapy: false,
     pollakiuria: false,
     menstruation: false,
@@ -77,6 +109,19 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
           stoolTypes: stoolTypes.map((elem) => {
             return elem.type;
           }),
+          experiments: experiments
+            .filter(
+              (experiment) =>
+                experiment.quantity != "" && experiment.generalSensation != 0
+            )
+            .map((experiment) => {
+              return {
+                experimentId: experiment.experimentId,
+                quantity: experiment.quantity,
+                productName: experiment.productName,
+                generalSensation: experiment.generalSensation,
+              };
+            }),
           inTherapy: inTherapy,
           menstruation: menstruation,
           migraine: migraine,
@@ -112,6 +157,7 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
           symptoms={symptoms}
           activities={activities}
           stoolTypes={stoolTypes}
+          experiments={experiments}
           setWeight={setWeight}
           setGeneralMood={setGeneralMood}
           setDayRate={setDayRate}
@@ -126,6 +172,7 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
           setSymptoms={setSymptoms}
           setActivities={setActivities}
           setStoolTypes={setStoolTypes}
+          setExperiments={setExperiments}
           onSubmit={handleSubmit}
           onBlur={handleBlur}
         />

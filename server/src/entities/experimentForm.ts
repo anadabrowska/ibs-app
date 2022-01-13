@@ -26,6 +26,10 @@ export class ExperimentForm extends BaseEntity {
 
   @Field()
   @Column()
+  productName: string;
+
+  @Field()
+  @Column()
   quantity: string;
 
   @Field()

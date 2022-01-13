@@ -1,4 +1,4 @@
-query dayForm($date: String!) {
+query DayForm($date: String!) {
   dayForm(date: $date) {
     ...FormData
   }

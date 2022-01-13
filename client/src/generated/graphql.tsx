@@ -35,6 +35,49 @@ export type ActivityInput = {
   type: Scalars['String'];
 };
 
+export type EndExperimentInput = {
+  isTolerable?: Maybe<Scalars['Boolean']>;
+  notes?: Maybe<Scalars['String']>;
+  productName: Scalars['String'];
+  quantity?: Maybe<Scalars['String']>;
+};
+
+export type Experiment = {
+  __typename?: 'Experiment';
+  creatorId: Scalars['Float'];
+  endDate?: Maybe<Scalars['String']>;
+  experimentForms?: Maybe<Array<ExperimentForm>>;
+  id: Scalars['Float'];
+  isTolerable?: Maybe<Scalars['Boolean']>;
+  notes?: Maybe<Scalars['String']>;
+  productName: Scalars['String'];
+  quantity?: Maybe<Scalars['String']>;
+  startDate: Scalars['String'];
+};
+
+export type ExperimentForm = {
+  __typename?: 'ExperimentForm';
+  experimentId: Scalars['Float'];
+  formId: Scalars['Float'];
+  generalSensation: Scalars['Float'];
+  id: Scalars['Float'];
+  productName: Scalars['String'];
+  quantity: Scalars['String'];
+};
+
+export type ExperimentInput = {
+  experimentId: Scalars['Float'];
+  generalSensation: Scalars['Float'];
+  productName: Scalars['String'];
+  quantity: Scalars['String'];
+};
+
+export type ExperimentResponse = {
+  __typename?: 'ExperimentResponse';
+  errors?: Maybe<Array<FieldError>>;
+  experiment?: Maybe<Experiment>;
+};
+
 export type FieldError = {
   __typename?: 'FieldError';
   fieldName: Scalars['String'];
@@ -47,6 +90,7 @@ export type Form = {
   createdAt: Scalars['String'];
   creatorId: Scalars['Float'];
   dayRate: Scalars['Float'];
+  experiments?: Maybe<Array<ExperimentForm>>;
   id: Scalars['Float'];
   inTherapy: Scalars['Boolean'];
   menstruation?: Maybe<Scalars['Boolean']>;
@@ -66,6 +110,7 @@ export type Form = {
 export type FormInput = {
   activities?: Maybe<Array<ActivityInput>>;
   dayRate: Scalars['Float'];
+  experiments?: Maybe<Array<ExperimentInput>>;
   inTherapy: Scalars['Boolean'];
   menstruation?: Maybe<Scalars['Boolean']>;
   migraine: Scalars['Boolean'];
@@ -95,10 +140,12 @@ export type Mutation = {
   __typename?: 'Mutation';
   changePassword: UserResponse;
   createForm: FormResponse;
+  endExperiment: ExperimentResponse;
   forgotPassword: ActionResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
   register: UserResponse;
+  startExperiment: ExperimentResponse;
   updateForm: FormResponse;
 };
 
@@ -111,6 +158,12 @@ export type MutationChangePasswordArgs = {
 
 export type MutationCreateFormArgs = {
   input: FormInput;
+};
+
+
+export type MutationEndExperimentArgs = {
+  id: Scalars['Int'];
+  input: EndExperimentInput;
 };
 
 
@@ -129,6 +182,11 @@ export type MutationRegisterArgs = {
 };
 
 
+export type MutationStartExperimentArgs = {
+  input: StartExperimentInput;
+};
+
+
 export type MutationUpdateFormArgs = {
   id: Scalars['Int'];
   input: FormInput;
@@ -136,9 +194,11 @@ export type MutationUpdateFormArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  closedExperiments?: Maybe<Array<Experiment>>;
   dayForm?: Maybe<Form>;
   formsFromTimeRange?: Maybe<Array<Form>>;
   me?: Maybe<User>;
+  openExperiments?: Maybe<Array<Experiment>>;
   test: Scalars['String'];
 };
 
@@ -159,6 +219,10 @@ export type RegisterInput = {
   gender: Scalars['String'];
   lastName: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type StartExperimentInput = {
+  productName: Scalars['String'];
 };
 
 export type Symptom = {
@@ -193,9 +257,9 @@ export type UserResponse = {
   user?: Maybe<User>;
 };
 
-export type FormDataFragment = { __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> };
+export type FormDataFragment = { __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>>, experiments?: Maybe<Array<{ __typename?: 'ExperimentForm', experimentId: number, quantity: string, productName: string, generalSensation: number }>> };
 
-export type FormInputFragment = { __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', type: string, moodAfter: number, time: number }>> };
+export type FormInputFragment = { __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', type: string, moodAfter: number, time: number }>>, experiments?: Maybe<Array<{ __typename?: 'ExperimentForm', experimentId: number, quantity: string, productName: string, generalSensation: number }>> };
 
 export type StarndardErrorFragment = { __typename?: 'FieldError', fieldName: string, message: string };
 
@@ -214,7 +278,15 @@ export type CreateFormMutationVariables = Exact<{
 }>;
 
 
-export type CreateFormMutation = { __typename?: 'Mutation', createForm: { __typename?: 'FormResponse', form?: Maybe<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
+export type CreateFormMutation = { __typename?: 'Mutation', createForm: { __typename?: 'FormResponse', form?: Maybe<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>>, experiments?: Maybe<Array<{ __typename?: 'ExperimentForm', experimentId: number, quantity: string, productName: string, generalSensation: number }>> }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
+
+export type EndExperimentMutationVariables = Exact<{
+  input: EndExperimentInput;
+  id: Scalars['Int'];
+}>;
+
+
+export type EndExperimentMutation = { __typename?: 'Mutation', endExperiment: { __typename?: 'ExperimentResponse', experiment?: Maybe<{ __typename?: 'Experiment', id: number, productName: string, startDate: string, endDate?: Maybe<string>, notes?: Maybe<string>, quantity?: Maybe<string>, isTolerable?: Maybe<boolean> }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
@@ -247,13 +319,25 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, firstName: string, lastName: string, email: string, gender: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
 
+export type StartExperimentMutationVariables = Exact<{
+  input: StartExperimentInput;
+}>;
+
+
+export type StartExperimentMutation = { __typename?: 'Mutation', startExperiment: { __typename?: 'ExperimentResponse', experiment?: Maybe<{ __typename?: 'Experiment', id: number, productName: string, startDate: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
+
 export type UpdateFormMutationVariables = Exact<{
   input: FormInput;
   id: Scalars['Int'];
 }>;
 
 
-export type UpdateFormMutation = { __typename?: 'Mutation', updateForm: { __typename?: 'FormResponse', form?: Maybe<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
+export type UpdateFormMutation = { __typename?: 'Mutation', updateForm: { __typename?: 'FormResponse', form?: Maybe<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>>, experiments?: Maybe<Array<{ __typename?: 'ExperimentForm', experimentId: number, quantity: string, productName: string, generalSensation: number }>> }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
+
+export type ClosedExperimentsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ClosedExperimentsQuery = { __typename?: 'Query', closedExperiments?: Maybe<Array<{ __typename?: 'Experiment', id: number, productName: string, startDate: string, endDate?: Maybe<string>, notes?: Maybe<string>, quantity?: Maybe<string>, isTolerable?: Maybe<boolean> }>> };
 
 export type DatesFromTimeRangeQueryVariables = Exact<{
   before: Scalars['String'];
@@ -268,7 +352,7 @@ export type DayFormQueryVariables = Exact<{
 }>;
 
 
-export type DayFormQuery = { __typename?: 'Query', dayForm?: Maybe<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> }> };
+export type DayFormQuery = { __typename?: 'Query', dayForm?: Maybe<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>>, experiments?: Maybe<Array<{ __typename?: 'ExperimentForm', experimentId: number, quantity: string, productName: string, generalSensation: number }>> }> };
 
 export type FormsFromTimeRangeQueryVariables = Exact<{
   before: Scalars['String'];
@@ -276,12 +360,17 @@ export type FormsFromTimeRangeQueryVariables = Exact<{
 }>;
 
 
-export type FormsFromTimeRangeQuery = { __typename?: 'Query', formsFromTimeRange?: Maybe<Array<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>> }>> };
+export type FormsFromTimeRangeQuery = { __typename?: 'Query', formsFromTimeRange?: Maybe<Array<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>>, experiments?: Maybe<Array<{ __typename?: 'ExperimentForm', experimentId: number, quantity: string, productName: string, generalSensation: number }>> }>> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: number, firstName: string, lastName: string, email: string, gender: string }> };
+
+export type OpenExperimentsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OpenExperimentsQuery = { __typename?: 'Query', openExperiments?: Maybe<Array<{ __typename?: 'Experiment', id: number, productName: string, startDate: string }>> };
 
 export const FormDataFragmentDoc = gql`
     fragment FormData on Form {
@@ -305,6 +394,12 @@ export const FormDataFragmentDoc = gql`
     type
     moodAfter
     time
+  }
+  experiments {
+    experimentId
+    quantity
+    productName
+    generalSensation
   }
   inTherapy
   menstruation
@@ -333,6 +428,12 @@ export const FormInputFragmentDoc = gql`
     type
     moodAfter
     time
+  }
+  experiments {
+    experimentId
+    quantity
+    productName
+    generalSensation
   }
   inTherapy
   menstruation
@@ -435,6 +536,51 @@ export function useCreateFormMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateFormMutationHookResult = ReturnType<typeof useCreateFormMutation>;
 export type CreateFormMutationResult = Apollo.MutationResult<CreateFormMutation>;
 export type CreateFormMutationOptions = Apollo.BaseMutationOptions<CreateFormMutation, CreateFormMutationVariables>;
+export const EndExperimentDocument = gql`
+    mutation EndExperiment($input: EndExperimentInput!, $id: Int!) {
+  endExperiment(input: $input, id: $id) {
+    experiment {
+      id
+      productName
+      startDate
+      endDate
+      notes
+      quantity
+      isTolerable
+    }
+    errors {
+      ...StarndardError
+    }
+  }
+}
+    ${StarndardErrorFragmentDoc}`;
+export type EndExperimentMutationFn = Apollo.MutationFunction<EndExperimentMutation, EndExperimentMutationVariables>;
+
+/**
+ * __useEndExperimentMutation__
+ *
+ * To run a mutation, you first call `useEndExperimentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEndExperimentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [endExperimentMutation, { data, loading, error }] = useEndExperimentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useEndExperimentMutation(baseOptions?: Apollo.MutationHookOptions<EndExperimentMutation, EndExperimentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<EndExperimentMutation, EndExperimentMutationVariables>(EndExperimentDocument, options);
+      }
+export type EndExperimentMutationHookResult = ReturnType<typeof useEndExperimentMutation>;
+export type EndExperimentMutationResult = Apollo.MutationResult<EndExperimentMutation>;
+export type EndExperimentMutationOptions = Apollo.BaseMutationOptions<EndExperimentMutation, EndExperimentMutationVariables>;
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
   forgotPassword(email: $email) {
@@ -586,6 +732,46 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const StartExperimentDocument = gql`
+    mutation StartExperiment($input: StartExperimentInput!) {
+  startExperiment(input: $input) {
+    experiment {
+      id
+      productName
+      startDate
+    }
+    errors {
+      ...StarndardError
+    }
+  }
+}
+    ${StarndardErrorFragmentDoc}`;
+export type StartExperimentMutationFn = Apollo.MutationFunction<StartExperimentMutation, StartExperimentMutationVariables>;
+
+/**
+ * __useStartExperimentMutation__
+ *
+ * To run a mutation, you first call `useStartExperimentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStartExperimentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [startExperimentMutation, { data, loading, error }] = useStartExperimentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useStartExperimentMutation(baseOptions?: Apollo.MutationHookOptions<StartExperimentMutation, StartExperimentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<StartExperimentMutation, StartExperimentMutationVariables>(StartExperimentDocument, options);
+      }
+export type StartExperimentMutationHookResult = ReturnType<typeof useStartExperimentMutation>;
+export type StartExperimentMutationResult = Apollo.MutationResult<StartExperimentMutation>;
+export type StartExperimentMutationOptions = Apollo.BaseMutationOptions<StartExperimentMutation, StartExperimentMutationVariables>;
 export const UpdateFormDocument = gql`
     mutation updateForm($input: FormInput!, $id: Int!) {
   updateForm(input: $input, id: $id) {
@@ -626,6 +812,46 @@ export function useUpdateFormMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateFormMutationHookResult = ReturnType<typeof useUpdateFormMutation>;
 export type UpdateFormMutationResult = Apollo.MutationResult<UpdateFormMutation>;
 export type UpdateFormMutationOptions = Apollo.BaseMutationOptions<UpdateFormMutation, UpdateFormMutationVariables>;
+export const ClosedExperimentsDocument = gql`
+    query ClosedExperiments {
+  closedExperiments {
+    id
+    productName
+    startDate
+    endDate
+    notes
+    quantity
+    isTolerable
+  }
+}
+    `;
+
+/**
+ * __useClosedExperimentsQuery__
+ *
+ * To run a query within a React component, call `useClosedExperimentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useClosedExperimentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useClosedExperimentsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useClosedExperimentsQuery(baseOptions?: Apollo.QueryHookOptions<ClosedExperimentsQuery, ClosedExperimentsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ClosedExperimentsQuery, ClosedExperimentsQueryVariables>(ClosedExperimentsDocument, options);
+      }
+export function useClosedExperimentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ClosedExperimentsQuery, ClosedExperimentsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ClosedExperimentsQuery, ClosedExperimentsQueryVariables>(ClosedExperimentsDocument, options);
+        }
+export type ClosedExperimentsQueryHookResult = ReturnType<typeof useClosedExperimentsQuery>;
+export type ClosedExperimentsLazyQueryHookResult = ReturnType<typeof useClosedExperimentsLazyQuery>;
+export type ClosedExperimentsQueryResult = Apollo.QueryResult<ClosedExperimentsQuery, ClosedExperimentsQueryVariables>;
 export const DatesFromTimeRangeDocument = gql`
     query DatesFromTimeRange($before: String!, $after: String!) {
   formsFromTimeRange(before: $before, after: $after) {
@@ -664,7 +890,7 @@ export type DatesFromTimeRangeQueryHookResult = ReturnType<typeof useDatesFromTi
 export type DatesFromTimeRangeLazyQueryHookResult = ReturnType<typeof useDatesFromTimeRangeLazyQuery>;
 export type DatesFromTimeRangeQueryResult = Apollo.QueryResult<DatesFromTimeRangeQuery, DatesFromTimeRangeQueryVariables>;
 export const DayFormDocument = gql`
-    query dayForm($date: String!) {
+    query DayForm($date: String!) {
   dayForm(date: $date) {
     ...FormData
   }
@@ -768,3 +994,39 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const OpenExperimentsDocument = gql`
+    query OpenExperiments {
+  openExperiments {
+    id
+    productName
+    startDate
+  }
+}
+    `;
+
+/**
+ * __useOpenExperimentsQuery__
+ *
+ * To run a query within a React component, call `useOpenExperimentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOpenExperimentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOpenExperimentsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useOpenExperimentsQuery(baseOptions?: Apollo.QueryHookOptions<OpenExperimentsQuery, OpenExperimentsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<OpenExperimentsQuery, OpenExperimentsQueryVariables>(OpenExperimentsDocument, options);
+      }
+export function useOpenExperimentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OpenExperimentsQuery, OpenExperimentsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<OpenExperimentsQuery, OpenExperimentsQueryVariables>(OpenExperimentsDocument, options);
+        }
+export type OpenExperimentsQueryHookResult = ReturnType<typeof useOpenExperimentsQuery>;
+export type OpenExperimentsLazyQueryHookResult = ReturnType<typeof useOpenExperimentsLazyQuery>;
+export type OpenExperimentsQueryResult = Apollo.QueryResult<OpenExperimentsQuery, OpenExperimentsQueryVariables>;

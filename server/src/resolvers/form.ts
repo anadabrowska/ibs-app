@@ -45,6 +45,8 @@ class ExperimentInput {
   @Field()
   experimentId: number;
   @Field()
+  productName: string;
+  @Field()
   quantity: string;
   @Field()
   generalSensation: number;

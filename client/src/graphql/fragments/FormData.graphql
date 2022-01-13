@@ -20,6 +20,12 @@ fragment FormData on Form {
     moodAfter
     time
   }
+  experiments {
+    experimentId
+    quantity
+    productName
+    generalSensation
+  }
   inTherapy
   menstruation
   migraine

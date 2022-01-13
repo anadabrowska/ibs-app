@@ -1,0 +1,12 @@
+mutation StartExperiment($input: StartExperimentInput!) {
+  startExperiment(input: $input) {
+    experiment {
+      id
+      productName
+      startDate
+    }
+    errors {
+      ...StarndardError
+    }
+  }
+}

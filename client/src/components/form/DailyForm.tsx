@@ -39,6 +39,7 @@ import StoolTypeForm, { IStoolType } from "./StoolTypeForm";
 import SymptomForm, { ISymptom } from "./SymptomForm";
 import { FormikErrors, FormikTouched } from "formik";
 import { FormInput } from "../../generated/graphql";
+import ExperimentFrom, { IExperiment } from "./ExperimentFrom";
 
 interface DailyFormProps {
   loading?: boolean;
@@ -58,6 +59,7 @@ interface DailyFormProps {
   symptoms: ISymptom[];
   activities: IActivity[];
   stoolTypes: IStoolType[];
+  experiments: IExperiment[];
 
   setWeight: (value: number) => void;
   setDayRate: (value: number) => void;
@@ -73,6 +75,7 @@ interface DailyFormProps {
   setSymptoms: (value: ISymptom[]) => void;
   setActivities: (value: IActivity[]) => void;
   setStoolTypes: (value: IStoolType[]) => void;
+  setExperiments: (value: IExperiment[]) => void;
   onSubmit: (e?: React.FormEvent<HTMLFormElement> | undefined) => void;
   onBlur: (e: React.FocusEvent<any>) => void;
 }
@@ -95,6 +98,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
   symptoms,
   activities,
   stoolTypes,
+  experiments,
   setWeight,
   setDayRate,
   setGeneralMood,
@@ -109,6 +113,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
   setSymptoms,
   setActivities,
   setStoolTypes,
+  setExperiments,
   onSubmit,
   onBlur,
 }) => {
@@ -139,6 +144,14 @@ const DailyForm: React.FC<DailyFormProps> = ({
         stressOptions.find((option) => option.title === value)?.rate || 0
       ),
   });
+
+  const handleSetExperiment = (value: IExperiment) => {
+    setExperiments(
+      experiments.map((experiment) =>
+        experiment.id === value.id ? value : experiment
+      )
+    );
+  };
 
   const handleAddStoolType = (type?: number) => {
     //TODO: think about using uuid here later
@@ -219,7 +232,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
             id="generalMood"
             isInvalid={(errors?.mood && touched?.mood) || false}
           >
-            <FormLabel>
+            <FormLabel fontWeight="bold" fontSize="lg">
               <FormattedMessage id="DailyForm.general-mood-label" />
             </FormLabel>
             <HStack
@@ -251,12 +264,12 @@ const DailyForm: React.FC<DailyFormProps> = ({
           </FormControl>
         </Box>
 
-        <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={8}>
+        <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
           <FormControl
             id="weight"
             isInvalid={(errors?.weight && touched?.weight) || false}
           >
-            <FormLabel>
+            <FormLabel fontWeight="bold" fontSize="lg" mb={5}>
               <FormattedMessage id="DailyForm.weight" />
             </FormLabel>
             <Flex>
@@ -301,9 +314,9 @@ const DailyForm: React.FC<DailyFormProps> = ({
           </FormControl>
         </Box>
 
-        <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={8}>
+        <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
           <FormControl id="symptoms">
-            <FormLabel>
+            <FormLabel fontWeight="bold" fontSize="lg">
               <FormattedMessage id="DailyForm.symptoms" />
             </FormLabel>
             <Collapse in={isOpen} animateOpacity>
@@ -357,7 +370,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
             id="sleepLenght"
             isInvalid={(errors?.sleepLenght && touched?.sleepLenght) || false}
           >
-            <FormLabel>
+            <FormLabel fontWeight="bold" fontSize="lg" mb={5}>
               <FormattedMessage id="DailyForm.sleep" />
             </FormLabel>
             <FormLabel>
@@ -446,7 +459,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
             id="stress"
             isInvalid={(errors?.stressLevel && touched?.stressLevel) || false}
           >
-            <FormLabel>
+            <FormLabel fontWeight="bold" fontSize="lg">
               <FormattedMessage id="DailyForm.stress" />
             </FormLabel>
             <HStack
@@ -478,9 +491,9 @@ const DailyForm: React.FC<DailyFormProps> = ({
           </FormControl>
         </Box>
 
-        <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={8}>
+        <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
           <FormControl id="symptoms">
-            <FormLabel>
+            <FormLabel fontWeight="bold" fontSize="lg">
               <FormattedMessage id="DailyForm.activities" />
             </FormLabel>
             {activities.map((activity, index) => (
@@ -511,7 +524,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
           <FormControl id="stool-type">
-            <FormLabel>
+            <FormLabel fontWeight="bold" fontSize="lg">
               <FormattedMessage id="DailyForm.stool-type-label" />{" "}
               <Popover>
                 <PopoverTrigger>
@@ -550,7 +563,24 @@ const DailyForm: React.FC<DailyFormProps> = ({
           </FormControl>
         </Box>
 
-        <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={8}>
+        <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
+          <FormControl id="symptoms">
+            <FormLabel fontWeight="bold" fontSize="lg">
+              <FormattedMessage id="DailyForm.experiemnts" />
+            </FormLabel>
+            {experiments.map((experiment, index) => (
+              <Box key={experiment.id}>
+                {index > 0 && <Divider mb={3} />}
+                <ExperimentFrom
+                  experiment={experiment}
+                  setExperiment={handleSetExperiment}
+                />
+              </Box>
+            ))}
+          </FormControl>
+        </Box>
+
+        <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
           <FormControl
             display="flex"
             alignItems="center"
@@ -622,7 +652,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
             id="dayRate"
             isInvalid={(errors?.dayRate && touched?.dayRate) || false}
           >
-            <FormLabel>
+            <FormLabel fontWeight="bold" fontSize="lg">
               <FormattedMessage id="DailyForm.general-day-rate" />
             </FormLabel>
             <HStack
@@ -654,9 +684,9 @@ const DailyForm: React.FC<DailyFormProps> = ({
           </FormControl>
         </Box>
 
-        <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={8}>
+        <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
           <FormControl id="email">
-            <FormLabel>
+            <FormLabel fontWeight="bold" fontSize="lg" mb={5}>
               <FormattedMessage id="DailyForm.notes" />
             </FormLabel>
             <Textarea
