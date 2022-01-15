@@ -57,6 +57,7 @@ export type Experiment = {
 
 export type ExperimentForm = {
   __typename?: 'ExperimentForm';
+  createdAt: Scalars['String'];
   experimentId: Scalars['Float'];
   formId: Scalars['Float'];
   generalSensation: Scalars['Float'];
@@ -196,6 +197,8 @@ export type Query = {
   __typename?: 'Query';
   closedExperiments?: Maybe<Array<Experiment>>;
   dayForm?: Maybe<Form>;
+  experiment?: Maybe<Experiment>;
+  experimentForms?: Maybe<Array<ExperimentForm>>;
   formsFromTimeRange?: Maybe<Array<Form>>;
   me?: Maybe<User>;
   openExperiments?: Maybe<Array<Experiment>>;
@@ -205,6 +208,16 @@ export type Query = {
 
 export type QueryDayFormArgs = {
   date: Scalars['String'];
+};
+
+
+export type QueryExperimentArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryExperimentFormsArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -353,6 +366,20 @@ export type DayFormQueryVariables = Exact<{
 
 
 export type DayFormQuery = { __typename?: 'Query', dayForm?: Maybe<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>>, experiments?: Maybe<Array<{ __typename?: 'ExperimentForm', experimentId: number, quantity: string, productName: string, generalSensation: number }>> }> };
+
+export type ExperimentQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type ExperimentQuery = { __typename?: 'Query', experiment?: Maybe<{ __typename?: 'Experiment', id: number, productName: string, startDate: string }> };
+
+export type ExperimentFormsQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type ExperimentFormsQuery = { __typename?: 'Query', experimentForms?: Maybe<Array<{ __typename?: 'ExperimentForm', createdAt: string, productName: string, quantity: string, generalSensation: number }>> };
 
 export type FormsFromTimeRangeQueryVariables = Exact<{
   before: Scalars['String'];
@@ -924,6 +951,81 @@ export function useDayFormLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Da
 export type DayFormQueryHookResult = ReturnType<typeof useDayFormQuery>;
 export type DayFormLazyQueryHookResult = ReturnType<typeof useDayFormLazyQuery>;
 export type DayFormQueryResult = Apollo.QueryResult<DayFormQuery, DayFormQueryVariables>;
+export const ExperimentDocument = gql`
+    query Experiment($id: Int!) {
+  experiment(id: $id) {
+    id
+    productName
+    startDate
+  }
+}
+    `;
+
+/**
+ * __useExperimentQuery__
+ *
+ * To run a query within a React component, call `useExperimentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useExperimentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useExperimentQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useExperimentQuery(baseOptions: Apollo.QueryHookOptions<ExperimentQuery, ExperimentQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ExperimentQuery, ExperimentQueryVariables>(ExperimentDocument, options);
+      }
+export function useExperimentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ExperimentQuery, ExperimentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ExperimentQuery, ExperimentQueryVariables>(ExperimentDocument, options);
+        }
+export type ExperimentQueryHookResult = ReturnType<typeof useExperimentQuery>;
+export type ExperimentLazyQueryHookResult = ReturnType<typeof useExperimentLazyQuery>;
+export type ExperimentQueryResult = Apollo.QueryResult<ExperimentQuery, ExperimentQueryVariables>;
+export const ExperimentFormsDocument = gql`
+    query ExperimentForms($id: Int!) {
+  experimentForms(id: $id) {
+    createdAt
+    productName
+    quantity
+    generalSensation
+  }
+}
+    `;
+
+/**
+ * __useExperimentFormsQuery__
+ *
+ * To run a query within a React component, call `useExperimentFormsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useExperimentFormsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useExperimentFormsQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useExperimentFormsQuery(baseOptions: Apollo.QueryHookOptions<ExperimentFormsQuery, ExperimentFormsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ExperimentFormsQuery, ExperimentFormsQueryVariables>(ExperimentFormsDocument, options);
+      }
+export function useExperimentFormsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ExperimentFormsQuery, ExperimentFormsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ExperimentFormsQuery, ExperimentFormsQueryVariables>(ExperimentFormsDocument, options);
+        }
+export type ExperimentFormsQueryHookResult = ReturnType<typeof useExperimentFormsQuery>;
+export type ExperimentFormsLazyQueryHookResult = ReturnType<typeof useExperimentFormsLazyQuery>;
+export type ExperimentFormsQueryResult = Apollo.QueryResult<ExperimentFormsQuery, ExperimentFormsQueryVariables>;
 export const FormsFromTimeRangeDocument = gql`
     query FormsFromTimeRange($before: String!, $after: String!) {
   formsFromTimeRange(before: $before, after: $after) {

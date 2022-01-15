@@ -47,10 +47,10 @@ const BottomNavigation: React.FC = () => {
           display="flex"
           justifyContent="space-between"
         >
-          <Tab>
+          <Tab id="calendar" aria-label="calendar">
             <FontAwesomeIcon icon={faCalendarAlt} />
           </Tab>
-          <Tab>
+          <Tab id="openExperiments" aria-label="openExperiments">
             <FontAwesomeIcon icon={faFlask} />
           </Tab>
         </Stack>
@@ -85,10 +85,10 @@ const BottomNavigation: React.FC = () => {
           display="flex"
           justifyContent="space-between"
         >
-          <Tab>
+          <Tab id="closedExperiments" aria-label="closedExperiments">
             <FontAwesomeIcon icon={faArchive} />
           </Tab>
-          <Tab>
+          <Tab id="settings" aria-label="settings">
             <FontAwesomeIcon icon={faCogs} />
           </Tab>
         </Stack>

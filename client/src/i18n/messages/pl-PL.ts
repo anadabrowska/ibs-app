@@ -75,6 +75,7 @@ export default {
     "DayPage.menstruation": "Menstruacja",
     "DayPage.migraine": "Migrena",
     "DayPage.pollakiuria": "Częstomocz",
+    "DayPage.no-notes": "Brak notatek",
     "DayPage.experiemnts": "Eksperymenty",
     "DayPage.quantity": "Ilość",
     "DayPage.general-sensation": "Samopoczucie",
@@ -98,8 +99,22 @@ export default {
     "ClosedExperiments.start-date": "Data rozpoczęcia",
     "ClosedExperiments.end-date": "Data zakończenia",
     "ClosedExperiments.details": "Szczegóły",
+    "ClosedExperiments.tolerated-amount": "Tolerowana ilość",
 
     "ExperimentDetails.experiment-details": "Szczegóły eksperymentu",
+    "ExperimentDetails.last-week-data": "Dane z ostatniego tygodnia",
+    "ExperimentDetails.general-sensation": "Samopoczucie",
+    "ExperimentDetails.quantity": "Ilość",
+    "ExperimentDetails.finish-experiment": "Zakończ eksperyment",
+
+    "ExperimentDetails.product-name": "Nazwa produktu",
+    "ExperimentDetails.product-name-placeholder": "brukselka",
+    "ExperimentDetails.is-tolerable": "Czy jest tolerowany?",
+    "ExperimentDetails.tolerated-amount": "Tolerowana ilość",
+    "ExperimentDetails.tolerated-amount-placeholder":
+      "2 szklanki / 20 gram/ 1 sztuka",
+    "ExperimentDetails.notes": "Notatki",
+    "ExperimentDetails.notes-placeholder": "Twoje miejsce na notatki",
 
     "ChangePassword.invalid-token": "Nieprawidłowy token",
     "ChangePassword.success": "Pomyślnie zmieniono hasło!",

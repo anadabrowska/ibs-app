@@ -277,18 +277,24 @@ const DailyForm: React.FC<DailyFormProps> = ({
                 maxW="60px"
                 mr="2rem"
                 value={weight}
-                onChange={(event) => setWeight(parseInt(event.target.value))}
+                onChange={(event) =>
+                  parseInt(event.target.value)
+                    ? setWeight(parseInt(event.target.value))
+                    : setWeight(0)
+                }
                 onBlur={onBlur}
                 type="weight"
               />
               <Slider
                 defaultValue={50}
                 min={20}
-                max={150}
+                max={140}
                 flex="1"
                 className="weight"
                 value={weight}
-                onChange={(value) => setWeight(value)}
+                onChange={(value) =>
+                  isNaN(value) ? setWeight(0) : setWeight(value)
+                }
                 onFocus={(e) => {
                   onBlur({
                     ...e,
@@ -383,7 +389,9 @@ const DailyForm: React.FC<DailyFormProps> = ({
                 value={sleepDuration}
                 onBlur={onBlur}
                 onChange={(event) =>
-                  setSleepDuration(parseInt(event.target.value))
+                  parseInt(event.target.value)
+                    ? setSleepDuration(parseInt(event.target.value))
+                    : setSleepDuration(0)
                 }
                 type="sleepLenght"
               />
@@ -394,7 +402,9 @@ const DailyForm: React.FC<DailyFormProps> = ({
                 step={0.5}
                 flex="1"
                 value={sleepDuration}
-                onChange={(value) => setSleepDuration(value)}
+                onChange={(value) =>
+                  isNaN(value) ? setSleepDuration(0) : setSleepDuration(value)
+                }
                 onFocus={(e) => {
                   onBlur({
                     ...e,
@@ -569,7 +579,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
               <FormattedMessage id="DailyForm.experiemnts" />
             </FormLabel>
             {experiments.map((experiment, index) => (
-              <Box key={experiment.id}>
+              <Box key={index}>
                 {index > 0 && <Divider mb={3} />}
                 <ExperimentFrom
                   experiment={experiment}
@@ -685,7 +695,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
         </Box>
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
-          <FormControl id="email">
+          <FormControl id="notes">
             <FormLabel fontWeight="bold" fontSize="lg" mb={5}>
               <FormattedMessage id="DailyForm.notes" />
             </FormLabel>

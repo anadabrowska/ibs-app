@@ -32,7 +32,7 @@ const main = async () => {
     },
     logging: true,
     // comment for deployment
-    synchronize: true,
+    // synchronize: true,
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [User, Form, Symptom, Activity, Experiment, ExperimentForm],
   });

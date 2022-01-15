@@ -19,7 +19,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Form, Formik } from "formik";
 import router from "next/router";
 import React, { useEffect, useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import {
   useOpenExperimentsQuery,
   useStartExperimentMutation,
@@ -38,9 +38,7 @@ const OpenExperiments: React.FC = () => {
     setScreenWidth(window.innerWidth);
   }, []);
 
-  useEffect(() => {
-    setScreenWidth(window.innerWidth);
-  }, []);
+  const intl = useIntl();
 
   const getFormattedDate = (date: string) => {
     const dateObj = new Date(parseInt(date));
@@ -156,8 +154,12 @@ const OpenExperiments: React.FC = () => {
                   <Form>
                     <FormInput
                       name="productName"
-                      label="product Name"
-                      placeholder="brocoli"
+                      label={intl.formatMessage({
+                        id: "ExperimentDetails.product-name",
+                      })}
+                      placeholder={intl.formatMessage({
+                        id: "ExperimentDetails.product-name-placeholder",
+                      })}
                     />
                     <Button
                       mt={4}

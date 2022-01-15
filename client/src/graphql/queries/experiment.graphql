@@ -1,0 +1,7 @@
+query Experiment($id: Int!) {
+  experiment(id: $id) {
+    id
+    productName
+    startDate
+  }
+}

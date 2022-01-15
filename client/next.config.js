@@ -2,6 +2,10 @@ const withPWA = require("next-pwa");
 
 module.exports = withPWA({
   reactStrictMode: true,
+  i18n: {
+    locales: ["pl-PL", "en-US"],
+    defaultLocale: "pl-PL",
+  },
   pwa: {
     dest: "public",
     register: true,
@@ -10,10 +14,3 @@ module.exports = withPWA({
     sw: "sw.js",
   },
 });
-
-module.exports = {
-  i18n: {
-    locales: ["pl-PL", "en-US"],
-    defaultLocale: "pl-PL",
-  },
-};

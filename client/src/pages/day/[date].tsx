@@ -45,8 +45,6 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
     variables: { date: `${year}-${month}-${day}` },
   });
 
-  console.log(data);
-
   const userQuery = useMeQuery();
   const UserData = userQuery.data?.me;
 
@@ -222,7 +220,8 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                 <FormattedMessage id="DailyForm.notes" />
               </Box>
               <Box mt={1} borderWidth="1px" borderRadius="lg" padding={3}>
-                {data?.dayForm?.notes || "No notes"}
+                {data?.dayForm?.notes ||
+                  intl.formatMessage({ id: "DayPage.no-notes" })}
               </Box>
             </Box>
             <Box

@@ -16,6 +16,7 @@ import {
 import { getConnection } from "typeorm";
 import { Context } from "vm";
 import { FieldError } from "./User";
+import { ExperimentForm } from "../entities/experimentForm";
 
 @InputType()
 class StartExperimentInput {
@@ -128,5 +129,48 @@ export class ExperimentResover {
       })
       .getMany();
     return experiments;
+  }
+  @Query(() => [ExperimentForm], { nullable: true })
+  @UseMiddleware(isAuth)
+  async experimentForms(
+    @Arg("id", () => Int) id: number,
+    @Ctx() { req }: Context
+  ): Promise<ExperimentForm[] | undefined> {
+    const experiment: Experiment | undefined = await getConnection()
+      .getRepository(Experiment)
+      .createQueryBuilder("experiment")
+      .where(`experiment.id = :id and "creatorId" = :creatorId`, {
+        id: id,
+        creatorId: (req.session as any).userId,
+      })
+      .getOne();
+    if (experiment) {
+      const experimentForms: ExperimentForm[] | undefined =
+        await getConnection()
+          .getRepository(ExperimentForm)
+          .createQueryBuilder("experiment_form")
+          .where(`experiment_form.experimentId = :id`, {
+            id: id,
+          })
+          .getMany();
+      return experimentForms;
+    }
+    return undefined;
+  }
+  @Query(() => Experiment, { nullable: true })
+  @UseMiddleware(isAuth)
+  async experiment(
+    @Arg("id", () => Int) id: number,
+    @Ctx() { req }: Context
+  ): Promise<Experiment | undefined> {
+    const experiment: Experiment | undefined = await getConnection()
+      .getRepository(Experiment)
+      .createQueryBuilder("experiment")
+      .where(`id = :id and "creatorId" = :creatorId`, {
+        id: id,
+        creatorId: (req.session as any).userId,
+      })
+      .getOne();
+    return experiment;
   }
 }

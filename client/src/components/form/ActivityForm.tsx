@@ -138,19 +138,28 @@ const ActivityForm: React.FC<IActivityForm> = ({
           mr="2rem"
           value={activity.duration}
           onChange={(event) =>
-            setActivity({ ...activity, duration: parseInt(event.target.value) })
+            parseInt(event.target.value)
+              ? setActivity({
+                  ...activity,
+                  duration: parseInt(event.target.value),
+                })
+              : setActivity({ ...activity, duration: 0 })
           }
           type="weight"
         />
         <Slider
           defaultValue={8}
           min={0}
-          max={24}
+          max={8}
           step={0.5}
           flex="1"
           focusThumbOnChange={false}
           value={activity.duration}
-          onChange={(value) => setActivity({ ...activity, duration: value })}
+          onChange={(value) =>
+            isNaN(value)
+              ? setActivity({ ...activity, duration: 0 })
+              : setActivity({ ...activity, duration: value })
+          }
         >
           <SliderTrack>
             <SliderFilledTrack />
