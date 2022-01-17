@@ -5,7 +5,7 @@ import BottomNavigation from "../components/BottomNavigation";
 import Calendar from "../components/Calendar";
 import ClosedExperiments from "../components/ClosedExperiments";
 import OpenExperiments from "../components/OpenExperiments";
-import SettingsPanel from "../components/SettingsPanel";
+import SettingsPanel from "../components/settings-panel/SettingsPanel";
 import { useMeQuery } from "../generated/graphql";
 
 const Index = () => {
