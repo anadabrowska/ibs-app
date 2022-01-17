@@ -1,9 +1,18 @@
-import { Box, Circle, Tab, TabList, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Circle,
+  Stack,
+  Tab,
+  TabList,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import {
   faCalendarAlt,
   faPlus,
   faCogs,
   faPen,
+  faFlask,
+  faArchive,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import router from "next/router";
@@ -32,35 +41,57 @@ const BottomNavigation: React.FC = () => {
       py={2}
     >
       <TabList py={4} display="flex" justifyContent="space-between">
-        <Tab>
-          <FontAwesomeIcon icon={faCalendarAlt} />
-        </Tab>
-        <Circle
-          role="button"
-          as="button"
-          aria-label="daily form"
-          size={16}
-          transform={"translateX(-50%)"}
-          position="fixed"
-          left="50%"
-          bottom={5}
-          backgroundColor="teal.100"
-          borderColor="teal.300"
-          borderWidth={5}
-          onClick={() => {
-            !loading && data?.dayForm != null
-              ? router.push(`/update-form/${day}-${month + 1}-${year}`)
-              : router.push(`/create-form/${day}-${month + 1}-${year}`);
-          }}
+        <Stack
+          direction="row"
+          width="30%"
+          display="flex"
+          justifyContent="space-between"
         >
-          <FontAwesomeIcon
-            color="gray"
-            icon={!loading && data?.dayForm != null ? faPen : faPlus}
-          />
-        </Circle>
-        <Tab>
-          <FontAwesomeIcon icon={faCogs} />
-        </Tab>
+          <Tab id="calendar" aria-label="calendar">
+            <FontAwesomeIcon icon={faCalendarAlt} />
+          </Tab>
+          <Tab id="openExperiments" aria-label="openExperiments">
+            <FontAwesomeIcon icon={faFlask} />
+          </Tab>
+        </Stack>
+        <Box width="40%">
+          <Circle
+            role="button"
+            as="button"
+            aria-label="daily form"
+            size={16}
+            transform={"translateX(-50%)"}
+            position="fixed"
+            left="50%"
+            bottom={5}
+            backgroundColor="teal.100"
+            borderColor="teal.300"
+            borderWidth={5}
+            onClick={() => {
+              !loading && data?.dayForm != null
+                ? router.push(`/update-form/${day}-${month + 1}-${year}`)
+                : router.push(`/create-form/${day}-${month + 1}-${year}`);
+            }}
+          >
+            <FontAwesomeIcon
+              color="gray"
+              icon={!loading && data?.dayForm != null ? faPen : faPlus}
+            />
+          </Circle>
+        </Box>
+        <Stack
+          direction="row"
+          width="30%"
+          display="flex"
+          justifyContent="space-between"
+        >
+          <Tab id="closedExperiments" aria-label="closedExperiments">
+            <FontAwesomeIcon icon={faArchive} />
+          </Tab>
+          <Tab id="settings" aria-label="settings">
+            <FontAwesomeIcon icon={faCogs} />
+          </Tab>
+        </Stack>
       </TabList>
     </Box>
   );

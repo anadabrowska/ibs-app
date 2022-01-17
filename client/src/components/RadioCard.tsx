@@ -57,7 +57,7 @@ const RadioCard: React.FC<RadioCardProps> = (props) => {
           <Box
             fontSize={10}
             textAlign="center"
-            color={state.isChecked ? "teal" : "gray.700"}
+            color={state.isChecked ? "teal" : undefined}
           >
             <FormattedMessage id={props.title} />
           </Box>

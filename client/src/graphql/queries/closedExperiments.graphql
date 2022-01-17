@@ -1,0 +1,11 @@
+query ClosedExperiments {
+  closedExperiments {
+    id
+    productName
+    startDate
+    endDate
+    notes
+    quantity
+    isTolerable
+  }
+}

@@ -10,10 +10,10 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import I18nProvider from "../i18n/provider";
 import { LOCALES } from "../i18n/locales";
 import React, { useEffect, useState } from "react";
-import { LangChangeEvent } from "../components/SettingsPanel";
 import { ApolloProvider } from "@apollo/client";
 import { createApolloClient } from "../utils/createApolloClient";
 import { Helmet } from "react-helmet";
+import { LangChangeEvent } from "../components/settings-panel/ChangeLanguage";
 
 library.add(far, fas);
 

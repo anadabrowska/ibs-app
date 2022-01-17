@@ -1,0 +1,8 @@
+query ExperimentForms($id: Int!) {
+  experimentForms(id: $id) {
+    createdAt
+    productName
+    quantity
+    generalSensation
+  }
+}

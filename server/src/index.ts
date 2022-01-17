@@ -4,7 +4,6 @@ import { createConnection } from "typeorm";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
-import { TestResover } from "./resolvers/test";
 import { UserResolver } from "./resolvers/User";
 import { User } from "./entities/User";
 import Redis from "ioredis";
@@ -17,6 +16,9 @@ import { FormResolver } from "./resolvers/form";
 import { Form } from "./entities/form";
 import { Activity } from "./entities/activity";
 import { Symptom } from "./entities/symptom";
+import { ExperimentResover } from "./resolvers/experiment";
+import { Experiment } from "./entities/experiment";
+import { ExperimentForm } from "./entities/experimentForm";
 
 const main = async () => {
   const dbUrl = "postgres://postgres:postgres@localhost:5432/ibs-app";
@@ -29,9 +31,9 @@ const main = async () => {
     },
     logging: true,
     // comment for deployment
-    // synchronize: true,
+    synchronize: true,
     migrations: [path.join(__dirname, "./migrations/*")],
-    entities: [User, Form, Symptom, Activity],
+    entities: [User, Form, Symptom, Activity, Experiment, ExperimentForm],
   });
 
   if (process.env.NODE_ENV === "production") {
@@ -77,7 +79,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [TestResover, UserResolver, FormResolver],
+      resolvers: [UserResolver, FormResolver, ExperimentResover],
       validate: false,
     }),
     context: ({ req, res }): Context => ({ req, res, redis }),

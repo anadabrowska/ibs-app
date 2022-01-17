@@ -17,6 +17,7 @@ import {
   faInfo,
   faRunning,
   faToiletPaper,
+  faUtensils,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NextPage } from "next";
@@ -81,6 +82,9 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
 
   const haveActivities =
     data?.dayForm?.activities && data.dayForm.activities.length > 0;
+
+  const haveExperiments =
+    data?.dayForm?.experiments && data.dayForm.experiments.length > 0;
 
   return (
     <Center>
@@ -216,7 +220,8 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                 <FormattedMessage id="DailyForm.notes" />
               </Box>
               <Box mt={1} borderWidth="1px" borderRadius="lg" padding={3}>
-                {data?.dayForm?.notes || "No notes"}
+                {data?.dayForm?.notes ||
+                  intl.formatMessage({ id: "DayPage.no-notes" })}
               </Box>
             </Box>
             <Box
@@ -240,8 +245,8 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                   </Box>
                 </GridItem>
                 <GridItem
-                  colStart={2}
-                  colSpan={4}
+                  colStart={1}
+                  colSpan={6}
                   display="flex"
                   alignItems="center"
                   justifyContent="space-between"
@@ -253,8 +258,8 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                   <Box>{data?.dayForm?.sleepLenght}</Box>
                 </GridItem>
                 <GridItem
-                  colStart={2}
-                  colSpan={4}
+                  colStart={1}
+                  colSpan={6}
                   display="flex"
                   alignItems="center"
                   justifyContent="space-between"
@@ -306,7 +311,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                     </Box>
                   </GridItem>
                   {data?.dayForm?.symptoms?.map((symptom, index) => (
-                    <GridItem colStart={2} colSpan={4} key={symptom.id}>
+                    <GridItem colStart={1} colSpan={6} key={symptom.id}>
                       {index > 0 && <Divider />}
                       <Box my={3}>
                         <Box
@@ -371,7 +376,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                   <GridItem>
                     <FontAwesomeIcon icon={faRunning} color="teal" size="2x" />
                   </GridItem>
-                  <GridItem colStart={2} colSpan={4}>
+                  <GridItem colStart={1} colSpan={6}>
                     <Box
                       fontWeight="bold"
                       lineHeight="tight"
@@ -382,7 +387,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                     </Box>
                   </GridItem>
                   {data?.dayForm?.activities?.map((activity, index) => (
-                    <GridItem colStart={2} colSpan={4} key={activity.id}>
+                    <GridItem colStart={1} colSpan={6} key={activity.id}>
                       {index > 0 && <Divider />}
                       <Box my={3}>
                         <Box
@@ -476,7 +481,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                     <FormattedMessage id="DayPage.stool-types" />
                   </Box>
                 </GridItem>
-                <GridItem colStart={2} colSpan={4}>
+                <GridItem colStart={1} colSpan={6}>
                   <Box display="flex" mt="2" alignItems="center">
                     {data?.dayForm?.stoolTypes?.map((type) => (
                       <Circle
@@ -495,6 +500,99 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                 </GridItem>
               </Grid>
             </Box>
+
+            {haveExperiments && (
+              <Box
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                padding={5}
+              >
+                <Grid templateColumns="repeat(6, 1fr)" gap={2}>
+                  <GridItem>
+                    <FontAwesomeIcon icon={faUtensils} color="teal" size="2x" />
+                  </GridItem>
+                  <GridItem colSpan={4}>
+                    <Box
+                      fontSize={25}
+                      fontWeight="bold"
+                      lineHeight="tight"
+                      color="teal"
+                    >
+                      <FormattedMessage id="DayPage.experiemnts" />
+                    </Box>
+                  </GridItem>
+                  {data?.dayForm?.experiments?.map((experiment, index) => (
+                    <GridItem
+                      colStart={1}
+                      colSpan={6}
+                      key={experiment.experimentId}
+                    >
+                      {index > 0 && <Divider />}
+                      <Box my={3}>
+                        <Text textAlign={"center"} fontSize="lg" my={3}>
+                          {experiment.productName}
+                        </Text>
+                        <Box
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="space-between"
+                        >
+                          <Box
+                            mt={1}
+                            fontWeight="bold"
+                            lineHeight="tight"
+                            color="teal.400"
+                          >
+                            <FormattedMessage id="DayPage.quantity" />
+                          </Box>
+                          <Box>{experiment.quantity}</Box>
+                        </Box>
+                        <Box
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="space-between"
+                        >
+                          <Box
+                            mt={1}
+                            fontWeight="bold"
+                            lineHeight="tight"
+                            color="teal.400"
+                          >
+                            <FormattedMessage id="DayPage.general-sensation" />
+                          </Box>
+
+                          <Box display="flex" mt="2" alignItems="center">
+                            <Box px={2}>
+                              <FormattedMessage
+                                id={
+                                  moodOptions.find(
+                                    (option) =>
+                                      option.rate ===
+                                      experiment.generalSensation
+                                  )?.title
+                                }
+                              />
+                            </Box>
+                            <FontAwesomeIcon
+                              icon={
+                                moodOptions.find(
+                                  (option) =>
+                                    option.rate === experiment.generalSensation
+                                )?.icon || "coffee"
+                              }
+                              color="teal"
+                              size="2x"
+                            />
+                          </Box>
+                        </Box>
+                      </Box>
+                    </GridItem>
+                  ))}
+                </Grid>
+              </Box>
+            )}
+
             <Box
               borderWidth="1px"
               borderRadius="lg"
@@ -505,7 +603,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                 <GridItem>
                   <FontAwesomeIcon icon={faInfo} color="teal" size="2x" />
                 </GridItem>
-                <GridItem colSpan={3}>
+                <GridItem colSpan={4}>
                   <Box
                     mb={2}
                     fontWeight="bold"
@@ -516,8 +614,8 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                     <FormattedMessage id="DayPage.other" />
                   </Box>
                   <GridItem
-                    colStart={2}
-                    colSpan={4}
+                    colStart={1}
+                    colSpan={6}
                     display="flex"
                     alignItems="center"
                     justifyContent="space-between"
@@ -533,8 +631,8 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                     <Box>{data?.dayForm?.weight}</Box>
                   </GridItem>
                   <GridItem
-                    colStart={2}
-                    colSpan={4}
+                    colStart={1}
+                    colSpan={6}
                     display="flex"
                     alignItems="center"
                     justifyContent="space-between"
@@ -554,8 +652,8 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                     </Box>
                   </GridItem>
                   <GridItem
-                    colStart={2}
-                    colSpan={4}
+                    colStart={1}
+                    colSpan={6}
                     display="flex"
                     alignItems="center"
                     justifyContent="space-between"
@@ -575,8 +673,8 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                     </Box>
                   </GridItem>
                   <GridItem
-                    colStart={2}
-                    colSpan={4}
+                    colStart={1}
+                    colSpan={6}
                     display="flex"
                     alignItems="center"
                     justifyContent="space-between"
@@ -597,8 +695,8 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                   </GridItem>
                   {UserData?.gender == (Gender.FEMALE || Gender.MALE) && (
                     <GridItem
-                      colStart={2}
-                      colSpan={4}
+                      colStart={1}
+                      colSpan={6}
                       display="flex"
                       alignItems="center"
                       justifyContent="space-between"

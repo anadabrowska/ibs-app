@@ -25,6 +25,7 @@ export default {
     "DailyForm.menstruation": "Menstruacja?",
     "DailyForm.migraine": "Migrena?",
     "DailyForm.pollakiuria": "Częstomocz?",
+    "DailyForm.experiemnts": "Eksperymenty",
 
     "DailyForm.header": "Jak minął Ci dzień?",
     "DailyForm.general-mood-label": "Nastrój",
@@ -58,6 +59,9 @@ export default {
     "DailyForm.notes-placeholder": "Twoje miejsce na notatki",
     "DailyForm.select-activity-placeholder": "Wybierz aktywność",
     "DailyForm.mood-after": "Nastrój po",
+    "DailyForm.quantity": "Ilość",
+    "DailyForm.quantity-placeholder": "2 szklanki / 20 gram/ 1 sztuka",
+    "DailyForm.general-sensation": "Samopoczucie",
 
     "DayPage.general-day-rate": "Generalna ocena dnia",
     "DayPage.mood": "Nastrój",
@@ -71,6 +75,10 @@ export default {
     "DayPage.menstruation": "Menstruacja",
     "DayPage.migraine": "Migrena",
     "DayPage.pollakiuria": "Częstomocz",
+    "DayPage.no-notes": "Brak notatek",
+    "DayPage.experiemnts": "Eksperymenty",
+    "DayPage.quantity": "Ilość",
+    "DayPage.general-sensation": "Samopoczucie",
 
     "SettingsPanel.hello": "Cześć {firstName} {lastName}!",
     "SettingsPanel.settings": "Ustawienia",
@@ -81,6 +89,32 @@ export default {
     "SettingsPanel.color-mode.dark": "Ciemny",
     "SettingsPanel.faq": "FAQ",
     "SettingsPanel.about-us": "O nas",
+
+    "OpenExperiments.open-experiments": "Otwarte Eksperymenty",
+    "OpenExperiments.start-date": "Data rozpoczęcia",
+    "OpenExperiments.details": "Szczegóły",
+    "OpenExperiments.new-experiment": "Rozpocznij nowy eksperyment",
+
+    "ClosedExperiments.closed-experiments": "Zakończone eksperymenty",
+    "ClosedExperiments.start-date": "Data rozpoczęcia",
+    "ClosedExperiments.end-date": "Data zakończenia",
+    "ClosedExperiments.details": "Szczegóły",
+    "ClosedExperiments.tolerated-amount": "Tolerowana ilość",
+
+    "ExperimentDetails.experiment-details": "Szczegóły eksperymentu",
+    "ExperimentDetails.last-week-data": "Dane z ostatniego tygodnia",
+    "ExperimentDetails.general-sensation": "Samopoczucie",
+    "ExperimentDetails.quantity": "Ilość",
+    "ExperimentDetails.finish-experiment": "Zakończ eksperyment",
+
+    "ExperimentDetails.product-name": "Nazwa produktu",
+    "ExperimentDetails.product-name-placeholder": "brukselka",
+    "ExperimentDetails.is-tolerable": "Czy jest tolerowany?",
+    "ExperimentDetails.tolerated-amount": "Tolerowana ilość",
+    "ExperimentDetails.tolerated-amount-placeholder":
+      "2 szklanki / 20 gram/ 1 sztuka",
+    "ExperimentDetails.notes": "Notatki",
+    "ExperimentDetails.notes-placeholder": "Twoje miejsce na notatki",
 
     "ChangePassword.invalid-token": "Nieprawidłowy token",
     "ChangePassword.success": "Pomyślnie zmieniono hasło!",
@@ -116,6 +150,34 @@ export default {
     "Register.other": "Inna",
     "Register.have-an-account": "Masz ju konto?",
     "Register.sign-in": "Zaloguj się do istniejącego konta",
+
+    "Faq.question-1":
+      "Do kogo zwrócić się po pomoc, gdy podejrzewasz u siebie zespół jelita drażliwego?",
+    "Faq.answer-1":
+      "Pierwsze kroki skieruj do lekarza internisty, który przeprowadzi z Tobą wywiad medyczny i zleci niezbędne badania. Pamiętaj, że diagnostyką zawsze zajmuje się lekarz, nie diagnozuj się sam/sama. Gdy już wiesz, że masz zespół jelita drażliwego, to wtedy postaraj się zbudować zespół zaufanych specjalistów, wśród których powinni znaleźć się: lekarz, dietetyk, trener i psycholog.",
+    "Faq.question-2": "Jak rozpoznać zespół jelita drażliwego?",
+    "Faq.answer-2":
+      "Diagnozę zespół jelita drażliwego może postawić wyłącznie lekarz po zebraniu wywiadu i przeprowadzeniu serii badań. IBS to choroba przewlekła, rozpoznaje się ją, gdy ból brzucha występuje przez minimum jeden dzień w tygodniu, przez ostatnie trzy miesiące. Dolegliwościom bólowym towarzyszą zazwyczaj ból związany z wypróżnieniem oraz zmiana częstości i konsystencji wypróżnień.",
+    "Faq.question-3":
+      "Jakie suplementy wspomagają leczenie zespołu jelita drażliwego?",
+    "Faq.answer-3":
+      "W leczeniu zespołu jelita drażliwego poza lekami dobieranymi przez lekarza prowadzącego stosuje się także indywidualnie zaplanowaną suplementację. Poproś swojego dietetyka, by Ci w tym pomógł. Pomocne mogą okazać się suplementy: z mięty pieprzowej, z błonnika rozpuszczalnego w wodzie, z dodatkiem maślanu sodu czy z probiotykami. Rozważ także psychoterapię, która choć nie jest suplementem, to w badaniach wykazuje dużą skuteczność w łagodzeniu IBSu.",
+    "Faq.question-4": "Jaką dietę stosować w zespole jelita drażliwego?",
+    "Faq.answer-4":
+      "Nie ma jednej, idealnej diety w zespole jelita drażliwego. Każda osoba chora powinna stworzyć swoją własną, indywidualną listę produktów dobrze tolerowanych. Temu służą Eksperymenty, które zaplanujesz w aplikacji IBS-Monitor. Obecnie za najbardziej skuteczną dietę w IBS uznaje się dietę low FODMAP.",
+
+    "AboutUs.about-us": "O nas",
+    "AboutUs.what-is-ibs-monitor": "Czym jest IBSMonitor?",
+    "AboutUs.about-ibs-monitor": "O IBSMonitor",
+    "AboutUs.about-ibs-monitor-pt1":
+      "IBSMonitor to aplikacja powstała z myślą o osobach z zespołem jelita drażliwego, mająca na celu poprawę jakości ich życia, poprzez stałe monitorowanie codziennych nawyków. Jest ona przyjazna osobom z niepełnosprawnościami i dostępna na wielu urządzeniach.",
+    "AboutUs.about-ibs-monitor-pt2":
+      "Dane zbierane na temat użytkowników wykorzystywane są do tworzenia statystyk oraz ogólnej poprawy jakości korzystania z aplikacji. Nie są one używane w żadnym innym celu ani udostępniane osobom trzecim.",
+    "AboutUs.what-we-stand-for": "Nasza misja",
+    "AboutUs.what-we-stand-for-pt1":
+      "Obecnie szacuję się, że IBS dotyczy od 9 do 23% populacji. Najlepszym sposobem na poprawienie standardu życia osób z tym schorzeniem jest właściwie zaplanowana dieta i obserwacja własnego organizmu. Może to złagodzić większość objawów i znacznie poprawić komfort życia na co dzień.",
+    "AboutUs.what-we-stand-for-pt2":
+      "Naszą misją jest stworzenie aplikacji, w której osoby z IBS będą miały całą wiedzę istotną dla przebiegu choroby, zawsze pod ręką. Ważne jest też to, że choroba ta jest niedeterministyczna i to co służy jednej osobie, może zaszkodzić drugiej, dlatego tak istotne jest indywidualne podejście. Zależy nam równie na tym aby IBSMonitor był przestrzenią w pełni bezpieczną i przyjazną każdemu.",
 
     January: "Styczeń",
     February: "Luty",

@@ -6,14 +6,16 @@ import { ISymptom } from "../../components/form/SymptomForm";
 import {
   FormInput,
   useDayFormQuery,
+  useOpenExperimentsQuery,
   useUpdateFormMutation,
 } from "../../generated/graphql";
 import router from "next/router";
 import DailyForm from "../../components/form/DailyForm";
 import { Formik } from "formik";
 import { mapErrors } from "../../utils/mapErrors";
+import { IExperiment } from "../../components/form/ExperimentFrom";
 
-const updateForm: NextPage<{ date: string }> = ({ date }) => {
+const UpdateForm: NextPage<{ date: string }> = ({ date }) => {
   const [day, month, year] = date.split("-");
 
   const { loading, data } = useDayFormQuery({
@@ -37,6 +39,7 @@ const updateForm: NextPage<{ date: string }> = ({ date }) => {
   const [symptoms, setSymptoms] = useState<ISymptom[]>([]);
   const [activities, setActivities] = useState<IActivity[]>([]);
   const [stoolTypes, setStoolTypes] = useState<IStoolType[]>([]);
+  const [experiments, setExperiments] = useState<IExperiment[]>([]);
 
   const [notes, setNotes] = useState("");
 
@@ -79,6 +82,16 @@ const updateForm: NextPage<{ date: string }> = ({ date }) => {
         })) || [];
       setStoolTypes(stoolData);
 
+      const experimentsData =
+        data?.dayForm?.experiments?.map((experiment: any) => ({
+          id: experiment.id,
+          productName: experiment.productName,
+          experimentId: experiment.experimentId,
+          generalSensation: experiment.generalSensation || 0,
+          quantity: experiment.quantity || "",
+        })) || [];
+      setExperiments(experimentsData);
+
       setMigraine(!!data.dayForm.migraine);
       setInTherapy(!!data.dayForm.inTherapy);
       setPollakiuria(!!data.dayForm.pollakiuria);
@@ -95,6 +108,7 @@ const updateForm: NextPage<{ date: string }> = ({ date }) => {
     stressLevel: 0,
     activities: [],
     stoolTypes: [],
+    experiments: [],
     inTherapy: false,
     pollakiuria: false,
     menstruation: false,
@@ -130,6 +144,19 @@ const updateForm: NextPage<{ date: string }> = ({ date }) => {
           stoolTypes: stoolTypes.map((elem) => {
             return elem.type;
           }),
+          experiments: experiments
+            .filter(
+              (experiment) =>
+                experiment.quantity != "" && experiment.generalSensation != 0
+            )
+            .map((experiment) => {
+              return {
+                experimentId: experiment.experimentId,
+                quantity: experiment.quantity,
+                productName: experiment.productName,
+                generalSensation: experiment.generalSensation,
+              };
+            }),
           inTherapy: inTherapy,
           menstruation: menstruation,
           migraine: migraine,
@@ -167,6 +194,7 @@ const updateForm: NextPage<{ date: string }> = ({ date }) => {
           symptoms={symptoms}
           activities={activities}
           stoolTypes={stoolTypes}
+          experiments={experiments}
           setWeight={setWeight}
           setGeneralMood={setGeneralMood}
           setDayRate={setDayRate}
@@ -181,6 +209,7 @@ const updateForm: NextPage<{ date: string }> = ({ date }) => {
           setSymptoms={setSymptoms}
           setActivities={setActivities}
           setStoolTypes={setStoolTypes}
+          setExperiments={setExperiments}
           onSubmit={handleSubmit}
           onBlur={handleBlur}
         />
@@ -189,10 +218,10 @@ const updateForm: NextPage<{ date: string }> = ({ date }) => {
   );
 };
 
-updateForm.getInitialProps = ({ query }) => {
+UpdateForm.getInitialProps = ({ query }) => {
   return {
     date: query.date as string,
   };
 };
 
-export default updateForm;
+export default UpdateForm;

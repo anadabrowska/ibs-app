@@ -57,10 +57,8 @@ const Calendar: React.FC = () => {
               }}
               className={styles.monthDay}
             >
-              <Circle size={35} bg="teal" color="white">
-                <Text as="b" fontSize="lg">
-                  {day}
-                </Text>
+              <Circle size={{ base: 31, mobile: 35 }} bg="teal" color="white">
+                <Text fontSize="lg">{day}</Text>
               </Circle>
             </Center>
           );
@@ -80,7 +78,7 @@ const Calendar: React.FC = () => {
             >
               {hasForm ? (
                 <Circle
-                  size={35}
+                  size={{ base: 31, mobile: 35 }}
                   bg={colorMode === "dark" ? "gray.600" : "gray.200"}
                   opacity={40}
                   color={colorMode === "dark" ? "white" : "black"}
