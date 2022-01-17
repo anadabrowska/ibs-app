@@ -4,7 +4,6 @@ import { createConnection } from "typeorm";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
-import { TestResover } from "./resolvers/test";
 import { UserResolver } from "./resolvers/User";
 import { User } from "./entities/User";
 import Redis from "ioredis";
@@ -32,7 +31,7 @@ const main = async () => {
     },
     logging: true,
     // comment for deployment
-    // synchronize: true,
+    synchronize: true,
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [User, Form, Symptom, Activity, Experiment, ExperimentForm],
   });
@@ -83,7 +82,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [TestResover, UserResolver, FormResolver, ExperimentResover],
+      resolvers: [UserResolver, FormResolver, ExperimentResover],
       validate: false,
     }),
     context: ({ req, res }): Context => ({ req, res, redis }),
