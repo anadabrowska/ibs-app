@@ -31,16 +31,16 @@ const main = async () => {
     },
     logging: true,
     // comment for deployment
-    synchronize: true,
+    // synchronize: true,
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [User, Form, Symptom, Activity, Experiment, ExperimentForm],
   });
 
-  if (process.env.NODE_ENV === "production") {
+  // if (process.env.NODE_ENV === "production") {
     await conn.runMigrations();
 
     console.log("migrations finished");
-  }
+  // }
 
   const app = express();
 
