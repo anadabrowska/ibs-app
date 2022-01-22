@@ -11,6 +11,7 @@ import I18nProvider from "../i18n/provider";
 import { LOCALES } from "../i18n/locales";
 import React, { useEffect, useState } from "react";
 import {
+  ApolloCache,
   ApolloClient,
   ApolloProvider,
   NormalizedCacheObject,
@@ -18,7 +19,10 @@ import {
 import { createApolloClient } from "../utils/createApolloClient";
 import { Helmet } from "react-helmet";
 import { LangChangeEvent } from "../components/settings-panel/ChangeLanguage";
-import { processOfflineQuery } from "../utils/trackedQueries";
+import {
+  displayOfflineQuery,
+  processOfflineQuery,
+} from "../utils/trackedQueries";
 
 library.add(far, fas);
 
@@ -27,6 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [locale, setLocale] = useState(LOCALES.ENGLISH);
   const [client, setClient] =
     useState<ApolloClient<NormalizedCacheObject> | null>(null);
+  const [cache, setCache] = useState<ApolloCache<any> | null>(null);
 
   useEffect(() => {
     // get language from browser
@@ -49,20 +54,23 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     document.addEventListener("languageChange", localStorageLangHandler, false);
 
-    createApolloClient().then((client) => {
-      setClient(client);
+    createApolloClient().then((res) => {
+      setClient(res.client);
+      setCache(res.cache);
       setLoading(false);
     });
   }, []);
 
   useEffect(() => {
-    if (!client) return;
+    if (!cache) return;
 
     const execute = async () => {
       const trackedQueries =
         JSON.parse(window.localStorage.getItem("trackedQueries") || "[]") || [];
       const promises = trackedQueries.map(
-        processOfflineQuery.bind(null, client)
+        client
+          ? processOfflineQuery.bind(null, client)
+          : displayOfflineQuery.bind(null, cache)
       );
 
       try {
@@ -72,11 +80,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         // A good place to show notification
       }
 
-      window.localStorage.setItem("trackedQueries", "[]");
+      if (client) window.localStorage.setItem("trackedQueries", "[]");
     };
 
     execute();
-  }, [client]);
+  }, [client, cache]);
 
   return (
     <>

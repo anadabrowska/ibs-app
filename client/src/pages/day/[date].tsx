@@ -55,7 +55,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
 
   const { loading, data } = useDayFormQuery({
     variables: { date: `${year}-${month}-${day}` },
-    fetchPolicy: "cache-first",
+    fetchPolicy: "cache-and-network",
   });
 
   const userQuery = useMeQuery();
@@ -155,7 +155,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
             </Stack>
           </Heading>
         </Center>
-        {loading && (
+        {loading && !data && (
           <>
             {navigator.onLine ? (
               <Center>
@@ -179,13 +179,13 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
         )}
         {data?.dayForm && (
           <Stack spacing={4} px={3} py={10}>
-            {data?.dayForm?.id === -1 && !navigator.onLine ? (
+            {(data?.dayForm?.id || 0) < 0 && !navigator.onLine && (
               <Alert status="info">
                 <AlertIcon />
                 You are offline. This form will be uploaded to the server as
                 soon as you get back online.
               </Alert>
-            ) : undefined}
+            )}
             <Box
               borderWidth="1px"
               borderRadius="lg"

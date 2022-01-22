@@ -129,7 +129,7 @@ const Calendar: React.FC = () => {
   const generateYearlyCalendar = (year: number) => {
     const { data } = useDatesFromTimeRangeQuery({
       variables: { before: `${year}-12-31`, after: `${year}-01-01` },
-      fetchPolicy: "cache-first",
+      fetchPolicy: "cache-and-network",
     });
 
     const dates = data?.formsFromTimeRange?.map((form) =>

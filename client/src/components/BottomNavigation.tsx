@@ -4,6 +4,8 @@ import {
   Stack,
   Tab,
   TabList,
+  Tag,
+  TagLabel,
   useColorModeValue,
 } from "@chakra-ui/react";
 import {
@@ -15,6 +17,7 @@ import {
   faArchive,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import router from "next/router";
 import React from "react";
 import { useDayFormQuery } from "../generated/graphql";
@@ -92,6 +95,23 @@ const BottomNavigation: React.FC = () => {
             <FontAwesomeIcon icon={faCogs} />
           </Tab>
         </Stack>
+        {!navigator.onLine && (
+          <Tag
+            position="fixed"
+            left="50%"
+            bottom={2}
+            transform={"translateX(-50%)"}
+            variant="outline"
+            colorScheme="blue"
+            backgroundColor="white"
+          >
+            <FontAwesomeIcon
+              icon={faTimesCircle}
+              style={{ marginRight: "5px" }}
+            />
+            <TagLabel>Offline</TagLabel>
+          </Tag>
+        )}
       </TabList>
     </Box>
   );

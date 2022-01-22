@@ -47,6 +47,13 @@ export const createApolloClient = async () => {
 
   const serializingLink = new SerializingLink();
 
+  const cache = new InMemoryCache();
+
+  const persistor = new CachePersistor({
+    cache,
+    storage: new LocalStorageWrapper(window.localStorage),
+  });
+
   const trackerLink = new ApolloLink((operation, forward) => {
     if (forward === undefined) return null;
 
@@ -90,13 +97,6 @@ export const createApolloClient = async () => {
     httpLink,
   ]);
 
-  const cache = new InMemoryCache();
-
-  const persistor = new CachePersistor({
-    cache,
-    storage: new LocalStorageWrapper(window.localStorage),
-  });
-
   const currentVersion = window.localStorage.getItem(SCHEMA_VERSION_KEY);
   if (currentVersion === SCHEMA_VERSION) {
     await persistor.restore();
@@ -110,5 +110,9 @@ export const createApolloClient = async () => {
     cache,
   });
 
-  return client;
+  return {
+    client,
+    persistor,
+    cache,
+  };
 };

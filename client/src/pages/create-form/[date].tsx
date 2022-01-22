@@ -6,7 +6,6 @@ import { IActivity } from "../../components/form/ActivityForm";
 import { IStoolType } from "../../components/form/StoolTypeForm";
 import { ISymptom } from "../../components/form/SymptomForm";
 import {
-  DayFormDocument,
   FormInput,
   useCreateFormMutation,
   useOpenExperimentsQuery,
@@ -14,6 +13,7 @@ import {
 import { mapErrors } from "../../utils/mapErrors";
 import { IExperiment } from "../../components/form/ExperimentFrom";
 import DailyForm from "../../components/form/DailyForm";
+import { dayFormOptimistic, dayFormUpdate } from "../../utils/trackedQueries";
 
 const CreateForm: NextPage<{ date: string }> = ({ date }) => {
   // TODO: we need date to create form for past dates in the future
@@ -41,7 +41,7 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
   const [notes, setNotes] = useState("");
 
   const { data } = useOpenExperimentsQuery({
-    fetchPolicy: "cache-first",
+    fetchPolicy: "cache-and-network",
   });
 
   useEffect(() => {
@@ -84,6 +84,8 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
     dayRate: 0,
     notes: "",
   };
+
+  const optimisticId = new Date().getTime() * -1;
 
   return (
     <Formik
@@ -135,54 +137,14 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
 
         createForm({
           variables: { input: formState },
-          update: (cache, context) => {
-            const dateObj = new Date();
-            const day = dateObj.getDate();
-            const month = dateObj.getMonth() + 1;
-            const year = dateObj.getFullYear();
-            const date = `${year}-${month}-${day}`;
-
-            const dayForm = (context as any).data.createForm.form;
-
-            cache.writeQuery({
-              query: DayFormDocument,
-              variables: { date },
-              data: {
-                dayForm: dayForm,
-              },
-            });
+          update: async (cache, context) => {
+            dayFormUpdate(cache, context);
 
             if (!navigator.onLine) {
               router.push(`/day/${day}-${month}-${year}`);
             }
           },
-          optimisticResponse: {
-            createForm: {
-              form: {
-                id: -1,
-                createdAt: new Date().getTime().toString(),
-                ...formState,
-                symptoms: formState.symptoms.map((symptom) => ({
-                  id: -1,
-                  ...symptom,
-                  __typename: "Symptom",
-                })),
-                activities: formState.activities.map((activity) => ({
-                  id: -1,
-                  ...activity,
-                  __typename: "Activity",
-                })),
-                experiments: formState.experiments.map((experiment) => ({
-                  id: -1,
-                  ...experiment,
-                  __typename: "ExperimentForm",
-                })),
-                __typename: "Form",
-              },
-              errors: [],
-              __typename: "FormResponse",
-            },
-          },
+          optimisticResponse: dayFormOptimistic(formState),
           onCompleted: (data) => {
             if (data?.createForm.errors) {
               setErrors(mapErrors(data.createForm.errors));
