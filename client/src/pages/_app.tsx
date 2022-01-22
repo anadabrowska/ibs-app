@@ -18,6 +18,7 @@ import {
 import { createApolloClient } from "../utils/createApolloClient";
 import { Helmet } from "react-helmet";
 import { LangChangeEvent } from "../components/settings-panel/ChangeLanguage";
+import { processOfflineQuery } from "../utils/trackedQueries";
 
 library.add(far, fas);
 
@@ -60,21 +61,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     const execute = async () => {
       const trackedQueries =
         JSON.parse(window.localStorage.getItem("trackedQueries") || "[]") || [];
-
-      const promises = trackedQueries.map((offlineQuery: any) => {
-        return new Promise(() => {
-          console.log("----|| offlined ||----");
-          console.log(offlineQuery);
-          console.log("----------------------");
-        });
-      });
-      // client.mutate({
-      //   context,
-      //   variables,
-      //   mutation: query,
-      //   update: updateFunctions[operationName],
-      //   optimisticResponse: context.optimisticResponse,
-      // }))
+      const promises = trackedQueries.map(
+        processOfflineQuery.bind(null, client)
+      );
 
       try {
         await Promise.all(promises);

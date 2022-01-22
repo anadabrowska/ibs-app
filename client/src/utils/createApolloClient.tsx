@@ -7,21 +7,23 @@ import {
 import QueueLink from "apollo-link-queue";
 import SerializingLink from "apollo-link-serialize";
 import { RetryLink } from "@apollo/client/link/retry";
-import { CachePersistor } from "apollo3-cache-persist";
+import { CachePersistor, LocalStorageWrapper } from "apollo3-cache-persist";
 import { onError } from "@apollo/client/link/error";
 import Router from "next/router";
 
 // TODO: jak sie zmienia schemat trzeba zupdate'owac
-const SCHEMA_VERSION = "1.2";
+const SCHEMA_VERSION = "1.0";
 const SCHEMA_VERSION_KEY = "apollo-schema-version";
 
 export const createApolloClient = async () => {
   const httpLink = new HttpLink({
-    uri: process.env.NEXT_PUBLIC_API_URL || "https://ibs-monitor.ddns.net:420/graphql",
+    uri:
+      process.env.NEXT_PUBLIC_API_URL ||
+      "https://ibs-monitor.ddns.net:420/graphql",
     credentials: "include",
   });
 
-  const retryLink = new RetryLink({ attempts: { max: 5 } });
+  const retryLink = new RetryLink({ attempts: { max: Infinity } });
 
   const onErrorLink = onError(({ graphQLErrors }) => {
     if (graphQLErrors)
@@ -92,7 +94,7 @@ export const createApolloClient = async () => {
 
   const persistor = new CachePersistor({
     cache,
-    storage: window.localStorage,
+    storage: new LocalStorageWrapper(window.localStorage),
   });
 
   const currentVersion = window.localStorage.getItem(SCHEMA_VERSION_KEY);
