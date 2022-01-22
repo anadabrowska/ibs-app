@@ -6,6 +6,7 @@ import { IActivity } from "../../components/form/ActivityForm";
 import { IStoolType } from "../../components/form/StoolTypeForm";
 import { ISymptom } from "../../components/form/SymptomForm";
 import {
+  DayFormDocument,
   FormInput,
   useCreateFormMutation,
   useOpenExperimentsQuery,
@@ -39,7 +40,9 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
   const [pollakiuria, setPollakiuria] = useState(false);
   const [notes, setNotes] = useState("");
 
-  const { data } = useOpenExperimentsQuery();
+  const { data } = useOpenExperimentsQuery({
+    fetchPolicy: "cache-first",
+  });
 
   useEffect(() => {
     handleExperiments();
@@ -129,13 +132,66 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
           dayRate: dayRate,
           notes: notes,
         };
-        const response = await createForm({ variables: { input: formState } });
 
-        if (response.data?.createForm.errors) {
-          setErrors(mapErrors(response.data.createForm.errors));
-        } else {
-          router.push(`/day/${day}-${month}-${year}`);
-        }
+        createForm({
+          variables: { input: formState },
+          update: (cache, context) => {
+            const dateObj = new Date();
+            const day = dateObj.getDate();
+            const month = dateObj.getMonth() + 1;
+            const year = dateObj.getFullYear();
+            const date = `${year}-${month}-${day}`;
+
+            const dayForm = (context as any).data.createForm.form;
+
+            cache.writeQuery({
+              query: DayFormDocument,
+              variables: { date },
+              data: {
+                dayForm: dayForm,
+              },
+            });
+
+            if (!navigator.onLine) {
+              router.push(`/day/${day}-${month}-${year}`);
+            }
+          },
+          optimisticResponse: {
+            createForm: {
+              form: {
+                id: -1,
+                createdAt: new Date().getTime().toString(),
+                ...formState,
+                symptoms: formState.symptoms.map((symptom) => ({
+                  id: -1,
+                  ...symptom,
+                  __typename: "Symptom",
+                })),
+                activities: formState.activities.map((activity) => ({
+                  id: -1,
+                  ...activity,
+                  __typename: "Activity",
+                })),
+                experiments: formState.experiments.map((experiment) => ({
+                  id: -1,
+                  ...experiment,
+                  __typename: "ExperimentForm",
+                })),
+                __typename: "Form",
+              },
+              errors: [],
+              __typename: "FormResponse",
+            },
+          },
+          onCompleted: (data) => {
+            if (data?.createForm.errors) {
+              setErrors(mapErrors(data.createForm.errors));
+            } else {
+              router.push(`/day/${day}-${month}-${year}`);
+            }
+          },
+          context: { tracked: true },
+        });
       }}
     >
       {({ errors, touched, handleSubmit, handleBlur }) => (

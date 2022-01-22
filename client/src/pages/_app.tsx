@@ -10,7 +10,11 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import I18nProvider from "../i18n/provider";
 import { LOCALES } from "../i18n/locales";
 import React, { useEffect, useState } from "react";
-import { ApolloProvider } from "@apollo/client";
+import {
+  ApolloClient,
+  ApolloProvider,
+  NormalizedCacheObject,
+} from "@apollo/client";
 import { createApolloClient } from "../utils/createApolloClient";
 import { Helmet } from "react-helmet";
 import { LangChangeEvent } from "../components/settings-panel/ChangeLanguage";
@@ -18,7 +22,10 @@ import { LangChangeEvent } from "../components/settings-panel/ChangeLanguage";
 library.add(far, fas);
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const [loading, setLoading] = useState(true);
   const [locale, setLocale] = useState(LOCALES.ENGLISH);
+  const [client, setClient] =
+    useState<ApolloClient<NormalizedCacheObject> | null>(null);
 
   useEffect(() => {
     // get language from browser
@@ -40,9 +47,47 @@ function MyApp({ Component, pageProps }: AppProps) {
     };
 
     document.addEventListener("languageChange", localStorageLangHandler, false);
+
+    createApolloClient().then((client) => {
+      setClient(client);
+      setLoading(false);
+    });
   }, []);
 
-  const client = createApolloClient();
+  useEffect(() => {
+    if (!client) return;
+
+    const execute = async () => {
+      const trackedQueries =
+        JSON.parse(window.localStorage.getItem("trackedQueries") || "[]") || [];
+
+      const promises = trackedQueries.map((offlineQuery: any) => {
+        return new Promise(() => {
+          console.log("----|| offlined ||----");
+          console.log(offlineQuery);
+          console.log("----------------------");
+        });
+      });
+      // client.mutate({
+      //   context,
+      //   variables,
+      //   mutation: query,
+      //   update: updateFunctions[operationName],
+      //   optimisticResponse: context.optimisticResponse,
+      // }))
+
+      try {
+        await Promise.all(promises);
+      } catch (error) {
+        console.error(error);
+        // A good place to show notification
+      }
+
+      window.localStorage.setItem("trackedQueries", "[]");
+    };
+
+    execute();
+  }, [client]);
 
   return (
     <>
@@ -123,15 +168,19 @@ function MyApp({ Component, pageProps }: AppProps) {
         <link href="/fontawesome/css/all.css" rel="stylesheet" />
       </Head>
       <I18nProvider locale={locale}>
-        <ApolloProvider client={client}>
-          <ChakraProvider resetCSS theme={theme}>
-            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-            <Helmet htmlAttributes={{ lang: locale }}>
-              <title>IBS App</title>
-            </Helmet>
-            <Component {...pageProps} />
-          </ChakraProvider>
-        </ApolloProvider>
+        <ChakraProvider resetCSS theme={theme}>
+          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+          <Helmet htmlAttributes={{ lang: locale }}>
+            <title>IBS App</title>
+          </Helmet>
+          {!client || loading ? (
+            <>Loading...</>
+          ) : (
+            <ApolloProvider client={client}>
+              <Component {...pageProps} />
+            </ApolloProvider>
+          )}
+        </ChakraProvider>
       </I18nProvider>
     </>
   );

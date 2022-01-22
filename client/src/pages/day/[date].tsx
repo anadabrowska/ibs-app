@@ -23,12 +23,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NextPage } from "next";
 import React from "react";
 import router from "next/router";
-import { useDayFormQuery, useMeQuery } from "../../generated/graphql";
+import {
+  DayFormDocument,
+  useDayFormQuery,
+  useMeQuery,
+} from "../../generated/graphql";
 import { MonthNames } from "../../utils/calendarUtils";
-import { Circle, CloseButton, Spinner } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertIcon,
+  Circle,
+  CloseButton,
+  Spinner,
+} from "@chakra-ui/react";
 import { moodOptions, stressOptions } from "../../utils/dailyFormUtils";
 import { Gender } from "../register";
 import { FormattedMessage, useIntl } from "react-intl";
+import { useApolloClient } from "@apollo/client";
 
 enum Direction {
   Prev,
@@ -37,12 +48,14 @@ enum Direction {
 
 const DayPage: NextPage<{ date: string }> = ({ date }) => {
   //TODO make this global
+  const client = useApolloClient();
   const intl = useIntl();
 
   const [day, month, year] = date.split("-");
 
   const { loading, data } = useDayFormQuery({
     variables: { date: `${year}-${month}-${day}` },
+    fetchPolicy: "cache-first",
   });
 
   const userQuery = useMeQuery();
@@ -100,11 +113,11 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
         >
           <CloseButton size="md" />
         </Circle>
-        <Center p={5}>
+        <Center mx={16} pt={16}>
           <Heading>
-            <Stack my={5} direction="row">
+            <Stack direction="row">
               <Box
-                px={2}
+                px={1}
                 as="button"
                 role="button"
                 onClick={() => {
@@ -119,12 +132,12 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
               >
                 <FontAwesomeIcon icon={faChevronLeft} />
               </Box>
-              <Text width={[200, 260, 350]} textAlign="center">
+              <Text width={[200, 260, 300]} textAlign="center">
                 {day} <FormattedMessage id={MonthNames[Number(month) - 1]} />{" "}
                 {year}
               </Text>
               <Box
-                px={2}
+                px={1}
                 as="button"
                 role="button"
                 onClick={() => {
@@ -143,18 +156,36 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
           </Heading>
         </Center>
         {loading && (
-          <Center>
-            <Spinner
-              thickness="4px"
-              speed="0.65s"
-              emptyColor="gray.200"
-              color="blue.500"
-              size="xl"
-            />
-          </Center>
+          <>
+            {navigator.onLine ? (
+              <Center>
+                <Spinner
+                  thickness="4px"
+                  speed="0.65s"
+                  emptyColor="gray.200"
+                  color="blue.500"
+                  size="xl"
+                />
+              </Center>
+            ) : (
+              <Stack spacing={4} px={3} py={10}>
+                <Alert status="info">
+                  <AlertIcon />
+                  You cannot fetch this content as you are offline.
+                </Alert>
+              </Stack>
+            )}
+          </>
         )}
         {data?.dayForm && (
-          <Stack spacing={4} px={3} pt={10}>
+          <Stack spacing={4} px={3} py={10}>
+            {data?.dayForm?.id === -1 && !navigator.onLine ? (
+              <Alert status="info">
+                <AlertIcon />
+                You are offline. This form will be uploaded to the server as
+                soon as you get back online.
+              </Alert>
+            ) : undefined}
             <Box
               borderWidth="1px"
               borderRadius="lg"
