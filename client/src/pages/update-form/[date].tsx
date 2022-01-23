@@ -6,7 +6,6 @@ import { ISymptom } from "../../components/form/SymptomForm";
 import {
   FormInput,
   useDayFormQuery,
-  useOpenExperimentsQuery,
   useUpdateFormMutation,
 } from "../../generated/graphql";
 import router from "next/router";
@@ -14,6 +13,7 @@ import DailyForm from "../../components/form/DailyForm";
 import { Formik } from "formik";
 import { mapErrors } from "../../utils/mapErrors";
 import { IExperiment } from "../../components/form/ExperimentFrom";
+import { dayFormUpdate, dayFormOptimistic } from "../../utils/trackedQueries";
 
 const UpdateForm: NextPage<{ date: string }> = ({ date }) => {
   const [day, month, year] = date.split("-");
@@ -164,15 +164,26 @@ const UpdateForm: NextPage<{ date: string }> = ({ date }) => {
           dayRate: dayRate,
           notes: notes,
         };
-        const response = await updateForm({
-          variables: { input: formState, id: data?.dayForm?.id || 0 },
-        });
 
-        if (response.data?.updateForm.errors) {
-          setErrors(mapErrors(response.data.updateForm.errors));
-        } else {
-          router.push(`/day/${day}-${month}-${year}`);
-        }
+        updateForm({
+          variables: { input: formState, date: `${year}-${month}-${day}` },
+          update: async (cache, context) => {
+            dayFormUpdate(cache, context);
+
+            if (!navigator.onLine) {
+              router.push(`/day/${day}-${month}-${year}`);
+            }
+          },
+          optimisticResponse: { updateForm: dayFormOptimistic(formState) },
+          onCompleted: (data) => {
+            if (data?.updateForm.errors) {
+              setErrors(mapErrors(data.updateForm.errors));
+            } else {
+              router.push(`/day/${day}-${month}-${year}`);
+            }
+          },
+          context: { tracked: true },
+        });
       }}
     >
       {({ errors, touched, handleSubmit, handleBlur }) => (

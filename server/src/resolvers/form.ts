@@ -10,7 +10,6 @@ import {
   Field,
   UseMiddleware,
   Query,
-  Int,
   ObjectType,
 } from "type-graphql";
 import { getConnection } from "typeorm";
@@ -163,7 +162,7 @@ export class FormResolver {
   @UseMiddleware(isAuth)
   async updateForm(
     @Arg("input") input: FormInput,
-    @Arg("id", () => Int) id: number,
+    @Arg("date") date: string,
     @Ctx() { req }: Context
   ): Promise<FormResponse> {
     const { experiments, symptoms, activities, ...formInput } = input;
@@ -177,10 +176,13 @@ export class FormResolver {
       .createQueryBuilder()
       .update(Form)
       .set({ ...formInput })
-      .where('id = :id and "creatorId" = :creatorId', {
-        id,
-        creatorId: (req.session as any).userId,
-      })
+      .where(
+        `DATE_TRUNC('day', "createdAt") = :date and "creatorId" = :creatorId`,
+        {
+          date,
+          creatorId: (req.session as any).userId,
+        }
+      )
       .returning("*")
       .execute();
 

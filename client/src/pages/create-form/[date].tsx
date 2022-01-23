@@ -85,8 +85,6 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
     notes: "",
   };
 
-  const optimisticId = new Date().getTime() * -1;
-
   return (
     <Formik
       initialValues={initialValues}
@@ -144,7 +142,7 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
               router.push(`/day/${day}-${month}-${year}`);
             }
           },
-          optimisticResponse: dayFormOptimistic(formState),
+          optimisticResponse: { createForm: dayFormOptimistic(formState) },
           onCompleted: (data) => {
             if (data?.createForm.errors) {
               setErrors(mapErrors(data.createForm.errors));

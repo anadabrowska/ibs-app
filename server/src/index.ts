@@ -37,9 +37,9 @@ const main = async () => {
   });
 
   // if (process.env.NODE_ENV === "production") {
-    await conn.runMigrations();
+  await conn.runMigrations();
 
-    console.log("migrations finished");
+  console.log("migrations finished");
   // }
 
   const app = express();

@@ -1,5 +1,5 @@
-mutation updateForm($input: FormInput!, $id: Int!) {
-  updateForm(input: $input, id: $id) {
+mutation updateForm($input: FormInput!, $date: String!) {
+  updateForm(input: $input, date: $date) {
     form {
       ...FormData
     }

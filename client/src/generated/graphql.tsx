@@ -4,7 +4,7 @@ export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions =  {}
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -189,7 +189,7 @@ export type MutationStartExperimentArgs = {
 
 
 export type MutationUpdateFormArgs = {
-  id: Scalars['Int'];
+  date: Scalars['String'];
   input: FormInput;
 };
 
@@ -202,7 +202,6 @@ export type Query = {
   formsFromTimeRange?: Maybe<Array<Form>>;
   me?: Maybe<User>;
   openExperiments?: Maybe<Array<Experiment>>;
-  test: Scalars['String'];
 };
 
 
@@ -341,7 +340,7 @@ export type StartExperimentMutation = { __typename?: 'Mutation', startExperiment
 
 export type UpdateFormMutationVariables = Exact<{
   input: FormInput;
-  id: Scalars['Int'];
+  date: Scalars['String'];
 }>;
 
 
@@ -800,8 +799,8 @@ export type StartExperimentMutationHookResult = ReturnType<typeof useStartExperi
 export type StartExperimentMutationResult = Apollo.MutationResult<StartExperimentMutation>;
 export type StartExperimentMutationOptions = Apollo.BaseMutationOptions<StartExperimentMutation, StartExperimentMutationVariables>;
 export const UpdateFormDocument = gql`
-    mutation updateForm($input: FormInput!, $id: Int!) {
-  updateForm(input: $input, id: $id) {
+    mutation updateForm($input: FormInput!, $date: String!) {
+  updateForm(input: $input, date: $date) {
     form {
       ...FormData
     }
@@ -828,7 +827,7 @@ export type UpdateFormMutationFn = Apollo.MutationFunction<UpdateFormMutation, U
  * const [updateFormMutation, { data, loading, error }] = useUpdateFormMutation({
  *   variables: {
  *      input: // value for 'input'
- *      id: // value for 'id'
+ *      date: // value for 'date'
  *   },
  * });
  */
