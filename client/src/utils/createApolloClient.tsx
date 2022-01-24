@@ -17,9 +17,7 @@ const SCHEMA_VERSION_KEY = "apollo-schema-version";
 
 export const createApolloClient = async () => {
   const httpLink = new HttpLink({
-    uri:
-      process.env.NEXT_PUBLIC_API_URL ||
-      "https://ibs-monitor.ddns.net:420/graphql",
+    uri: process.env.NEXT_PUBLIC_GRAPHQL_URL || "http://localhost:4000/graphql",
     credentials: "include",
   });
 

@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 import "reflect-metadata";
 import path from "path";
 import { createConnection } from "typeorm";
@@ -26,21 +28,18 @@ const main = async () => {
   const conn = await createConnection({
     type: "postgres",
     url: process.env.DATABASE_URL || dbUrl,
-    extra: {
-      ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : undefined,
-    },
     logging: true,
     // comment for deployment
-    // synchronize: true,
+    synchronize: process.env.NODE_ENV !== "production",
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [User, Form, Symptom, Activity, Experiment, ExperimentForm],
   });
 
-  // if (process.env.NODE_ENV === "production") {
-  await conn.runMigrations();
+  if (process.env.NODE_ENV === "production") {
+    await conn.runMigrations();
 
-  console.log("migrations finished");
-  // }
+    console.log("migrations finished");
+  }
 
   const app = express();
 
@@ -51,7 +50,7 @@ const main = async () => {
 
   app.use(
     cors({
-      origin: process.env.FRONTEND_URL || "https://ibs-monitor.ddns.net",
+      origin: process.env.FRONTEND_URL || "http://localhost:3000",
       credentials: true,
     })
   );
@@ -71,7 +70,6 @@ const main = async () => {
         httpOnly: true,
       },
       saveUninitialized: false,
-      //TODO:  make this Env variable
       secret: process.env.APP_SECRET || "sjbjkbjsdnij8y97843y7",
       resave: false,
     })
