@@ -1,8 +1,8 @@
 import { FormLabel } from "@chakra-ui/form-control";
-import { Box, Grid, GridItem, HStack } from "@chakra-ui/layout";
+import { Box, HStack } from "@chakra-ui/layout";
 import {
   Button,
-  IconButton,
+  FormControl,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -44,13 +44,22 @@ const SymptomForm: React.FC<ISymptomForm> = ({
 
   const intl = useIntl();
 
-  //TODO: this should come from the database
+  //TODO: in the future create database for symptoms
+  // with add your own option
   const symptoms = [
-    { name: "predefinedSymptom.stomach-ache", isDangerous: false },
-    { name: "predefinedSymptom.headache", isDangerous: false },
-    { name: "predefinedSymptom.nausea", isDangerous: false },
-    { name: "predefinedSymptom.dizziness", isDangerous: true },
+    { name: "predefinedSymptom.flatulence", isDangerous: false },
+    { name: "predefinedSymptom.gases", isDangerous: false },
+    { name: "predefinedSymptom.diarrhea", isDangerous: false },
+    { name: "predefinedSymptom.constipation", isDangerous: true },
     { name: "predefinedSymptom.heartburn", isDangerous: false },
+    { name: "predefinedSymptom.reflux", isDangerous: false },
+    { name: "predefinedSymptom.nausea", isDangerous: false },
+    { name: "predefinedSymptom.mucus-in-the-stool", isDangerous: false },
+    { name: "predefinedSymptom.incomplete-evacuation", isDangerous: false },
+    { name: "predefinedSymptom.stomach-ache", isDangerous: false },
+
+    { name: "predefinedSymptom.blood-in-the-stool", isDangerous: true },
+    { name: "predefinedSymptom.symptoms-at-night", isDangerous: true },
   ];
 
   const getIntensityRadioProps = useRadioGroup({
@@ -100,81 +109,79 @@ const SymptomForm: React.FC<ISymptomForm> = ({
           <FormattedMessage id="general.remove" />
         </Button>
       </Box>
-      <FormLabel>
-        <FormattedMessage id="general.name" />
-      </FormLabel>
-      <Grid templateColumns="repeat(6, 1fr)" gap={3}>
-        <GridItem colSpan={5}>
-          <Select
-            onChange={(e) => {
-              setSymptom({
-                ...symptom,
-                name: e.target.value,
-                isDangerous: e.target.value.includes(
-                  `[${intl.formatMessage({ id: "general.dangerous" })}]`
-                ),
-              });
-            }}
-            mb={4}
-            value={symptom.name}
-            placeholder="Select symptom"
-          >
-            {symptoms.map((symptom) => (
-              <option
-                key={intl.formatMessage({
-                  id: symptom.name,
-                })}
-                value={`${intl.formatMessage({
-                  id: symptom.name,
-                })} ${
-                  symptom.isDangerous
-                    ? `[${intl.formatMessage({ id: "general.dangerous" })}]`
-                    : ""
-                }`}
-              >
-                {intl.formatMessage({
-                  id: symptom.name,
-                })}
-                {symptom.isDangerous
-                  ? ` [${intl.formatMessage({ id: "general.dangerous" })}]`
-                  : ""}
-              </option>
-            ))}
-          </Select>
-        </GridItem>
-        <IconButton
-          aria-label="Add symptom"
-          fontSize="15px"
-          icon={<FontAwesomeIcon icon="plus" />}
-        />
-      </Grid>
-      <FormLabel>
-        <FormattedMessage id="DailyForm.intensity" />
-      </FormLabel>
-      <HStack
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        {...getIntensityRadioProps.getRootProps()}
-      >
-        {Array(5)
-          .fill(0)
-          .map((_, value) => {
-            const radio = getIntensityRadioProps.getRadioProps({
-              value: (value + 1).toString(),
+      <FormControl id={`symptom${symptom.id}.name`}>
+        <FormLabel>
+          <FormattedMessage id="general.name" />
+        </FormLabel>
+
+        <Select
+          onChange={(e) => {
+            setSymptom({
+              ...symptom,
+              name: e.target.value,
+              isDangerous: e.target.value.includes(
+                `[${intl.formatMessage({ id: "general.dangerous" })}]`
+              ),
             });
-            return (
-              <RadioCard
-                key={value}
-                radioType={RadioType.NumberRadio}
-                radioName="intensity"
-                {...radio}
-              >
-                {value + 1}
-              </RadioCard>
-            );
+          }}
+          mb={4}
+          value={symptom.name}
+          placeholder={intl.formatMessage({
+            id: "DailyForm.select-symptom-placeholder",
           })}
-      </HStack>
+        >
+          {symptoms.map((symptom) => (
+            <option
+              key={intl.formatMessage({
+                id: symptom.name,
+              })}
+              value={`${intl.formatMessage({
+                id: symptom.name,
+              })} ${
+                symptom.isDangerous
+                  ? `[${intl.formatMessage({ id: "general.dangerous" })}]`
+                  : ""
+              }`}
+            >
+              {intl.formatMessage({
+                id: symptom.name,
+              })}
+              {symptom.isDangerous
+                ? ` [${intl.formatMessage({ id: "general.dangerous" })}]`
+                : ""}
+            </option>
+          ))}
+        </Select>
+      </FormControl>
+      <FormControl id={`symptom${symptom.id}.intensity`}>
+        <FormLabel>
+          <FormattedMessage id="DailyForm.intensity" />
+        </FormLabel>
+        <HStack
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          {...getIntensityRadioProps.getRootProps()}
+        >
+          {Array(5)
+            .fill(0)
+            .map((_, value) => {
+              const radio = getIntensityRadioProps.getRadioProps({
+                value: (value + 1).toString(),
+              });
+              return (
+                <RadioCard
+                  key={value}
+                  radioType={RadioType.NumberRadio}
+                  radioName="intensity"
+                  {...radio}
+                >
+                  {value + 1}
+                </RadioCard>
+              );
+            })}
+        </HStack>
+      </FormControl>
     </Box>
   );
 };

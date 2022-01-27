@@ -49,22 +49,18 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
   }, [data]);
 
   const handleExperiments = () => {
-    const newExperiments: IExperiment[] = [];
-    data?.openExperiments?.map((openExperiment) => {
-      const id =
-        newExperiments.length > 0
-          ? newExperiments[newExperiments.length - 1].id + 1
-          : 0;
-      const newExperimentForm: IExperiment = {
-        id,
-        experimentId: openExperiment.id,
-        productName: openExperiment.productName,
-        generalSensation: 0,
-        quantity: "",
-      };
-      newExperiments.push(newExperimentForm);
-    });
-    setExperiments([...experiments, ...newExperiments]);
+    const newExperiments: IExperiment[] =
+      data?.openExperiments?.map((openExperiment, id) => {
+        const newExperimentForm: IExperiment = {
+          id,
+          experimentId: openExperiment.id,
+          productName: openExperiment.productName,
+          generalSensation: 0,
+          quantity: "",
+        };
+        return newExperimentForm;
+      }) || [];
+    setExperiments(newExperiments);
   };
 
   const initialValues: FormInput = {

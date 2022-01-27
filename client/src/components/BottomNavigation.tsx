@@ -66,7 +66,7 @@ const BottomNavigation: React.FC = () => {
             transform={"translateX(-50%)"}
             position="fixed"
             left="50%"
-            bottom={5}
+            bottom={10}
             backgroundColor="teal.100"
             borderColor="teal.300"
             borderWidth={5}
@@ -103,7 +103,6 @@ const BottomNavigation: React.FC = () => {
             transform={"translateX(-50%)"}
             variant="outline"
             colorScheme="blue"
-            backgroundColor="white"
           >
             <FontAwesomeIcon
               icon={faTimesCircle}

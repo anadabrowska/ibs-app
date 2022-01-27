@@ -1,21 +1,10 @@
-import {
-  Center,
-  Stack,
-  Heading,
-  GridItem,
-  Box,
-  Button,
-  Grid,
-} from "@chakra-ui/react";
-import {
-  faArrowRight,
-  faCheck,
-  faTimes,
-} from "@fortawesome/free-solid-svg-icons";
+import { Center, Stack, Heading, GridItem, Box, Grid } from "@chakra-ui/react";
+import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useClosedExperimentsQuery } from "../generated/graphql";
+import OfflineAlert from "./OfflineAlert";
 
 const ClosedExperiments: React.FC = () => {
   const { data } = useClosedExperimentsQuery();
@@ -39,90 +28,108 @@ const ClosedExperiments: React.FC = () => {
         <Heading mb={10} textAlign={"center"}>
           <FormattedMessage id="ClosedExperiments.closed-experiments" />
         </Heading>
+
         {/* we want to display data in reverse order */}
-        {data?.closedExperiments
-          ?.slice(0)
-          .reverse()
-          .map((experiment) => (
-            <Box
-              key={experiment.id}
-              borderWidth="1px"
-              borderRadius="lg"
-              overflow="hidden"
-              padding={5}
-            >
-              <Grid templateColumns="repeat(6, 1fr)" gap={2}>
-                <GridItem>
-                  {experiment.isTolerable ? (
-                    <FontAwesomeIcon icon={faCheck} color="#38A169" size="2x" />
-                  ) : (
-                    <FontAwesomeIcon icon={faTimes} color="#F56565" size="2x" />
-                  )}
-                </GridItem>
-                <GridItem colSpan={4}>
+        {navigator.onLine ? (
+          data?.closedExperiments
+            ?.slice(0)
+            .reverse()
+            .map((experiment) => (
+              <Box
+                key={experiment.id}
+                borderWidth="1px"
+                borderRadius="lg"
+                overflow="hidden"
+                padding={5}
+              >
+                <Grid templateColumns="repeat(6, 1fr)" gap={2}>
+                  <GridItem>
+                    {experiment.isTolerable ? (
+                      <FontAwesomeIcon
+                        icon={faCheck}
+                        color="#38A169"
+                        size="2x"
+                      />
+                    ) : (
+                      <FontAwesomeIcon
+                        icon={faTimes}
+                        color="#F56565"
+                        size="2x"
+                      />
+                    )}
+                  </GridItem>
+                  <GridItem colSpan={4}>
+                    <Box
+                      fontSize={25}
+                      fontWeight="bold"
+                      lineHeight="tight"
+                      color={experiment.isTolerable ? "green.500" : "red.400"}
+                    >
+                      {experiment.productName}
+                    </Box>
+                  </GridItem>
+                </Grid>
+                {experiment.isTolerable ? (
                   <Box
-                    fontSize={25}
-                    fontWeight="bold"
-                    lineHeight="tight"
-                    color={experiment.isTolerable ? "green.500" : "red.400"}
+                    mt={5}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
                   >
-                    {experiment.productName}
+                    <Box fontWeight="bold" lineHeight="tight" color="teal.400">
+                      <FormattedMessage id="ClosedExperiments.tolerated-amount" />
+                    </Box>
+                    <Box>{experiment.quantity}</Box>
                   </Box>
-                </GridItem>
-              </Grid>
-              {experiment.isTolerable ? (
+                ) : null}
                 <Box
-                  mt={5}
+                  mt={3}
                   display="flex"
                   alignItems="center"
                   justifyContent="space-between"
                 >
-                  <Box fontWeight="bold" lineHeight="tight" color="teal.400">
-                    <FormattedMessage id="ClosedExperiments.tolerated-amount" />
+                  <Box>
+                    <Box
+                      mt={1}
+                      fontWeight="bold"
+                      lineHeight="tight"
+                      color="teal.400"
+                      mr={3}
+                    >
+                      <FormattedMessage id="ClosedExperiments.start-date" />
+                    </Box>
+                    {getFormattedDate(experiment.startDate)}
                   </Box>
-                  <Box>{experiment.quantity}</Box>
+                  <Box textAlign={"right"}>
+                    <Box
+                      mt={1}
+                      fontWeight="bold"
+                      lineHeight="tight"
+                      color="teal.400"
+                      ml={3}
+                    >
+                      <FormattedMessage id="ClosedExperiments.end-date" />
+                    </Box>
+                    {getFormattedDate(experiment.endDate || "")}
+                  </Box>
                 </Box>
-              ) : null}
-              <Box
-                mt={3}
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Box>
-                  <Box
-                    mt={1}
-                    fontWeight="bold"
-                    lineHeight="tight"
-                    color="teal.400"
-                    mr={3}
-                  >
-                    <FormattedMessage id="ClosedExperiments.start-date" />
-                  </Box>
-                  {getFormattedDate(experiment.startDate)}
+                <Box
+                  mt={5}
+                  fontWeight="bold"
+                  lineHeight="tight"
+                  color="teal.400"
+                >
+                  <FormattedMessage id="DailyForm.notes" />
                 </Box>
-                <Box textAlign={"right"}>
-                  <Box
-                    mt={1}
-                    fontWeight="bold"
-                    lineHeight="tight"
-                    color="teal.400"
-                    ml={3}
-                  >
-                    <FormattedMessage id="ClosedExperiments.end-date" />
-                  </Box>
-                  {getFormattedDate(experiment.endDate || "")}
+                <Box mt={1} borderWidth="1px" borderRadius="lg" padding={3}>
+                  {experiment.notes ||
+                    intl.formatMessage({ id: "DayPage.no-notes" })}
                 </Box>
               </Box>
-              <Box mt={5} fontWeight="bold" lineHeight="tight" color="teal.400">
-                <FormattedMessage id="DailyForm.notes" />
-              </Box>
-              <Box mt={1} borderWidth="1px" borderRadius="lg" padding={3}>
-                {experiment.notes ||
-                  intl.formatMessage({ id: "DayPage.no-notes" })}
-              </Box>
-            </Box>
-          ))}
+            ))
+        ) : (
+          <OfflineAlert fullData={true} />
+        )}
       </Stack>
     </Center>
   );

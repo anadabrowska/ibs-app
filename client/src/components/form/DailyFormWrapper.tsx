@@ -1,23 +1,32 @@
 import { Stack, Circle, CloseButton, Heading, Center } from "@chakra-ui/react";
 import router from "next/router";
 import React from "react";
-import { FormattedMessage } from "react-intl";
+import { Helmet } from "react-helmet";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const DailyFormWrapper: React.FC = ({ children }) => {
+  const intl = useIntl();
   return (
     <Center
       transformOrigin="top"
       transform={{
-        base: "scale(.77)",
-        mobileS: "scale(.85)",
+        base: "scale(.9)",
+        mobileS: "scale(.95)",
         mobile: "scale(1)",
       }}
     >
-      <Stack>
+      <Helmet>
+        <title>
+          {intl.formatMessage({
+            id: "general.daily-form",
+          })}
+        </title>
+      </Helmet>
+      <Stack mb={10}>
         <Circle
           position="absolute"
           top={{ base: 3, mobileS: 4, mobile: 4 }}
-          left={{ base: -8, mobileS: -3, mobile: 4 }}
+          left={{ base: -2, mobileS: 1, mobile: 4 }}
           borderWidth={2}
           onClick={() => {
             router.replace("/");
@@ -25,8 +34,8 @@ const DailyFormWrapper: React.FC = ({ children }) => {
         >
           <CloseButton size="md" />
         </Circle>
-        <Center paddingTop={16}>
-          <Heading fontSize={"4xl"}>
+        <Center pt={16}>
+          <Heading as="h1" fontSize={"4xl"}>
             <FormattedMessage id="DailyForm.header" />
           </Heading>
         </Center>

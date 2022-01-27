@@ -20,7 +20,7 @@ import { FormattedMessage } from "react-intl";
 
 const Calendar: React.FC = () => {
   useEffect(() => {
-    var scrollDiv = document?.getElementById("current")?.offsetTop;
+    const scrollDiv = document?.getElementById("current")?.offsetTop;
     window.scrollTo({ top: scrollDiv, behavior: "auto" });
   }, []);
 

@@ -20,15 +20,21 @@ type RadioCardProps = UseRadioProps & {
 
 const RadioCard: React.FC<RadioCardProps> = (props) => {
   const { state, getInputProps, getCheckboxProps } = useRadio(props);
+  const [outline, setOutline] = React.useState(false);
 
   const input = getInputProps();
   const checkbox = getCheckboxProps();
 
   return (
-    <Box as="label">
+    <Box
+      as="label"
+      boxShadow={outline ? "outline" : ""}
+      rounded={outline ? "md" : ""}
+    >
       <input
         {...input}
         onFocus={(e) => {
+          setOutline(!outline);
           props.onBlur
             ? props.onBlur({
                 ...e,
@@ -39,6 +45,7 @@ const RadioCard: React.FC<RadioCardProps> = (props) => {
               })
             : null;
         }}
+        onBlur={() => setOutline(!outline)}
       />
       {props.radioType === RadioType.IconRadio && (
         <VStack
@@ -51,13 +58,13 @@ const RadioCard: React.FC<RadioCardProps> = (props) => {
         >
           <FontAwesomeIcon
             icon={[state.isChecked ? "fas" : "far", props.icon || "coffee"]}
-            color={state.isChecked ? "teal" : "gray"}
+            color={state.isChecked ? "#319795" : "gray"}
             size={state.isChecked ? "3x" : "2x"}
           />
           <Box
-            fontSize={10}
+            fontSize={11}
             textAlign="center"
-            color={state.isChecked ? "teal" : undefined}
+            textColor={state.isChecked ? "teal.500" : undefined}
           >
             <FormattedMessage id={props.title} />
           </Box>
@@ -69,9 +76,9 @@ const RadioCard: React.FC<RadioCardProps> = (props) => {
           cursor="pointer"
           size={state.isChecked ? "50px" : "40px"}
           _checked={{
-            bg: "teal.600",
+            bg: "teal.500",
             color: "white",
-            borderColor: "teal.600",
+            borderColor: "teal.500",
           }}
           // px={2}
           py={2}

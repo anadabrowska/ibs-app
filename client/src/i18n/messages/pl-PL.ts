@@ -10,6 +10,7 @@ export default {
     "general.yes": "Tak",
     "general.no": "Nie",
     "general.dangerous": "Niebezpieczny",
+    "general.daily-form": "Daily Form",
 
     "DailyForm.notes": "Notatki",
     "DailyForm.sleep": "Sen",
@@ -58,6 +59,7 @@ export default {
     "DailyForm.general-day-rate": "Generalna ocena dnia",
     "DailyForm.notes-placeholder": "Twoje miejsce na notatki",
     "DailyForm.select-activity-placeholder": "Wybierz aktywność",
+    "DailyForm.select-symptom-placeholder": "Wybierz symptom",
     "DailyForm.mood-after": "Nastrój po",
     "DailyForm.quantity": "Ilość",
     "DailyForm.quantity-placeholder": "2 szklanki / 20 gram/ 1 sztuka",
@@ -79,6 +81,8 @@ export default {
     "DayPage.experiemnts": "Eksperymenty",
     "DayPage.quantity": "Ilość",
     "DayPage.general-sensation": "Samopoczucie",
+    "DayPage.offline-message":
+      "Jesteś w trybie offline. Ten formularz zostanie przesłany na serwer, gdy tylko odzyskasz odstęp do sieci.",
 
     "SettingsPanel.hello": "Cześć {firstName} {lastName}!",
     "SettingsPanel.settings": "Ustawienia",
@@ -179,6 +183,11 @@ export default {
     "AboutUs.what-we-stand-for-pt2":
       "Naszą misją jest stworzenie aplikacji, w której osoby z IBS będą miały całą wiedzę istotną dla przebiegu choroby, zawsze pod ręką. Ważne jest też to, że choroba ta jest niedeterministyczna i to co służy jednej osobie, może zaszkodzić drugiej, dlatego tak istotne jest indywidualne podejście. Zależy nam równie na tym aby IBSMonitor był przestrzenią w pełni bezpieczną i przyjazną każdemu.",
 
+    "OfflineAlert.data-missing":
+      "Nie możesz pobrać tych treści, ponieważ jesteś offline.",
+    "OfflineAlert.partial-data-missing":
+      "Nie możesz pobrać niektórych treści na stronie, ponieważ jesteś offline.",
+
     January: "Styczeń",
     February: "Luty",
     March: "Marzec",
@@ -215,10 +224,37 @@ export default {
     "moodOptions.bad": "zły",
     "moodOptions.terrible": "okropny",
 
-    "predefinedSymptom.stomach-ache": "ból brzucha",
-    "predefinedSymptom.headache": "ból głowy",
-    "predefinedSymptom.nausea": "mdłości",
-    "predefinedSymptom.dizziness": "zawroty głowy",
+    "predefinedSymptom.flatulence": "wzdęcia",
+    "predefinedSymptom.gases": "gazy",
+    "predefinedSymptom.diarrhea": "biegunka",
+    "predefinedSymptom.constipation": "zaparcie",
     "predefinedSymptom.heartburn": "zgaga",
+    "predefinedSymptom.reflux": "refluks",
+    "predefinedSymptom.nausea": "mdłości",
+    "predefinedSymptom.mucus-in-the-stool": "śluz w stolcu",
+    "predefinedSymptom.incomplete-evacuation": "niepełne wypróżnienie",
+    "predefinedSymptom.stomach-ache": "ból brzucha",
+
+    "predefinedSymptom.blood-in-the-stool": "krew w stolcu",
+    "predefinedSymptom.symptoms-at-night": "symptomy w nocy",
+
+    "predefinedActivity.walking": "marsz",
+    "predefinedActivity.running": "bieganie",
+    "predefinedActivity.cycling": "jazda na rowerze",
+    "predefinedActivity.elliptical": "orbitrek",
+    "predefinedActivity.rower": "ergometr",
+    "predefinedActivity.stair-stepper": "stepper",
+    "predefinedActivity.hiit-training": "trening HIIT",
+    "predefinedActivity.hiking": "wędrówka",
+    "predefinedActivity.yoga": "joga",
+    "predefinedActivity.functional-strength-training":
+      "funkcjonalny trening siłowy",
+    "predefinedActivity.dance": "taniec",
+    "predefinedActivity.core-training": "core training",
+    "predefinedActivity.pilates": "pilates",
+    "predefinedActivity.tai-chi": "Tai Chi",
+    "predefinedActivity.swimming": "pływanie",
+    "predefinedActivity.wheelchair": "wózek inwalidzki",
+    "predefinedActivity.other": "inna",
   },
 };

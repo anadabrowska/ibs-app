@@ -54,6 +54,7 @@ export default {
     "DailyForm.general-day-rate": "General rate of the day",
     "DailyForm.notes-placeholder": "Put your notes here",
     "DailyForm.select-activity-placeholder": "Select activity",
+    "DailyForm.select-symptom-placeholder": "Select symptom",
     "DailyForm.mood-after": "Mood after",
     "DailyForm.quantity": "Quantity",
     "DailyForm.quantity-placeholder": "2 cups / 20 grams/ 1 piece",
@@ -75,6 +76,8 @@ export default {
     "DayPage.experiemnts": "Experiments",
     "DayPage.quantity": "Quantity",
     "DayPage.general-sensation": "General sensation",
+    "DayPage.offline-message":
+      "You are offline. This form will be uploaded to the server as soon as you get back online.",
 
     "SettingsPanel.hello": "Hi {firstName} {lastName}!",
     "SettingsPanel.settings": "Settings",
@@ -175,6 +178,11 @@ export default {
     "AboutUs.what-we-stand-for-pt2":
       "Our mission is to create an application in which people with IBS will have all the knowledge relevant to the course of the disease, always at hand. It is also important that this disease is non-deterministic and what serves one person may harm another, which is why an individual approach is so important. We also want IBSMonitor to be a safe and friendly space for everyone.",
 
+    "OfflineAlert.data-missing":
+      "You cannot fetch this content as you are offline.",
+    "OfflineAlert.partial-data-missing":
+      "You cannot fetch some of the page content because you are offline.",
+
     January: "January",
     February: "February",
     March: "March",
@@ -211,10 +219,37 @@ export default {
     "moodOptions.bad": "bad",
     "moodOptions.terrible": "terrible",
 
-    "predefinedSymptom.stomach-ache": "stomach ache",
-    "predefinedSymptom.headache": "headache",
-    "predefinedSymptom.nausea": "nausea",
-    "predefinedSymptom.dizziness": "dizziness",
+    "predefinedSymptom.flatulence": "flatulence",
+    "predefinedSymptom.gases": "gases",
+    "predefinedSymptom.diarrhea": "diarrhea",
+    "predefinedSymptom.constipation": "constipation",
     "predefinedSymptom.heartburn": "heartburn",
+    "predefinedSymptom.reflux": "reflux",
+    "predefinedSymptom.nausea": "nausea",
+    "predefinedSymptom.mucus-in-the-stool": "mucus in the stool",
+    "predefinedSymptom.incomplete-evacuation": "incomplete evacuation",
+    "predefinedSymptom.stomach-ache": "stomach ache",
+
+    "predefinedSymptom.blood-in-the-stool": "blood in the stool",
+    "predefinedSymptom.symptoms-at-night": "symptoms at night",
+
+    "predefinedActivity.walking": "walking",
+    "predefinedActivity.running": "running",
+    "predefinedActivity.cycling": "cycling",
+    "predefinedActivity.elliptical": "elliptical",
+    "predefinedActivity.rower": "rower",
+    "predefinedActivity.stair-stepper": "stair stepper",
+    "predefinedActivity.hiit-training": "HIIT training",
+    "predefinedActivity.hiking": "hiking",
+    "predefinedActivity.yoga": "yoga",
+    "predefinedActivity.functional-strength-training":
+      "functional strength training",
+    "predefinedActivity.dance": "dance",
+    "predefinedActivity.core-training": "core training",
+    "predefinedActivity.pilates": "pilates",
+    "predefinedActivity.tai-chi": "Tai Chi",
+    "predefinedActivity.swimming": "swimming",
+    "predefinedActivity.wheelchair": "wheelchair",
+    "predefinedActivity.other": "other",
   },
 };

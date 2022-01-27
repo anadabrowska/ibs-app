@@ -23,11 +23,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NextPage } from "next";
 import React from "react";
 import router from "next/router";
-import {
-  DayFormDocument,
-  useDayFormQuery,
-  useMeQuery,
-} from "../../generated/graphql";
+import { useDayFormQuery, useMeQuery } from "../../generated/graphql";
 import { MonthNames } from "../../utils/calendarUtils";
 import {
   Alert,
@@ -39,7 +35,7 @@ import {
 import { moodOptions, stressOptions } from "../../utils/dailyFormUtils";
 import { Gender } from "../register";
 import { FormattedMessage, useIntl } from "react-intl";
-import { useApolloClient } from "@apollo/client";
+import OfflineAlert from "../../components/OfflineAlert";
 
 enum Direction {
   Prev,
@@ -48,7 +44,6 @@ enum Direction {
 
 const DayPage: NextPage<{ date: string }> = ({ date }) => {
   //TODO make this global
-  const client = useApolloClient();
   const intl = useIntl();
 
   const [day, month, year] = date.split("-");
@@ -168,12 +163,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
                 />
               </Center>
             ) : (
-              <Stack spacing={4} px={3} py={10}>
-                <Alert status="info">
-                  <AlertIcon />
-                  You cannot fetch this content as you are offline.
-                </Alert>
-              </Stack>
+              <OfflineAlert fullData={true} />
             )}
           </>
         )}
@@ -182,8 +172,7 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
             {(data?.dayForm?.id || 0) < 0 && !navigator.onLine && (
               <Alert status="info">
                 <AlertIcon />
-                You are offline. This form will be uploaded to the server as
-                soon as you get back online.
+                <FormattedMessage id="DayPage.offline-message" />
               </Alert>
             )}
             <Box

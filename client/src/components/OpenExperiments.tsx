@@ -26,6 +26,7 @@ import {
 } from "../generated/graphql";
 import { mapErrors } from "../utils/mapErrors";
 import FormInput from "./FormInput";
+import OfflineAlert from "./OfflineAlert";
 
 const OpenExperiments: React.FC = () => {
   const { loading, data, refetch } = useOpenExperimentsQuery();
@@ -58,6 +59,7 @@ const OpenExperiments: React.FC = () => {
         <Heading mb={10} textAlign={"center"}>
           <FormattedMessage id="OpenExperiments.open-experiments" />
         </Heading>
+        {navigator.onLine ? null : <OfflineAlert fullData={false} />}
         {data?.openExperiments?.map((experiment) => (
           <Box
             key={experiment.id}
@@ -100,6 +102,7 @@ const OpenExperiments: React.FC = () => {
               <Button
                 width={110}
                 isLoading={loading}
+                disabled={!navigator.onLine}
                 rightIcon={<FontAwesomeIcon icon={faArrowRight} />}
                 colorScheme="teal"
                 variant="outline"
@@ -115,6 +118,7 @@ const OpenExperiments: React.FC = () => {
         ))}
         <Button
           isLoading={loading}
+          disabled={!navigator.onLine}
           rightIcon={<FontAwesomeIcon icon={faArrowRight} />}
           colorScheme="teal"
           variant="outline"

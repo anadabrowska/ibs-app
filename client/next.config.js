@@ -15,6 +15,8 @@ module.exports = withPWA({
   },
 });
 
+//for dev tesintg turn of pwa fuctionalitites
+
 // module.exports = {
 //   i18n: {
 //     locales: ["pl-PL", "en-US"],

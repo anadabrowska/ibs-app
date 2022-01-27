@@ -1,10 +1,8 @@
+import React from "react";
 import {
   Box,
   FormLabel,
-  Grid,
-  GridItem,
   Select,
-  IconButton,
   HStack,
   Flex,
   Input,
@@ -15,8 +13,6 @@ import {
   useRadioGroup,
   Button,
 } from "@chakra-ui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { moodOptions } from "../../utils/dailyFormUtils";
 import RadioCard, { RadioType } from "../RadioCard";
@@ -46,8 +42,27 @@ const ActivityForm: React.FC<IActivityForm> = ({
 
   const intl = useIntl();
 
-  //TODO: this should come from the database
-  const activityNames = ["swimming", "running", "dancing", "biking"];
+  //TODO: in the future create database for activites
+  // with add your own option
+  const activityNames = [
+    "predefinedActivity.walking",
+    "predefinedActivity.running",
+    "predefinedActivity.cycling",
+    "predefinedActivity.elliptical",
+    "predefinedActivity.rower",
+    "predefinedActivity.stair-stepper",
+    "predefinedActivity.hiit-training",
+    "predefinedActivity.hiking",
+    "predefinedActivity.yoga",
+    "predefinedActivity.functional-strength-training",
+    "predefinedActivity.dance",
+    "predefinedActivity.core-training",
+    "predefinedActivity.pilates",
+    "predefinedActivity.tai-chi",
+    "predefinedActivity.swimming",
+    "predefinedActivity.wheelchair",
+    "predefinedActivity.other",
+  ];
 
   const getMoodRadioProps = useRadioGroup({
     defaultValue:
@@ -78,29 +93,29 @@ const ActivityForm: React.FC<IActivityForm> = ({
       <FormLabel>
         <FormattedMessage id="general.name" />
       </FormLabel>
-      <Grid templateColumns="repeat(6, 1fr)" gap={3}>
-        <GridItem colSpan={5}>
-          <Select
-            onChange={(e) => setActivity({ ...activity, name: e.target.value })}
-            mb={4}
-            value={activity.name}
-            placeholder={intl.formatMessage({
-              id: "DailyForm.select-activity-placeholder",
+      <Select
+        onChange={(e) => setActivity({ ...activity, name: e.target.value })}
+        mb={4}
+        value={activity.name}
+        placeholder={intl.formatMessage({
+          id: "DailyForm.select-activity-placeholder",
+        })}
+      >
+        {activityNames.map((name) => (
+          <option
+            key={intl.formatMessage({
+              id: name,
+            })}
+            value={intl.formatMessage({
+              id: name,
             })}
           >
-            {activityNames.map((name) => (
-              <option key={name} value={name}>
-                {name}
-              </option>
-            ))}
-          </Select>
-        </GridItem>
-        <IconButton
-          aria-label="Add activity"
-          fontSize="15px"
-          icon={<FontAwesomeIcon icon="plus" />}
-        />
-      </Grid>
+            {intl.formatMessage({
+              id: name,
+            })}
+          </option>
+        ))}
+      </Select>
       <FormLabel>
         <FormattedMessage id="DailyForm.mood-after" />
       </FormLabel>
@@ -168,6 +183,7 @@ const ActivityForm: React.FC<IActivityForm> = ({
             color="black"
             fontSize="sm"
             boxSize="32px"
+            // eslint-disable-next-line react/no-children-prop
             children={activity.duration}
           />
         </Slider>

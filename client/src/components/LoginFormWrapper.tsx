@@ -1,9 +1,7 @@
 import { Box, Center } from "@chakra-ui/react";
 import React from "react";
 
-interface LoginFormWrapperProps {}
-
-const LoginFormWrapper: React.FC<LoginFormWrapperProps> = ({ children }) => {
+const LoginFormWrapper: React.FC = ({ children }) => {
   return (
     <Center minHeight="100vh">
       <Box

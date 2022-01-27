@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Box,
   Button,
@@ -12,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { NextPage } from "next";
 import router from "next/router";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { Line } from "react-chartjs-2";
 import { CategoryScale } from "chart.js";
 import Chart from "chart.js/auto";
@@ -24,11 +25,13 @@ import {
 } from "../../generated/graphql";
 import { useEffect, useState } from "react";
 import FinishExperimentForm from "../../components/FinishExperimentForm";
+import { Helmet } from "react-helmet";
 
 const ExperimentDetails: NextPage<{ id: string }> = ({ id }) => {
   Chart.register(CategoryScale);
 
   const closeExperiment = useDisclosure();
+  const intl = useIntl();
 
   const experimentData = useExperimentQuery({
     variables: { id: parseInt(id) },
@@ -48,10 +51,10 @@ const ExperimentDetails: NextPage<{ id: string }> = ({ id }) => {
     Array(8)
       .fill(0)
       .map((_, i) => {
-        var date = new Date();
+        const date = new Date();
         date.setDate(date.getDate() - (7 - i));
-        var start = new Date(date);
-        var end = new Date(date);
+        const start = new Date(date);
+        const end = new Date(date);
         start.setUTCHours(0, 0, 0, 0);
         end.setUTCHours(23, 59, 59, 999);
         const dayData = data?.experimentForms?.find(
@@ -92,6 +95,13 @@ const ExperimentDetails: NextPage<{ id: string }> = ({ id }) => {
         mobile: "scale(1)",
       }}
     >
+      <Helmet>
+        <title>
+          {intl.formatMessage({
+            id: "ExperimentDetails.experiment-details",
+          })}
+        </title>
+      </Helmet>
       <Stack>
         <Circle
           position="absolute"
@@ -111,7 +121,7 @@ const ExperimentDetails: NextPage<{ id: string }> = ({ id }) => {
         </Circle>
         <Center py={12}>
           <Stack m={2}>
-            <Heading textAlign={"center"}>
+            <Heading as="h1" textAlign={"center"}>
               <FormattedMessage id="ExperimentDetails.experiment-details" />
             </Heading>
             <Heading textAlign={"center"} size="xl">
@@ -199,7 +209,7 @@ const ExperimentDetails: NextPage<{ id: string }> = ({ id }) => {
                       mt={1}
                       fontWeight="bold"
                       lineHeight="tight"
-                      color="teal"
+                      color="teal.400"
                     >
                       {label}
                     </Box>

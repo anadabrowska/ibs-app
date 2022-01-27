@@ -226,7 +226,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
   });
   return (
     <DailyFormWrapper>
-      <Stack spacing={4} px={3} pt={10}>
+      <Stack spacing={4} px={{ base: 0, mobileS: 2, mobile: 4 }} pt={10}>
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
           <FormControl
             id="generalMood"
@@ -312,6 +312,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
                   color="black"
                   fontSize="sm"
                   boxSize="32px"
+                  // eslint-disable-next-line react/no-children-prop
                   children={weight}
                 />
               </Slider>
@@ -321,64 +322,58 @@ const DailyForm: React.FC<DailyFormProps> = ({
         </Box>
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
-          <FormControl id="symptoms">
-            <FormLabel fontWeight="bold" fontSize="lg">
-              <FormattedMessage id="DailyForm.symptoms" />
-            </FormLabel>
-            <Collapse in={isOpen} animateOpacity>
-              <Alert
-                status="warning"
-                variant="subtle"
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="center"
-                textAlign="center"
-                borderRadius={5}
-                mb={5}
-              >
-                <AlertIcon boxSize="20px" mr={0} />
-                <AlertTitle mt={4} mb={1} fontSize="lg">
-                  <FormattedMessage id="DailyForm.alert.dangerous-symptom" />
-                </AlertTitle>
-                <AlertDescription maxWidth="280px">
-                  <FormattedMessage id="DailyForm.alert.dangerous-symptom-description" />
-                </AlertDescription>
-              </Alert>
+          <FormLabel fontWeight="bold" fontSize="lg">
+            <FormattedMessage id="DailyForm.symptoms" />
+          </FormLabel>
+          <Collapse in={isOpen} animateOpacity>
+            <Alert
+              status="warning"
+              variant="subtle"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              textAlign="center"
+              borderRadius={5}
+              mb={5}
+            >
+              <AlertIcon boxSize="20px" mr={0} />
+              <AlertTitle mt={4} mb={1} fontSize="lg">
+                <FormattedMessage id="DailyForm.alert.dangerous-symptom" />
+              </AlertTitle>
+              <AlertDescription maxWidth="280px">
+                <FormattedMessage id="DailyForm.alert.dangerous-symptom-description" />
+              </AlertDescription>
+            </Alert>
+          </Collapse>
+          {symptoms.map((symptom, index) => (
+            <Collapse key={symptom.id} startingHeight={0} in={symptom.collapse}>
+              {index > 0 && <Divider mb={3} />}
+              <SymptomForm
+                symptom={symptom}
+                removeSymptom={handleRemoveSymptom}
+                setSymptom={handleSetSymptom}
+              />
             </Collapse>
-            {symptoms.map((symptom, index) => (
-              <Collapse
-                key={symptom.id}
-                startingHeight={0}
-                in={symptom.collapse}
-              >
-                {index > 0 && <Divider mb={3} />}
-                <SymptomForm
-                  symptom={symptom}
-                  removeSymptom={handleRemoveSymptom}
-                  setSymptom={handleSetSymptom}
-                />
-              </Collapse>
-            ))}
-            <Box display="flex" alignItems="center" justifyContent="center">
-              <Button
-                onClick={() => handleAddSymptom()}
-                leftIcon={<FontAwesomeIcon icon="plus" />}
-                variant="outline"
-              >
-                <FormattedMessage id="DailyForm.add-symptom-button" />
-              </Button>
-            </Box>
-          </FormControl>
+          ))}
+          <Box display="flex" alignItems="center" justifyContent="center">
+            <Button
+              onClick={() => handleAddSymptom()}
+              leftIcon={<FontAwesomeIcon icon="plus" />}
+              variant="outline"
+            >
+              <FormattedMessage id="DailyForm.add-symptom-button" />
+            </Button>
+          </Box>
         </Box>
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
+          <FormLabel fontWeight="bold" fontSize="lg" mb={5}>
+            <FormattedMessage id="DailyForm.sleep" />
+          </FormLabel>
           <FormControl
             id="sleepLenght"
             isInvalid={(errors?.sleepLenght && touched?.sleepLenght) || false}
           >
-            <FormLabel fontWeight="bold" fontSize="lg" mb={5}>
-              <FormattedMessage id="DailyForm.sleep" />
-            </FormLabel>
             <FormLabel>
               <FormattedMessage id="DailyForm.duration" />
             </FormLabel>
@@ -422,6 +417,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
                   color="black"
                   fontSize="sm"
                   boxSize="32px"
+                  // eslint-disable-next-line react/no-children-prop
                   children={sleepDuration}
                 />
               </Slider>
@@ -538,7 +534,11 @@ const DailyForm: React.FC<DailyFormProps> = ({
               <FormattedMessage id="DailyForm.stool-type-label" />{" "}
               <Popover>
                 <PopoverTrigger>
-                  <Box as="button">
+                  <Box
+                    as="button"
+                    role="button"
+                    aria-label="stool-type-details"
+                  >
                     <FontAwesomeIcon icon={faQuestionCircle} size="lg" />
                   </Box>
                 </PopoverTrigger>
@@ -574,20 +574,18 @@ const DailyForm: React.FC<DailyFormProps> = ({
         </Box>
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
-          <FormControl id="symptoms">
-            <FormLabel fontWeight="bold" fontSize="lg">
-              <FormattedMessage id="DailyForm.experiemnts" />
-            </FormLabel>
-            {experiments.map((experiment, index) => (
-              <Box key={index}>
-                {index > 0 && <Divider mb={3} />}
-                <ExperimentFrom
-                  experiment={experiment}
-                  setExperiment={handleSetExperiment}
-                />
-              </Box>
-            ))}
-          </FormControl>
+          <FormLabel fontWeight="bold" fontSize="lg">
+            <FormattedMessage id="DailyForm.experiemnts" />
+          </FormLabel>
+          {experiments.map((experiment, index) => (
+            <Box key={index}>
+              {index > 0 && <Divider mb={3} />}
+              <ExperimentFrom
+                experiment={experiment}
+                setExperiment={handleSetExperiment}
+              />
+            </Box>
+          ))}
         </Box>
 
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
@@ -595,6 +593,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
             display="flex"
             alignItems="center"
             justifyContent="space-between"
+            id="therapy"
           >
             <FormLabel htmlFor="therapy">
               <FormattedMessage id="DailyForm.in-therapy" />
@@ -603,7 +602,6 @@ const DailyForm: React.FC<DailyFormProps> = ({
               onChange={(e) => setInTherapy(e.target.checked)}
               isChecked={inTherapy}
               mb={4}
-              id="therapy"
               size="lg"
             />
           </FormControl>
@@ -612,6 +610,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
             display="flex"
             alignItems="center"
             justifyContent="space-between"
+            id="menstruation"
           >
             <FormLabel htmlFor="menstruation">
               <FormattedMessage id="DailyForm.menstruation" />
@@ -620,7 +619,6 @@ const DailyForm: React.FC<DailyFormProps> = ({
               onChange={(e) => setMenstruation(e.target.checked)}
               isChecked={menstruation || false}
               mb={4}
-              id="menstruation"
               size="lg"
             />
           </FormControl>
@@ -628,6 +626,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
             display="flex"
             alignItems="center"
             justifyContent="space-between"
+            id="migraine"
           >
             <FormLabel htmlFor="migraine">
               <FormattedMessage id="DailyForm.migraine" />
@@ -636,7 +635,6 @@ const DailyForm: React.FC<DailyFormProps> = ({
               onChange={(e) => setMigraine(e.target.checked)}
               isChecked={migraine}
               mb={4}
-              id="migraine"
               size="lg"
             />
           </FormControl>
@@ -645,13 +643,12 @@ const DailyForm: React.FC<DailyFormProps> = ({
             alignItems="center"
             justifyContent="space-between"
           >
-            <FormLabel htmlFor="pollakiuria">
+            <FormLabel id="pollakiuria">
               <FormattedMessage id="DailyForm.pollakiuria" />
             </FormLabel>
             <Switch
               onChange={(e) => setPollakiuria(e.target.checked)}
               isChecked={pollakiuria}
-              id="pollakiuria"
               size="lg"
             />
           </FormControl>

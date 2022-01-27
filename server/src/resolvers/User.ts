@@ -222,7 +222,7 @@ export class UserResolver {
     await sendEmail(
       email,
       "forgot password",
-      `<a href="http://localhost:3000/change-password/${token}">reset password</a>`
+      `<a href="${process.env.FRONTEND_URL}/change-password/${token}">reset password</a>`
     );
     return { success: true };
   }
