@@ -14,6 +14,7 @@ import { mapErrors } from "../../utils/mapErrors";
 import { IExperiment } from "../../components/form/ExperimentFrom";
 import DailyForm from "../../components/form/DailyForm";
 import { dayFormOptimistic, dayFormUpdate } from "../../utils/trackedQueries";
+import { useIntl } from "react-intl";
 
 const CreateForm: NextPage<{ date: string }> = ({ date }) => {
   // TODO: in the future add option to edit and create forms for the past
@@ -46,6 +47,8 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
   useEffect(() => {
     handleExperiments();
   }, [data]);
+
+  const intl = useIntl();
 
   const handleExperiments = () => {
     const newExperiments: IExperiment[] =
@@ -140,7 +143,7 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
           optimisticResponse: { createForm: dayFormOptimistic(formState) },
           onCompleted: (data) => {
             if (data?.createForm.errors) {
-              setErrors(mapErrors(data.createForm.errors));
+              setErrors(mapErrors(data.createForm.errors, intl));
             } else {
               router.push(`/day/${day}-${month}-${year}`);
             }

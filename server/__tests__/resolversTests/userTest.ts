@@ -27,6 +27,7 @@ const registerMutation = `
       }
       errors {
         fieldName
+        errorId
         message
       }
     }
@@ -45,6 +46,7 @@ mutation Login($email: String!, $password: String!) {
     }
     errors {
       fieldName
+      errorId
       message
     }
   }

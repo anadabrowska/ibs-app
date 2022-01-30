@@ -20,7 +20,7 @@ const Login: React.FC = () => {
         const response = await login({ variables: values });
 
         if (response.data?.login.errors) {
-          setErrors(mapErrors(response.data.login.errors));
+          setErrors(mapErrors(response.data.login.errors, intl));
         } else if (response.data?.login.user) {
           router.push("/");
         }

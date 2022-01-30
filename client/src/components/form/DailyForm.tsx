@@ -538,7 +538,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
                   <Box
                     as="button"
                     role="button"
-                    aria-label="stool-type-details"
+                    aria-label="stool type details"
                   >
                     <FontAwesomeIcon icon={faQuestionCircle} size="lg" />
                   </Box>
@@ -573,22 +573,22 @@ const DailyForm: React.FC<DailyFormProps> = ({
             </Box>
           </FormControl>
         </Box>
-
-        <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
-          <FormLabel fontWeight="bold" fontSize="lg">
-            <FormattedMessage id="DailyForm.experiemnts" />
-          </FormLabel>
-          {experiments.map((experiment, index) => (
-            <Box key={index}>
-              {index > 0 && <Divider mb={3} />}
-              <ExperimentFrom
-                experiment={experiment}
-                setExperiment={handleSetExperiment}
-              />
-            </Box>
-          ))}
-        </Box>
-
+        {experiments.length > 0 && (
+          <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
+            <FormLabel fontWeight="bold" fontSize="lg">
+              <FormattedMessage id="DailyForm.experiemnts" />
+            </FormLabel>
+            {experiments.map((experiment, index) => (
+              <Box key={index}>
+                {index > 0 && <Divider mb={3} />}
+                <ExperimentFrom
+                  experiment={experiment}
+                  setExperiment={handleSetExperiment}
+                />
+              </Box>
+            ))}
+          </Box>
+        )}
         <Box borderWidth={1} rounded={"lg"} boxShadow={"lg"} p={4}>
           <FormControl
             display="flex"

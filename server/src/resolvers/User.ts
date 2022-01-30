@@ -50,6 +50,8 @@ export class FieldError {
   @Field()
   fieldName: string;
   @Field()
+  errorId: string;
+  @Field()
   message: string;
 }
 
@@ -152,6 +154,7 @@ export class UserResolver {
         errors: [
           {
             fieldName: "email",
+            errorId: "UserError.email.no-user",
             message: "User with this email doesn't exist",
           },
         ],
@@ -192,6 +195,7 @@ export class UserResolver {
         errors: [
           {
             fieldName: "token",
+            errorId: "UserError.token.token-expired",
             message: "Your token expired, request password change again",
           },
         ],
@@ -206,6 +210,7 @@ export class UserResolver {
         errors: [
           {
             fieldName: "token",
+            errorId: "UserError.token.user-removed",
             message: "This user no longer exist",
           },
         ],

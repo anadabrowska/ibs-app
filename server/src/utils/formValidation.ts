@@ -6,6 +6,7 @@ export const validateForm = (form: FormInput) => {
       errors: [
         {
           fieldName: "mood",
+          errorId: "FormError.mood.empty",
           message: "You need to select a mood",
         },
       ],
@@ -16,6 +17,7 @@ export const validateForm = (form: FormInput) => {
       errors: [
         {
           fieldName: "weight",
+          errorId: "FormError.weight.empty",
           message: "You need to add your weight",
         },
       ],
@@ -26,6 +28,7 @@ export const validateForm = (form: FormInput) => {
       errors: [
         {
           fieldName: "sleepLenght",
+          errorId: "FormError.sleepLenght.empty",
           message: "You need to add a sleep length",
         },
       ],
@@ -36,6 +39,7 @@ export const validateForm = (form: FormInput) => {
       errors: [
         {
           fieldName: "sleepQuality",
+          errorId: "FormError.sleepQuality.empty",
           message: "You need to select a sleep quality",
         },
       ],
@@ -46,6 +50,7 @@ export const validateForm = (form: FormInput) => {
       errors: [
         {
           fieldName: "stressLevel",
+          errorId: "FormError.stressLevel.empty",
           message: "You need to select a stress level",
         },
       ],
@@ -56,6 +61,7 @@ export const validateForm = (form: FormInput) => {
       errors: [
         {
           fieldName: "dayRate",
+          errorId: "FormError.dayRate.empty",
           message: "You need to select a day rate",
         },
       ],

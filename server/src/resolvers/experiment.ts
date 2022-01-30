@@ -57,6 +57,7 @@ export class ExperimentResover {
         errors: [
           {
             fieldName: "productName",
+            errorId: "ExperimentError.productName.empty",
             message:
               "You need to pass the name of the product you want to make an experiment on",
           },

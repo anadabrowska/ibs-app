@@ -67,7 +67,7 @@ const FinishExperimentForm: React.FC<{
               },
             });
             if (response.data?.endExperiment.errors) {
-              setErrors(mapErrors(response.data.endExperiment.errors));
+              setErrors(mapErrors(response.data.endExperiment.errors, intl));
             } else if (response.data?.endExperiment.experiment) {
               router.push({
                 pathname: "/",

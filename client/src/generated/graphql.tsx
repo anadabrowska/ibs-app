@@ -81,6 +81,7 @@ export type ExperimentResponse = {
 
 export type FieldError = {
   __typename?: 'FieldError';
+  errorId: Scalars['String'];
   fieldName: Scalars['String'];
   message: Scalars['String'];
 };
@@ -273,7 +274,7 @@ export type FormDataFragment = { __typename?: 'Form', id: number, createdAt: str
 
 export type FormInputFragment = { __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', type: string, moodAfter: number, time: number }>>, experiments?: Maybe<Array<{ __typename?: 'ExperimentForm', experimentId: number, quantity: string, productName: string, generalSensation: number }>> };
 
-export type StarndardErrorFragment = { __typename?: 'FieldError', fieldName: string, message: string };
+export type StarndardErrorFragment = { __typename?: 'FieldError', fieldName: string, errorId: string, message: string };
 
 export type StandardUserFragment = { __typename?: 'User', id: number, firstName: string, lastName: string, email: string, gender: string };
 
@@ -283,14 +284,14 @@ export type ChangePasswordMutationVariables = Exact<{
 }>;
 
 
-export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, firstName: string, lastName: string, email: string, gender: string }> } };
+export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, errorId: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, firstName: string, lastName: string, email: string, gender: string }> } };
 
 export type CreateFormMutationVariables = Exact<{
   input: FormInput;
 }>;
 
 
-export type CreateFormMutation = { __typename?: 'Mutation', createForm: { __typename?: 'FormResponse', form?: Maybe<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>>, experiments?: Maybe<Array<{ __typename?: 'ExperimentForm', experimentId: number, quantity: string, productName: string, generalSensation: number }>> }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
+export type CreateFormMutation = { __typename?: 'Mutation', createForm: { __typename?: 'FormResponse', form?: Maybe<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>>, experiments?: Maybe<Array<{ __typename?: 'ExperimentForm', experimentId: number, quantity: string, productName: string, generalSensation: number }>> }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, errorId: string, message: string }>> } };
 
 export type EndExperimentMutationVariables = Exact<{
   input: EndExperimentInput;
@@ -298,14 +299,14 @@ export type EndExperimentMutationVariables = Exact<{
 }>;
 
 
-export type EndExperimentMutation = { __typename?: 'Mutation', endExperiment: { __typename?: 'ExperimentResponse', experiment?: Maybe<{ __typename?: 'Experiment', id: number, productName: string, startDate: string, endDate?: Maybe<string>, notes?: Maybe<string>, quantity?: Maybe<string>, isTolerable?: Maybe<boolean> }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
+export type EndExperimentMutation = { __typename?: 'Mutation', endExperiment: { __typename?: 'ExperimentResponse', experiment?: Maybe<{ __typename?: 'Experiment', id: number, productName: string, startDate: string, endDate?: Maybe<string>, notes?: Maybe<string>, quantity?: Maybe<string>, isTolerable?: Maybe<boolean> }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, errorId: string, message: string }>> } };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String'];
 }>;
 
 
-export type ForgotPasswordMutation = { __typename?: 'Mutation', forgotPassword: { __typename?: 'ActionResponse', success?: Maybe<boolean>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
+export type ForgotPasswordMutation = { __typename?: 'Mutation', forgotPassword: { __typename?: 'ActionResponse', success?: Maybe<boolean>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, errorId: string, message: string }>> } };
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
@@ -313,7 +314,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, firstName: string, lastName: string, email: string, gender: string }> } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, errorId: string, message: string }>>, user?: Maybe<{ __typename?: 'User', id: number, firstName: string, lastName: string, email: string, gender: string }> } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -329,14 +330,14 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, firstName: string, lastName: string, email: string, gender: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: number, firstName: string, lastName: string, email: string, gender: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, errorId: string, message: string }>> } };
 
 export type StartExperimentMutationVariables = Exact<{
   input: StartExperimentInput;
 }>;
 
 
-export type StartExperimentMutation = { __typename?: 'Mutation', startExperiment: { __typename?: 'ExperimentResponse', experiment?: Maybe<{ __typename?: 'Experiment', id: number, productName: string, startDate: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
+export type StartExperimentMutation = { __typename?: 'Mutation', startExperiment: { __typename?: 'ExperimentResponse', experiment?: Maybe<{ __typename?: 'Experiment', id: number, productName: string, startDate: string }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, errorId: string, message: string }>> } };
 
 export type UpdateFormMutationVariables = Exact<{
   input: FormInput;
@@ -344,7 +345,7 @@ export type UpdateFormMutationVariables = Exact<{
 }>;
 
 
-export type UpdateFormMutation = { __typename?: 'Mutation', updateForm: { __typename?: 'FormResponse', form?: Maybe<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>>, experiments?: Maybe<Array<{ __typename?: 'ExperimentForm', experimentId: number, quantity: string, productName: string, generalSensation: number }>> }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, message: string }>> } };
+export type UpdateFormMutation = { __typename?: 'Mutation', updateForm: { __typename?: 'FormResponse', form?: Maybe<{ __typename?: 'Form', id: number, createdAt: string, dayRate: number, weight: number, stoolTypes: Array<number>, sleepLenght: number, sleepQuality: number, mood: number, stressLevel: number, inTherapy: boolean, menstruation?: Maybe<boolean>, migraine: boolean, pollakiuria: boolean, notes?: Maybe<string>, symptoms?: Maybe<Array<{ __typename?: 'Symptom', id: number, name: string, intensity: number, isDangerous?: Maybe<boolean> }>>, activities?: Maybe<Array<{ __typename?: 'Activity', id: number, type: string, moodAfter: number, time: number }>>, experiments?: Maybe<Array<{ __typename?: 'ExperimentForm', experimentId: number, quantity: string, productName: string, generalSensation: number }>> }>, errors?: Maybe<Array<{ __typename?: 'FieldError', fieldName: string, errorId: string, message: string }>> } };
 
 export type ClosedExperimentsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -471,6 +472,7 @@ export const FormInputFragmentDoc = gql`
 export const StarndardErrorFragmentDoc = gql`
     fragment StarndardError on FieldError {
   fieldName
+  errorId
   message
 }
     `;

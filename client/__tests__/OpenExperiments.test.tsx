@@ -33,6 +33,7 @@ const startExperimentMutation = gql`
 
   fragment StarndardError on FieldError {
     fieldName
+    errorId
     message
   }
 `;
@@ -108,6 +109,7 @@ const openExperimentsErrorData = [
           errors: [
             {
               fieldName: "productName",
+              errorId: "ExperimentError.productName.empty",
               message:
                 "You need to pass the name of the product you want to make an experiment on",
             },

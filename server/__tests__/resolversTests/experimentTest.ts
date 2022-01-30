@@ -12,6 +12,7 @@ mutation StartExperiment($input: StartExperimentInput!) {
       }
       errors {
         fieldName
+        errorId
         message
       }
     }
@@ -31,6 +32,7 @@ mutation EndExperiment($input: EndExperimentInput!, $id: Int!) {
       }
       errors {
         fieldName
+        errorId
         message
       }
     }

@@ -212,6 +212,28 @@ export default {
     "Password.hide": "Pokaż",
     "Password.show": "Ukryj",
 
+    "UserError.password.invalid": "Nieprawidłowe hasło, spróbuj ponownie",
+    "UserError.password.not-fulfill-requirements":
+      "Hasło nie spełnia wszystkich wymagań, musi zawierać więcej niż 2 znaki",
+    "UserError.email.invalid": "Nieprawidłowy email",
+    "UserError.email.no-user": "Uytkownik z tym adresem email nie istnieje",
+    "UserError.gender.empty": "To pole nie moe być puste",
+    "UserError.token.token-expired":
+      "Token wygasł, ponownie zarządaj zmiany hasła",
+    "UserError.token.user-removed": "Ten uytkownik już nie ustnieje",
+
+    "FormError.mood.empty": "Musisz wybrać nastrój",
+    "FormError.weight.empty": "Musisz dodać swoją masę ciała",
+    "FormError.sleepLenght.empty": "Musisz dodać czas trwania snu",
+    "FormError.sleepQuality.empty": "Musisz wybrać jakoś snu",
+    "FormError.stressLevel.empty": "Musisz wybrać poziom stresu",
+    "FormError.dayRate.empty": "Musisz podać ogólną ocenę dnia",
+
+    "ExperimentError.quantity.empty":
+      "Jeśli tolerujesz ten produkt podaj przybliżoną tolerowaną ilość",
+    "ExperimentError.productName.empty":
+      "Musisz podać nazwę produktu na którym chcesz przeprowadzić eksperyment",
+
     "stressOptions.not-stressed": "bez stresu",
     "stressOptions.a-bit-stressed": "lekko zestresowany",
     "stressOptions.stressed": "zestresowany",

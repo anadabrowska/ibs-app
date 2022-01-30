@@ -207,6 +207,28 @@ export default {
     "Password.hide": "Hide",
     "Password.show": "Show",
 
+    "UserError.password.invalid": "Password is invalid, try again",
+    "UserError.password.not-fulfill-requirements":
+      "Passowrd does not fulfill all the requirements, it needs to have more than 2 characters",
+    "UserError.email.invalid": "Invalid email",
+    "UserError.email.no-user": "User with this email doesn't exist",
+    "UserError.gender.empty": "This field can't be empty",
+    "UserError.token.token-expired":
+      "Your token expired, request password change again",
+    "UserError.token.user-removed": "This user no longer exist",
+
+    "FormError.mood.empty": "You need to select a mood",
+    "FormError.weight.empty": "You need to add your weight",
+    "FormError.sleepLenght.empty": "You need to add a sleep length",
+    "FormError.sleepQuality.empty": "You need to select a sleep quality",
+    "FormError.stressLevel.empty": "You need to select a stress level",
+    "FormError.dayRate.empty": "You need to select a day rate",
+
+    "ExperimentError.quantity.empty":
+      "If you tolerate the product pass the approximate ammount you tolerate",
+    "ExperimentError.productName.empty":
+      "You need to pass the name of the product you want to make an experiment on",
+
     "stressOptions.not-stressed": "not stressed",
     "stressOptions.a-bit-stressed": "a bit stressed",
     "stressOptions.stressed": "stressed",

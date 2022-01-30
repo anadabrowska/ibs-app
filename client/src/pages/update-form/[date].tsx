@@ -14,6 +14,7 @@ import { Formik } from "formik";
 import { mapErrors } from "../../utils/mapErrors";
 import { IExperiment } from "../../components/form/ExperimentFrom";
 import { dayFormUpdate, dayFormOptimistic } from "../../utils/trackedQueries";
+import { useIntl } from "react-intl";
 
 const UpdateForm: NextPage<{ date: string }> = ({ date }) => {
   const [day, month, year] = date.split("-");
@@ -22,6 +23,8 @@ const UpdateForm: NextPage<{ date: string }> = ({ date }) => {
     variables: { date: `${year}-${month}-${day}` },
     fetchPolicy: "cache-and-network",
   });
+
+  const intl = useIntl();
 
   const [updateForm] = useUpdateFormMutation();
 
@@ -178,7 +181,7 @@ const UpdateForm: NextPage<{ date: string }> = ({ date }) => {
           optimisticResponse: { updateForm: dayFormOptimistic(formState) },
           onCompleted: (data) => {
             if (data?.updateForm.errors) {
-              setErrors(mapErrors(data.updateForm.errors));
+              setErrors(mapErrors(data.updateForm.errors, intl));
             } else {
               router.push(`/day/${day}-${month}-${year}`);
             }

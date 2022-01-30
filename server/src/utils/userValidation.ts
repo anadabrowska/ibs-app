@@ -8,6 +8,7 @@ export const validateEmail = (email: string) => {
       errors: [
         {
           fieldName: "email",
+          errorId: "UserError.email.invalid",
           message: "Invalid email",
         },
       ],
@@ -22,6 +23,7 @@ export const validatePassword = (password: string) => {
       errors: [
         {
           fieldName: "password",
+          errorId: "UserError.password.not-fulfill-requirements",
           message: "Passowrd does not fulfill all requirements",
         },
       ],
@@ -36,7 +38,8 @@ export const validateRegisterData = (input: RegisterInput) => {
       errors: [
         {
           fieldName: "gender",
-          message: "this field can't be empty",
+          errorId: "UserError.gender.empty",
+          message: "This field can't be empty",
         },
       ],
     };
@@ -59,6 +62,7 @@ export const validateLoginData = async (
       errors: [
         {
           fieldName: "email",
+          errorId: "UserError.email.no-user",
           message: "User with this email doesn't exist",
         },
       ],
@@ -72,6 +76,7 @@ export const validateLoginData = async (
       errors: [
         {
           fieldName: "password",
+          errorId: "UserError.password.invalid",
           message: "Password is invalid",
         },
       ],

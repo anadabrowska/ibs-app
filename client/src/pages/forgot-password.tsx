@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import React from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import FormInput from "../components/FormInput";
 import LoginFormWrapper from "../components/LoginFormWrapper";
 import { useForgotPasswordMutation } from "../generated/graphql";
@@ -20,6 +20,7 @@ import { mapErrors } from "../utils/mapErrors";
 const ForgotPassword = () => {
   const [forgotPassword] = useForgotPasswordMutation();
   const { isOpen, onOpen } = useDisclosure();
+  const intl = useIntl();
 
   return (
     <Formik
@@ -27,7 +28,7 @@ const ForgotPassword = () => {
       onSubmit={async (values, { setErrors }) => {
         const response = await forgotPassword({ variables: values });
         if (response.data?.forgotPassword.errors) {
-          setErrors(mapErrors(response.data.forgotPassword.errors));
+          setErrors(mapErrors(response.data.forgotPassword.errors, intl));
         } else if (response.data?.forgotPassword.success) {
           onOpen();
         }

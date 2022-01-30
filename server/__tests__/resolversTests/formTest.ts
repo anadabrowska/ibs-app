@@ -41,6 +41,7 @@ mutation createForm($input: FormInput!) {
       }
       errors {
         fieldName
+        errorId
         message
       }
     }

@@ -1,4 +1,5 @@
 fragment StarndardError on FieldError {
   fieldName
+  errorId
   message
 }

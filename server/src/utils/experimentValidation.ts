@@ -6,6 +6,7 @@ export const validateExperiment = (experiment: EndExperimentInput) => {
       errors: [
         {
           fieldName: "quantity",
+          errorId: "ExperimentError.quantity.empty",
           message:
             "If you tolerate the product pass the approximate ammount you tolerate",
         },
@@ -17,6 +18,7 @@ export const validateExperiment = (experiment: EndExperimentInput) => {
       errors: [
         {
           fieldName: "productName",
+          errorId: "ExperimentError.productName.empty",
           message:
             "You need to pass the name of the product you want to make an experiment on",
         },

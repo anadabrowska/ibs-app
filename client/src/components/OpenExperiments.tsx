@@ -149,7 +149,9 @@ const OpenExperiments: React.FC = () => {
                   variables: { input: values },
                 });
                 if (response.data?.startExperiment.errors) {
-                  setErrors(mapErrors(response.data.startExperiment.errors));
+                  setErrors(
+                    mapErrors(response.data.startExperiment.errors, intl)
+                  );
                 } else if (response.data?.startExperiment.experiment) {
                   newExperiment.onClose();
                   refetch();
