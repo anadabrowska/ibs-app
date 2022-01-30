@@ -27,7 +27,9 @@ import ColorMode from "./ColorMode";
 import Faq from "./Faq";
 
 const SettingsPanel: React.FC = () => {
-  const { data } = useMeQuery();
+  const { data } = useMeQuery({
+    fetchPolicy: "cache-and-network",
+  });
   const router = useRouter();
   const apolloClient = useApolloClient();
   const [logout, { loading }] = useLogoutMutation();

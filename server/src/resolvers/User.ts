@@ -16,9 +16,15 @@ import { Context } from "src/types";
 import { COOKIE_NAME, FORGOT_PASSWORD_KEY_PREFIX } from "../constants";
 import { sendEmail } from "../utils/sendEmail";
 import { isAuth } from "../middleware/isAuth";
+import {
+  validateEmail,
+  validateLoginData,
+  validateRegisterData,
+  validatePassword,
+} from "../utils/userValidation";
 
 @InputType()
-class RegisterInput {
+export class RegisterInput {
   @Field()
   firstName: string;
   @Field()
@@ -32,7 +38,7 @@ class RegisterInput {
 }
 
 @InputType()
-class LoginInput {
+export class LoginInput {
   @Field()
   email: string;
   @Field()
@@ -79,37 +85,9 @@ export class UserResolver {
   async register(@Arg("input") input: RegisterInput): Promise<UserResponse> {
     const hashedPassword = await argon2.hash(input.password);
 
-    //TODO: add MUCH better validation
-
-    if (input.gender.length === 0) {
-      return {
-        errors: [
-          {
-            fieldName: "gender",
-            message: "this field can't be empty",
-          },
-        ],
-      };
-    }
-    if (input.email.length <= 2) {
-      return {
-        errors: [
-          {
-            fieldName: "email",
-            message: "Invalid email",
-          },
-        ],
-      };
-    }
-    if (input.password.length <= 2) {
-      return {
-        errors: [
-          {
-            fieldName: "password",
-            message: "Passowrd does not fulfill all requirements",
-          },
-        ],
-      };
+    const errors = validateRegisterData(input);
+    if (errors) {
+      return errors;
     }
 
     const user = await User.create({
@@ -132,31 +110,12 @@ export class UserResolver {
   ): Promise<UserResponse> {
     const user = await User.findOne({ where: { email: input.email } });
 
-    if (!user) {
-      return {
-        errors: [
-          {
-            fieldName: "email",
-            message: "User with this email doesn't exist",
-          },
-        ],
-      };
+    const errors = await validateLoginData(input, user);
+    if (errors) {
+      return errors;
     }
 
-    const isValid = await argon2.verify(user.password, input.password);
-
-    if (!isValid) {
-      return {
-        errors: [
-          {
-            fieldName: "password",
-            message: "Password is invalid",
-          },
-        ],
-      };
-    }
-
-    (req.session as any).userId = user.id;
+    (req.session as any).userId = user?.id;
 
     return {
       user,
@@ -183,18 +142,8 @@ export class UserResolver {
     @Arg("email") email: string,
     @Ctx() { redis }: Context
   ): Promise<ActionResponse> {
-    //TODO: add MUCH better validation
-
-    if (email.length <= 2) {
-      return {
-        errors: [
-          {
-            fieldName: "email",
-            message: "Invalid email",
-          },
-        ],
-      };
-    }
+    const emailValidation = validateEmail(email);
+    if (emailValidation) return emailValidation;
 
     const user = await User.findOne({ where: { email: email } });
 
@@ -211,7 +160,7 @@ export class UserResolver {
 
     const token = v4();
 
-    //token expores after a day
+    //token expires after a day
     await redis.set(
       FORGOT_PASSWORD_KEY_PREFIX + token,
       user.id,
@@ -233,19 +182,8 @@ export class UserResolver {
     @Arg("newPassword") newPassword: string,
     @Ctx() { redis }: Context
   ): Promise<UserResponse> {
-    //TODO: add MUCH better validation
-    //create generic validation functions for things like password or email
-
-    if (newPassword.length <= 2) {
-      return {
-        errors: [
-          {
-            fieldName: "newPassword",
-            message: "Passowrd does not fulfill all requirements",
-          },
-        ],
-      };
-    }
+    const passwordValidation = validatePassword(newPassword);
+    if (passwordValidation) return passwordValidation;
     const key = FORGOT_PASSWORD_KEY_PREFIX + token;
     const userId = await redis.get(key);
 

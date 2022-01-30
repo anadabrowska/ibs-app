@@ -20,6 +20,7 @@ const UpdateForm: NextPage<{ date: string }> = ({ date }) => {
 
   const { loading, data } = useDayFormQuery({
     variables: { date: `${year}-${month}-${day}` },
+    fetchPolicy: "cache-and-network",
   });
 
   const [updateForm] = useUpdateFormMutation();

@@ -16,7 +16,7 @@ import DailyForm from "../../components/form/DailyForm";
 import { dayFormOptimistic, dayFormUpdate } from "../../utils/trackedQueries";
 
 const CreateForm: NextPage<{ date: string }> = ({ date }) => {
-  // TODO: we need date to create form for past dates in the future
+  // TODO: in the future add option to edit and create forms for the past
   const [day, month, year] = date.split("-");
 
   const router = useRouter();
@@ -27,7 +27,6 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
   const [symptoms, setSymptoms] = useState<ISymptom[]>([]);
   const [experiments, setExperiments] = useState<IExperiment[]>([]);
 
-  //TODO: default weight needs to come from the form from yesterday
   const [weight, setWeight] = useState(0);
   const [sleepDuration, setSleepDuration] = useState(8);
   const [sleepQuality, setSleepQuality] = useState(0);

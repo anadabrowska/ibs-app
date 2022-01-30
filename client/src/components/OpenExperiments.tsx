@@ -29,7 +29,9 @@ import FormInput from "./FormInput";
 import OfflineAlert from "./OfflineAlert";
 
 const OpenExperiments: React.FC = () => {
-  const { loading, data, refetch } = useOpenExperimentsQuery();
+  const { loading, data, refetch } = useOpenExperimentsQuery({
+    fetchPolicy: "cache-and-network",
+  });
   const [startExperiment] = useStartExperimentMutation();
   const [screenWidth, setScreenWidth] = useState(1024);
 
@@ -120,6 +122,7 @@ const OpenExperiments: React.FC = () => {
           isLoading={loading}
           disabled={!navigator.onLine}
           rightIcon={<FontAwesomeIcon icon={faArrowRight} />}
+          data-testid="new-experiment-button"
           colorScheme="teal"
           variant="outline"
           size="sm"
@@ -135,7 +138,7 @@ const OpenExperiments: React.FC = () => {
         >
           <DrawerOverlay />
           <DrawerContent>
-            <DrawerCloseButton />
+            <DrawerCloseButton data-testid="close-button" />
             <DrawerHeader>
               <FormattedMessage id="OpenExperiments.new-experiment" />
             </DrawerHeader>
@@ -167,6 +170,7 @@ const OpenExperiments: React.FC = () => {
                     />
                     <Button
                       mt={4}
+                      data-testid="submit-button"
                       colorScheme="teal"
                       isLoading={props.isSubmitting}
                       type="submit"

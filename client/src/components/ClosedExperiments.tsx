@@ -7,7 +7,9 @@ import { useClosedExperimentsQuery } from "../generated/graphql";
 import OfflineAlert from "./OfflineAlert";
 
 const ClosedExperiments: React.FC = () => {
-  const { data } = useClosedExperimentsQuery();
+  const { data } = useClosedExperimentsQuery({
+    fetchPolicy: "cache-and-network",
+  });
   const intl = useIntl();
 
   const getFormattedDate = (date: string) => {

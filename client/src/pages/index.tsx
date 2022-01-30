@@ -9,7 +9,9 @@ import SettingsPanel from "../components/settings-panel/SettingsPanel";
 import { useMeQuery } from "../generated/graphql";
 
 const Index = () => {
-  const { data } = useMeQuery();
+  const { data } = useMeQuery({
+    fetchPolicy: "cache-and-network",
+  });
   const [tabIndex, setTabIndex] = React.useState(0);
   const router = useRouter();
 
@@ -48,7 +50,7 @@ const Index = () => {
                 size="xl"
               />
             ) : (
-              <Calendar />
+              <Calendar active={tabIndex == 0} />
             )}
           </Center>
         </TabPanel>

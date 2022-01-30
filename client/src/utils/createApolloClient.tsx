@@ -11,8 +11,7 @@ import { CachePersistor, LocalStorageWrapper } from "apollo3-cache-persist";
 import { onError } from "@apollo/client/link/error";
 import Router from "next/router";
 
-// TODO: jak sie zmienia schemat trzeba zupdate'owac
-const SCHEMA_VERSION = "1.0";
+const SCHEMA_VERSION = process.env.SCHEMA_VERSION || "1.0";
 const SCHEMA_VERSION_KEY = "apollo-schema-version";
 
 export const createApolloClient = async () => {

@@ -3,10 +3,11 @@ import {
   Circle,
   Divider,
   Grid,
+  Spinner,
   Text,
   useColorMode,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Calendar.module.css";
 import router from "next/router";
 import { useDatesFromTimeRangeQuery } from "../generated/graphql";
@@ -17,12 +18,52 @@ import {
   shortWeekNames,
 } from "../utils/calendarUtils";
 import { FormattedMessage } from "react-intl";
+import OfflineAlert from "./OfflineAlert";
 
-const Calendar: React.FC = () => {
+const calendarYearHeight = 5600;
+
+interface CalendarProps {
+  active?: boolean;
+}
+
+const Calendar: React.FC<CalendarProps> = ({ active }) => {
+  const currDate = new Date();
+  const currYear = currDate.getFullYear();
+  const currMonth = currDate.getMonth();
+  const [years, setYears] = useState([currYear]);
+
+  const startDate = years[0];
+  const endDate = years[years.length - 1];
+
+  const { data, loading } = useDatesFromTimeRangeQuery({
+    variables: { before: `${endDate}-12-31`, after: `${startDate}-01-01` },
+    fetchPolicy: "cache-and-network",
+  });
+
+  const dates = data?.formsFromTimeRange?.map((form) =>
+    new Date(Number(form.createdAt)).setHours(0, 0, 0, 0)
+  );
+
   useEffect(() => {
     const scrollDiv = document?.getElementById("current")?.offsetTop;
     window.scrollTo({ top: scrollDiv, behavior: "auto" });
-  }, []);
+  }, [active]);
+
+  useEffect(() => {
+    if (!active) return;
+
+    const handleScroll = () => {
+      if (window.scrollY > 0 || loading) return;
+
+      setYears([years[0] - 1, ...years]);
+      window.scrollTo({ top: calendarYearHeight });
+    };
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [years, loading, active]);
 
   const { colorMode } = useColorMode();
 
@@ -122,30 +163,41 @@ const Calendar: React.FC = () => {
     );
   };
 
-  const currDate = new Date();
-  const month = currDate.getMonth();
-  const year = currDate.getFullYear();
-
-  const generateYearlyCalendar = (year: number) => {
-    const { data } = useDatesFromTimeRangeQuery({
-      variables: { before: `${year}-12-31`, after: `${year}-01-01` },
-      fetchPolicy: "cache-and-network",
-    });
-
-    const dates = data?.formsFromTimeRange?.map((form) =>
-      new Date(Number(form.createdAt)).setHours(0, 0, 0, 0)
-    );
-
-    return Array(12)
-      .fill(0)
-      .map((_, i) => (
-        <div key={i}>
-          {generateMonthlyCalendar(i, year, i === month, dates || [])}
-          {i < 11 ? <Divider mt={10} mb={10} /> : null}
-        </div>
-      ));
-  };
-  return <div className={styles.calendar}>{generateYearlyCalendar(year)}</div>;
+  return (
+    <div className={styles.calendar}>
+      {loading &&
+        (navigator.onLine ? (
+          <Center>
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+            />
+          </Center>
+        ) : (
+          <OfflineAlert fullData={false} />
+        ))}
+      {years.map((year) =>
+        Array(12)
+          .fill(0)
+          .map((_, i) => (
+            <div key={i}>
+              {generateMonthlyCalendar(
+                i,
+                year,
+                i === currMonth && year === currYear,
+                dates || []
+              )}
+              {currYear === year && i === 11 ? null : (
+                <Divider mt={10} mb={10} />
+              )}
+            </div>
+          ))
+      )}
+    </div>
+  );
 };
 
 export default Calendar;

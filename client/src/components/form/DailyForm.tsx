@@ -38,8 +38,9 @@ import StoolTypePopoverContent from "./StoolTypePopoverContent";
 import StoolTypeForm, { IStoolType } from "./StoolTypeForm";
 import SymptomForm, { ISymptom } from "./SymptomForm";
 import { FormikErrors, FormikTouched } from "formik";
-import { FormInput } from "../../generated/graphql";
+import { FormInput, useMeQuery } from "../../generated/graphql";
 import ExperimentFrom, { IExperiment } from "./ExperimentFrom";
+import { Gender } from "../../pages/register";
 
 interface DailyFormProps {
   loading?: boolean;
@@ -121,6 +122,9 @@ const DailyForm: React.FC<DailyFormProps> = ({
     symptoms.find((symptom) => symptom.isDangerous) ? onOpen() : onClose();
   }, [symptoms]);
   const intl = useIntl();
+  const meQuery = useMeQuery({
+    fetchPolicy: "cache-and-network",
+  });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -154,7 +158,6 @@ const DailyForm: React.FC<DailyFormProps> = ({
   };
 
   const handleAddStoolType = (type?: number) => {
-    //TODO: think about using uuid here later
     const id =
       stoolTypes.length > 0 ? stoolTypes[stoolTypes.length - 1].id + 1 : 0;
     const newStoolType: IStoolType = { id, type: type || 0, collapse: true };
@@ -184,7 +187,6 @@ const DailyForm: React.FC<DailyFormProps> = ({
     moodAfter?: number,
     name?: string
   ) => {
-    //TODO: think about using uuid here later
     const id =
       activities.length > 0 ? activities[activities.length - 1].id + 1 : 0;
     const newActivity: IActivity = {
@@ -206,7 +208,6 @@ const DailyForm: React.FC<DailyFormProps> = ({
   };
 
   const handleAddSymptom = (name?: string, intensity?: number) => {
-    //TODO: think about using uuid here later
     const id = symptoms.length > 0 ? symptoms[symptoms.length - 1].id + 1 : 0;
     const newSymptom: ISymptom = {
       id,
@@ -605,23 +606,24 @@ const DailyForm: React.FC<DailyFormProps> = ({
               size="lg"
             />
           </FormControl>
-          {/* TODO: only for women  */}
-          <FormControl
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            id="menstruation"
-          >
-            <FormLabel htmlFor="menstruation">
-              <FormattedMessage id="DailyForm.menstruation" />
-            </FormLabel>
-            <Switch
-              onChange={(e) => setMenstruation(e.target.checked)}
-              isChecked={menstruation || false}
-              mb={4}
-              size="lg"
-            />
-          </FormControl>
+          {meQuery.data?.me?.gender === Gender.FEMALE && (
+            <FormControl
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              id="menstruation"
+            >
+              <FormLabel htmlFor="menstruation">
+                <FormattedMessage id="DailyForm.menstruation" />
+              </FormLabel>
+              <Switch
+                onChange={(e) => setMenstruation(e.target.checked)}
+                isChecked={menstruation || false}
+                mb={4}
+                size="lg"
+              />
+            </FormControl>
+          )}
           <FormControl
             display="flex"
             alignItems="center"

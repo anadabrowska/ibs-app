@@ -43,7 +43,6 @@ enum Direction {
 }
 
 const DayPage: NextPage<{ date: string }> = ({ date }) => {
-  //TODO make this global
   const intl = useIntl();
 
   const [day, month, year] = date.split("-");
@@ -53,7 +52,9 @@ const DayPage: NextPage<{ date: string }> = ({ date }) => {
     fetchPolicy: "cache-and-network",
   });
 
-  const userQuery = useMeQuery();
+  const userQuery = useMeQuery({
+    fetchPolicy: "cache-and-network",
+  });
   const UserData = userQuery.data?.me;
 
   const getDifferentDayPath = (

@@ -15,7 +15,7 @@ module.exports = withPWA({
   },
 });
 
-//for dev tesintg turn of pwa fuctionalitites
+//for dev tesintg turn off pwa fuctionalitites
 
 // module.exports = {
 //   i18n: {

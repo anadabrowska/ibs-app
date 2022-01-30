@@ -30,6 +30,7 @@ const BottomNavigation: React.FC = () => {
 
   const { loading, data } = useDayFormQuery({
     variables: { date: `${year}-${month + 1}-${day}` },
+    fetchPolicy: "cache-and-network",
   });
 
   return (

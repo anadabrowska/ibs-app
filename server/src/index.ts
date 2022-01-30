@@ -29,7 +29,7 @@ const main = async () => {
     type: "postgres",
     url: process.env.DATABASE_URL || dbUrl,
     logging: true,
-    // comment for deployment
+    // true for deployment
     synchronize: process.env.NODE_ENV !== "production",
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [User, Form, Symptom, Activity, Experiment, ExperimentForm],

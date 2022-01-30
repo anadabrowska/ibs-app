@@ -35,9 +35,11 @@ const ExperimentDetails: NextPage<{ id: string }> = ({ id }) => {
 
   const experimentData = useExperimentQuery({
     variables: { id: parseInt(id) },
+    fetchPolicy: "cache-and-network",
   }).data;
 
   const { loading, data } = useExperimentFormsQuery({
+    fetchPolicy: "cache-and-network",
     variables: { id: parseInt(id) },
   });
   const [labels, setLabels] = useState<string[]>([]);
