@@ -10,7 +10,8 @@ export default {
     "general.yes": "Tak",
     "general.no": "Nie",
     "general.dangerous": "Niebezpieczny",
-    "general.daily-form": "Daily Form",
+    "general.daily-form": "Codzienny Formularz",
+    "general.day-page": "Strona dnia",
 
     "DailyForm.notes": "Notatki",
     "DailyForm.sleep": "Sen",
@@ -81,6 +82,7 @@ export default {
     "DayPage.experiemnts": "Eksperymenty",
     "DayPage.quantity": "Ilość",
     "DayPage.general-sensation": "Samopoczucie",
+    "DayPage.no-data": "Brak danych dla wybranego dnia",
     "DayPage.offline-message":
       "Jesteś w trybie offline. Ten formularz zostanie przesłany na serwer, gdy tylko odzyskasz odstęp do sieci.",
 
@@ -133,6 +135,7 @@ export default {
     "ForgotPassword.submitted-description":
       "Niedługo powinieneś otzymać email z linkiem, który pozwoli Ci zmienić hasło.",
     "ForgotPassword.header": "Wprowadź swój adres email aby zmienić hasło",
+    "ForgotPassword.back-to-login": "Wróć do strony logowania",
 
     "Login.sign-in": "Zaloguj się do swojego konta",
     "Login.forgot-password": "Zapomniałeś hasła?",
@@ -187,6 +190,7 @@ export default {
       "Nie możesz pobrać tych treści, ponieważ jesteś offline.",
     "OfflineAlert.partial-data-missing":
       "Nie możesz pobrać niektórych treści na stronie, ponieważ jesteś offline.",
+    "OfflineAlert.login": "Nie możesz się zalogować gdy jesteś offline",
 
     January: "Styczeń",
     February: "Luty",
@@ -245,6 +249,12 @@ export default {
     "moodOptions.ok": "ok",
     "moodOptions.bad": "zły",
     "moodOptions.terrible": "okropny",
+
+    "generalSensation.very-good": "bardzo dobre",
+    "generalSensation.good": "dobre",
+    "generalSensation.ok": "ok",
+    "generalSensation.bad": "złe",
+    "generalSensation.terrible": "okropne",
 
     "predefinedSymptom.flatulence": "wzdęcia",
     "predefinedSymptom.gases": "gazy",

@@ -70,7 +70,19 @@ function MyApp({ Component, pageProps }: AppProps) {
     const execute = async () => {
       const trackedQueries =
         JSON.parse(window.localStorage.getItem("trackedQueries") || "[]") || [];
-      const promises = trackedQueries.map(
+
+      const create = trackedQueries.find(
+        (query: any) => query.operationName === "createForm"
+      );
+      const update = trackedQueries
+        .reverse()
+        .find((query: any) => query.operationName === "updateForm");
+
+      const queries = [];
+      if (create) queries.push(create);
+      if (update) queries.push(update);
+
+      const promises = queries.map(
         client
           ? processOfflineQuery.bind(null, client)
           : displayOfflineQuery.bind(null, cache)

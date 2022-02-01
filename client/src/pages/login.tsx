@@ -1,6 +1,13 @@
 import React from "react";
 import { Form, Formik } from "formik";
-import { Button, Container, Heading, Link } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertIcon,
+  Button,
+  Container,
+  Heading,
+  Link,
+} from "@chakra-ui/react";
 import LoginFormWrapper from "../components/LoginFormWrapper";
 import FormInput from "../components/FormInput";
 import { useLoginMutation } from "../generated/graphql";
@@ -29,7 +36,13 @@ const Login: React.FC = () => {
       {(props) => (
         <LoginFormWrapper>
           <Form>
-            <Heading mb={4} as="h4" size="md">
+            {!navigator.onLine && (
+              <Alert my={5} status="info">
+                <AlertIcon />
+                <FormattedMessage id="OfflineAlert.login" />
+              </Alert>
+            )}
+            <Heading mb={4} as="h2" size="md">
               <FormattedMessage id="Login.sign-in" />
             </Heading>
             <FormInput

@@ -10,6 +10,8 @@ export default {
     "general.yes": "Yes",
     "general.no": "No",
     "general.dangerous": "Dangerous",
+    "general.daily-form": "Daily Form",
+    "general.day-page": "Day Page",
 
     "DailyForm.notes": "Notes",
     "DailyForm.sleep": "Sleep",
@@ -76,6 +78,7 @@ export default {
     "DayPage.experiemnts": "Experiments",
     "DayPage.quantity": "Quantity",
     "DayPage.general-sensation": "General sensation",
+    "DayPage.no-data": " No data for current day",
     "DayPage.offline-message":
       "You are offline. This form will be uploaded to the server as soon as you get back online.",
 
@@ -128,6 +131,7 @@ export default {
     "ForgotPassword.submitted-description":
       "Soon you should receive an email with a link that will allow you to change the password.",
     "ForgotPassword.header": "Enter your email to change the password",
+    "ForgotPassword.back-to-login": "Go back to login page",
 
     "Login.sign-in": "Sign in to your acconut",
     "Login.forgot-password": "Forgot password?",
@@ -182,6 +186,7 @@ export default {
       "You cannot fetch this content as you are offline.",
     "OfflineAlert.partial-data-missing":
       "You cannot fetch some of the page content because you are offline.",
+    "OfflineAlert.login": "You canot login when you are offline",
 
     January: "January",
     February: "February",
@@ -240,6 +245,12 @@ export default {
     "moodOptions.ok": "ok",
     "moodOptions.bad": "bad",
     "moodOptions.terrible": "terrible",
+
+    "generalSensation.very-good": "vary good",
+    "generalSensation.good": "good",
+    "generalSensation.ok": "ok",
+    "generalSensation.bad": "bad",
+    "generalSensation.terrible": "terrible",
 
     "predefinedSymptom.flatulence": "flatulence",
     "predefinedSymptom.gases": "gases",

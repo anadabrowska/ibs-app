@@ -13,6 +13,7 @@ import {
   DrawerHeader,
   DrawerOverlay,
   useDisclosure,
+  useColorMode,
 } from "@chakra-ui/react";
 import { faArrowRight, faUtensils } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -42,6 +43,7 @@ const OpenExperiments: React.FC = () => {
   }, []);
 
   const intl = useIntl();
+  const { colorMode } = useColorMode();
 
   const getFormattedDate = (date: string) => {
     const dateObj = new Date(parseInt(date));
@@ -58,7 +60,12 @@ const OpenExperiments: React.FC = () => {
   return (
     <Center mb={20}>
       <Stack spacing={4} px={3} pt={10} width={400}>
-        <Heading mb={10} textAlign={"center"}>
+        <Heading
+          as="h1"
+          mb={10}
+          textAlign={"center"}
+          color={colorMode === "dark" ? "white" : "black"}
+        >
           <FormattedMessage id="OpenExperiments.open-experiments" />
         </Heading>
         {navigator.onLine ? null : <OfflineAlert fullData={false} />}
@@ -80,6 +87,7 @@ const OpenExperiments: React.FC = () => {
                   fontWeight="bold"
                   lineHeight="tight"
                   color="teal"
+                  as="h2"
                 >
                   {experiment.productName}
                 </Box>
@@ -91,14 +99,15 @@ const OpenExperiments: React.FC = () => {
               justifyContent="space-between"
             >
               <Box>
-                <Box
+                <Heading
+                  as="h3"
                   mt={1}
                   fontWeight="bold"
                   lineHeight="tight"
-                  color="teal.400"
+                  size="sm"
                 >
                   <FormattedMessage id="OpenExperiments.start-date" />
-                </Box>
+                </Heading>
                 {getFormattedDate(experiment.startDate)}
               </Box>
               <Button

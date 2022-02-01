@@ -9,6 +9,7 @@ import {
   Heading,
   Spinner,
   Stack,
+  useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
 import { NextPage } from "next";
@@ -32,6 +33,7 @@ const ExperimentDetails: NextPage<{ id: string }> = ({ id }) => {
 
   const closeExperiment = useDisclosure();
   const intl = useIntl();
+  const { colorMode } = useColorMode();
 
   const experimentData = useExperimentQuery({
     variables: { id: parseInt(id) },
@@ -123,10 +125,18 @@ const ExperimentDetails: NextPage<{ id: string }> = ({ id }) => {
         </Circle>
         <Center py={12}>
           <Stack m={2}>
-            <Heading as="h1" textAlign={"center"}>
+            <Heading
+              as="h1"
+              textAlign={"center"}
+              color={colorMode === "dark" ? "white" : "black"}
+            >
               <FormattedMessage id="ExperimentDetails.experiment-details" />
             </Heading>
-            <Heading textAlign={"center"} size="xl">
+            <Heading
+              textAlign={"center"}
+              size="xl"
+              color={colorMode === "dark" ? "white" : "black"}
+            >
               {experimentData?.experiment?.productName}
             </Heading>
           </Stack>
@@ -143,8 +153,11 @@ const ExperimentDetails: NextPage<{ id: string }> = ({ id }) => {
           </Center>
         ) : (
           <Stack spacing={4} px={3}>
-            <Heading textAlign={"center"} size={"md"}>
-              {" "}
+            <Heading
+              textAlign={"center"}
+              size={"md"}
+              color={colorMode === "dark" ? "white" : "black"}
+            >
               <FormattedMessage id="ExperimentDetails.last-week-data" />
             </Heading>
             <Box
@@ -159,6 +172,7 @@ const ExperimentDetails: NextPage<{ id: string }> = ({ id }) => {
                 fontWeight="bold"
                 lineHeight="tight"
                 color="teal"
+                as="h2"
               >
                 <FormattedMessage id="ExperimentDetails.general-sensation" />
               </Box>
@@ -196,6 +210,7 @@ const ExperimentDetails: NextPage<{ id: string }> = ({ id }) => {
                 fontWeight="bold"
                 lineHeight="tight"
                 color="teal"
+                as="h2"
               >
                 <FormattedMessage id="ExperimentDetails.quantity" />
               </Box>
@@ -207,14 +222,15 @@ const ExperimentDetails: NextPage<{ id: string }> = ({ id }) => {
                     alignItems="center"
                     justifyContent="space-between"
                   >
-                    <Box
+                    <Heading
                       mt={1}
                       fontWeight="bold"
                       lineHeight="tight"
-                      color="teal.400"
+                      size="sm"
+                      as="h3"
                     >
                       {label}
-                    </Box>
+                    </Heading>
 
                     <Box display="flex" mt="2" alignItems="center">
                       {quantities[index] ? quantities[index] : "-"}

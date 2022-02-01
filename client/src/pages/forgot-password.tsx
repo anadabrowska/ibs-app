@@ -5,7 +5,9 @@ import {
   AlertTitle,
   Button,
   Collapse,
+  Container,
   Heading,
+  Link,
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
@@ -16,6 +18,7 @@ import FormInput from "../components/FormInput";
 import LoginFormWrapper from "../components/LoginFormWrapper";
 import { useForgotPasswordMutation } from "../generated/graphql";
 import { mapErrors } from "../utils/mapErrors";
+import NextLink from "next/link";
 
 const ForgotPassword = () => {
   const [forgotPassword] = useForgotPasswordMutation();
@@ -75,6 +78,13 @@ const ForgotPassword = () => {
                 <FormattedMessage id="general.submit" />
               </Button>
             </Form>
+            <Container mt={4} textAlign="center">
+              <NextLink href="/login">
+                <Link color="teal.500">
+                  <FormattedMessage id="ForgotPassword.back-to-login" />
+                </Link>
+              </NextLink>
+            </Container>
           </VStack>
         </LoginFormWrapper>
       )}

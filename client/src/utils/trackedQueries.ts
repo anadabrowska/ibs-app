@@ -12,29 +12,35 @@ type ContextType = Omit<
   "context"
 >;
 
-export const dayFormOptimistic = (formState: any): FormResponse => {
-  const optimisticId = new Date().getTime() * -1;
+export const dayFormOptimistic = (
+  formState: any,
+  id?: number
+): FormResponse => {
+  const dateString = new Date().toISOString().split("T")[0];
+  const optimisticId = (id || new Date(dateString).getTime()) * -1;
 
   return {
     form: {
       id: optimisticId,
       createdAt: new Date().getTime().toString(),
       ...formState,
-      symptoms: formState.symptoms.map((symptom: any) => ({
-        id: optimisticId,
+      symptoms: formState.symptoms.map((symptom: any, index: number) => ({
+        id: optimisticId + index,
         ...symptom,
         __typename: "Symptom",
       })),
-      activities: formState.activities.map((activity: any) => ({
-        id: optimisticId,
+      activities: formState.activities.map((activity: any, index: number) => ({
+        id: optimisticId + index,
         ...activity,
         __typename: "Activity",
       })),
-      experiments: formState.experiments.map((experiment: any) => ({
-        id: optimisticId,
-        ...experiment,
-        __typename: "ExperimentForm",
-      })),
+      experiments: formState.experiments.map(
+        (experiment: any, index: number) => ({
+          id: optimisticId + index,
+          ...experiment,
+          __typename: "ExperimentForm",
+        })
+      ),
       __typename: "Form",
     },
     errors: [],
@@ -95,8 +101,9 @@ export const displayOfflineQuery = (cache: CacheType, offlineQuery: any) => {
       data: { createForm: dayFormOptimistic(formState) },
     });
   } else if (operationName === "updateForm") {
+    const id = new Date(variables.date || 0).getTime();
     dayFormUpdate(cache, {
-      data: { updateForm: dayFormOptimistic(formState) },
+      data: { updateForm: dayFormOptimistic(formState, id) },
     });
   }
 };

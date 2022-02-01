@@ -28,7 +28,7 @@ const BottomNavigation: React.FC = () => {
   const year = today.getFullYear();
   const day = today.getDate();
 
-  const { loading, data } = useDayFormQuery({
+  const { data } = useDayFormQuery({
     variables: { date: `${year}-${month + 1}-${day}` },
     fetchPolicy: "cache-and-network",
   });

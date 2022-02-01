@@ -10,6 +10,7 @@ import {
   Divider,
   Button,
   useDisclosure,
+  useColorMode,
 } from "@chakra-ui/react";
 import {
   faUserAstronaut,
@@ -43,6 +44,7 @@ const SettingsPanel: React.FC = () => {
   useEffect(() => {
     setScreenWidth(window.innerWidth);
   }, []);
+  const { colorMode } = useColorMode();
 
   return (
     <Stack width="100%" direction="column">
@@ -71,7 +73,7 @@ const SettingsPanel: React.FC = () => {
           </Stack>
         </Box>
       </Center>
-      <Heading>
+      <Heading color={colorMode === "dark" ? "white" : "black"}>
         <FormattedMessage id="SettingsPanel.settings" />
       </Heading>
       <List>
@@ -154,7 +156,7 @@ const SettingsPanel: React.FC = () => {
           colorScheme="teal"
           variant="outline"
           onClick={async () => {
-            await logout();
+            if (navigator.onLine) await logout();
             await apolloClient.clearStore();
             await router.replace("/login");
           }}

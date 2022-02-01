@@ -21,3 +21,11 @@ export const moodOptions: RadioOpiton[] = [
   { title: "moodOptions.bad", icon: "frown-open", rate: 2 },
   { title: "moodOptions.terrible", icon: "grimace", rate: 1 },
 ];
+
+export const generalSensationOptions: RadioOpiton[] = [
+  { title: "generalSensation.very-good", icon: "grin-stars", rate: 5 },
+  { title: "generalSensation.good", icon: "grin", rate: 4 },
+  { title: "generalSensation.ok", icon: "meh", rate: 3 },
+  { title: "generalSensation.bad", icon: "frown-open", rate: 2 },
+  { title: "generalSensation.terrible", icon: "grimace", rate: 1 },
+];

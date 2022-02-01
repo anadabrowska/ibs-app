@@ -712,7 +712,7 @@ const DailyForm: React.FC<DailyFormProps> = ({
           mt={4}
           colorScheme="teal"
           onClick={onSubmit as any}
-          isLoading={loading}
+          isLoading={loading && navigator.onLine}
           type="submit"
         >
           <FormattedMessage id="general.submit" />

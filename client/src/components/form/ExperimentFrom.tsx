@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { moodOptions } from "../../utils/dailyFormUtils";
+import { generalSensationOptions } from "../../utils/dailyFormUtils";
 import RadioCard, { RadioType } from "../RadioCard";
 
 export interface IExperiment {
@@ -32,14 +32,15 @@ const ExperimentFrom: React.FC<IExperimentForm> = ({
   const intl = useIntl();
 
   const getGeneralSensationRadioProps = useRadioGroup({
-    value: moodOptions.find(
+    value: generalSensationOptions.find(
       (option) => option.rate === experiment.generalSensation
     )?.title,
     onChange: (value) =>
       setExperiment({
         ...experiment,
         generalSensation:
-          moodOptions.find((option) => option.title === value)?.rate || 0,
+          generalSensationOptions.find((option) => option.title === value)
+            ?.rate || 0,
       }),
   });
 
@@ -72,7 +73,7 @@ const ExperimentFrom: React.FC<IExperimentForm> = ({
           justifyContent="space-between"
           {...getGeneralSensationRadioProps.getRootProps()}
         >
-          {moodOptions.map((option) => {
+          {generalSensationOptions.map((option) => {
             const radio = getGeneralSensationRadioProps.getRadioProps({
               value: option.title,
             });
@@ -83,7 +84,7 @@ const ExperimentFrom: React.FC<IExperimentForm> = ({
                 icon={option.icon}
                 title={option.title}
                 rate={option.rate}
-                radioName="moodAfter"
+                radioName="experiment"
                 {...radio}
               >
                 {option}

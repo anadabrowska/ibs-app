@@ -8,6 +8,7 @@ import {
   Heading,
   Container,
   Box,
+  useColorMode,
 } from "@chakra-ui/react";
 import React from "react";
 import { FormattedMessage } from "react-intl";
@@ -19,6 +20,7 @@ interface AboutUsProps {
 }
 
 const AboutUs: React.FC<AboutUsProps> = ({ isOpen, screenWidth, onClose }) => {
+  const { colorMode } = useColorMode();
   return (
     <Drawer
       size={screenWidth > 425 ? "md" : "full"}
@@ -33,11 +35,19 @@ const AboutUs: React.FC<AboutUsProps> = ({ isOpen, screenWidth, onClose }) => {
           <FormattedMessage id="AboutUs.about-us" />
         </DrawerHeader>
         <DrawerBody>
-          <Heading as="h1" size="md">
+          <Heading
+            as="h1"
+            size="md"
+            color={colorMode === "dark" ? "white" : "black"}
+          >
             <FormattedMessage id="AboutUs.what-is-ibs-monitor" />
           </Heading>
           <Box padding={5}>
-            <Heading as="h2" size="sm">
+            <Heading
+              as="h2"
+              size="sm"
+              color={colorMode === "dark" ? "white" : "black"}
+            >
               <FormattedMessage id="AboutUs.about-ibs-monitor" />
             </Heading>
             <Container mt={5}>
@@ -46,7 +56,12 @@ const AboutUs: React.FC<AboutUsProps> = ({ isOpen, screenWidth, onClose }) => {
             <Container mt={2}>
               <FormattedMessage id="AboutUs.about-ibs-monitor-pt2" />
             </Container>
-            <Heading as="h2" size="sm" mt={5}>
+            <Heading
+              as="h2"
+              size="sm"
+              mt={5}
+              color={colorMode === "dark" ? "white" : "black"}
+            >
               <FormattedMessage id="AboutUs.what-we-stand-for" />
             </Heading>
             <Container mt={5}>

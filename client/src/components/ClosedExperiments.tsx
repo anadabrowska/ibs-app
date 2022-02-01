@@ -1,4 +1,12 @@
-import { Center, Stack, Heading, GridItem, Box, Grid } from "@chakra-ui/react";
+import {
+  Center,
+  Stack,
+  Heading,
+  GridItem,
+  Box,
+  Grid,
+  useColorMode,
+} from "@chakra-ui/react";
 import { faCheck, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
@@ -11,6 +19,7 @@ const ClosedExperiments: React.FC = () => {
     fetchPolicy: "cache-and-network",
   });
   const intl = useIntl();
+  const { colorMode } = useColorMode();
 
   const getFormattedDate = (date: string) => {
     const dateObj = new Date(parseInt(date));
@@ -27,7 +36,12 @@ const ClosedExperiments: React.FC = () => {
   return (
     <Center mb={20}>
       <Stack spacing={4} px={3} pt={10} width={400}>
-        <Heading mb={10} textAlign={"center"}>
+        <Heading
+          as="h1"
+          mb={10}
+          textAlign={"center"}
+          color={colorMode === "dark" ? "white" : "black"}
+        >
           <FormattedMessage id="ClosedExperiments.closed-experiments" />
         </Heading>
 
@@ -62,6 +76,7 @@ const ClosedExperiments: React.FC = () => {
                   </GridItem>
                   <GridItem colSpan={4}>
                     <Box
+                      as="h2"
                       fontSize={25}
                       fontWeight="bold"
                       lineHeight="tight"
@@ -78,9 +93,14 @@ const ClosedExperiments: React.FC = () => {
                     alignItems="center"
                     justifyContent="space-between"
                   >
-                    <Box fontWeight="bold" lineHeight="tight" color="teal.400">
+                    <Heading
+                      fontWeight="bold"
+                      lineHeight="tight"
+                      size="sm"
+                      as="h3"
+                    >
                       <FormattedMessage id="ClosedExperiments.tolerated-amount" />
-                    </Box>
+                    </Heading>
                     <Box>{experiment.quantity}</Box>
                   </Box>
                 ) : null}
@@ -91,38 +111,41 @@ const ClosedExperiments: React.FC = () => {
                   justifyContent="space-between"
                 >
                   <Box>
-                    <Box
+                    <Heading
                       mt={1}
                       fontWeight="bold"
                       lineHeight="tight"
-                      color="teal.400"
                       mr={3}
+                      size="sm"
+                      as="h3"
                     >
                       <FormattedMessage id="ClosedExperiments.start-date" />
-                    </Box>
+                    </Heading>
                     {getFormattedDate(experiment.startDate)}
                   </Box>
                   <Box textAlign={"right"}>
-                    <Box
+                    <Heading
                       mt={1}
                       fontWeight="bold"
                       lineHeight="tight"
-                      color="teal.400"
+                      size="sm"
+                      as="h3"
                       ml={3}
                     >
                       <FormattedMessage id="ClosedExperiments.end-date" />
-                    </Box>
+                    </Heading>
                     {getFormattedDate(experiment.endDate || "")}
                   </Box>
                 </Box>
-                <Box
+                <Heading
                   mt={5}
                   fontWeight="bold"
                   lineHeight="tight"
-                  color="teal.400"
+                  size="sm"
+                  as="h3"
                 >
                   <FormattedMessage id="DailyForm.notes" />
-                </Box>
+                </Heading>
                 <Box mt={1} borderWidth="1px" borderRadius="lg" padding={3}>
                   {experiment.notes ||
                     intl.formatMessage({ id: "DayPage.no-notes" })}
