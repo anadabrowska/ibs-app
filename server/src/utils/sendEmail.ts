@@ -1,13 +1,14 @@
 import nodemailer from "nodemailer";
 
 export async function sendEmail(to: string, subject: string, message: string) {
+  const port = parseInt(process.env.EMAIL_PORT || "465");
   let transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false, // true for 465, false for other ports
+    host: process.env.EMAIL_HOST,
+    port,
+    secure: port === 465, // true for 465, false for other ports
     auth: {
-      user: process.env.NODEMAILER_USER,
-      pass: process.env.NODEMAILER_PASS,
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
   });
 

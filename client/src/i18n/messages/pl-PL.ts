@@ -209,8 +209,8 @@ export default {
     Sat: "Sb",
     Sun: "Nd",
 
-    "Password.hide": "Pokaż",
-    "Password.show": "Ukryj",
+    "Password.hide": "Ukryj",
+    "Password.show": "Pokaż",
 
     "UserError.password.invalid": "Nieprawidłowe hasło, spróbuj ponownie",
     "UserError.password.not-fulfill-requirements":

@@ -45,7 +45,6 @@ const ChangePassword: NextPage<{ token: string }> = ({ token }) => {
               response.data.changePassword.errors,
               intl
             );
-            //TODO: deal with token errors
             if ("token" in errorMap) {
               setTokenErrorMessage(errorMap.token);
             }

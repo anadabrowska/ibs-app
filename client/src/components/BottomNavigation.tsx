@@ -72,14 +72,14 @@ const BottomNavigation: React.FC = () => {
             borderColor="teal.300"
             borderWidth={5}
             onClick={() => {
-              !loading && data?.dayForm != null
+              data?.dayForm != null
                 ? router.push(`/update-form/${day}-${month + 1}-${year}`)
                 : router.push(`/create-form/${day}-${month + 1}-${year}`);
             }}
           >
             <FontAwesomeIcon
               color="gray"
-              icon={!loading && data?.dayForm != null ? faPen : faPlus}
+              icon={data?.dayForm != null ? faPen : faPlus}
             />
           </Circle>
         </Box>

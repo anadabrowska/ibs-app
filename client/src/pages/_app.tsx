@@ -23,7 +23,10 @@ import {
   displayOfflineQuery,
   processOfflineQuery,
 } from "../utils/trackedQueries";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 
+config.autoAddCss = false;
 library.add(far, fas);
 
 function MyApp({ Component, pageProps }: AppProps) {

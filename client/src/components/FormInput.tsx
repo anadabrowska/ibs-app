@@ -36,7 +36,7 @@ const FormInput: React.FC<FieldProps> = (props) => {
         {props.type === "password" && (
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleClick}>
-              <FormattedMessage id={show ? "Password.show" : "Password.hide"} />
+              <FormattedMessage id={show ? "Password.hide" : "Password.show"} />
             </Button>
           </InputRightElement>
         )}

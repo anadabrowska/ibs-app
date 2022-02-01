@@ -103,7 +103,7 @@ const OpenExperiments: React.FC = () => {
               </Box>
               <Button
                 width={110}
-                isLoading={loading}
+                isLoading={loading && navigator.onLine}
                 disabled={!navigator.onLine}
                 rightIcon={<FontAwesomeIcon icon={faArrowRight} />}
                 colorScheme="teal"
@@ -119,7 +119,7 @@ const OpenExperiments: React.FC = () => {
           </Box>
         ))}
         <Button
-          isLoading={loading}
+          isLoading={loading && navigator.onLine}
           disabled={!navigator.onLine}
           rightIcon={<FontAwesomeIcon icon={faArrowRight} />}
           data-testid="new-experiment-button"

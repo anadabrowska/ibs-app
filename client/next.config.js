@@ -14,12 +14,3 @@ module.exports = withPWA({
     sw: "sw.js",
   },
 });
-
-//for dev tesintg turn off pwa fuctionalitites
-
-// module.exports = {
-//   i18n: {
-//     locales: ["pl-PL", "en-US"],
-//     defaultLocale: "pl-PL",
-//   },
-// };
