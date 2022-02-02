@@ -58,7 +58,7 @@ export const createApolloClient = async () => {
     const trackedQueries =
       JSON.parse(window.localStorage.getItem("trackedQueries") || "[]") || [];
 
-    if (context.tracked !== undefined) {
+    if (context.tracked) {
       const { operationName, query, variables } = operation;
 
       const newTrackedQuery = {
@@ -71,18 +71,10 @@ export const createApolloClient = async () => {
         "trackedQueries",
         JSON.stringify([...trackedQueries, newTrackedQuery])
       );
+
+      return null;
     }
-
-    return forward(operation).map((data) => {
-      if (context.tracked !== undefined) {
-        window.localStorage.setItem(
-          "trackedQueries",
-          JSON.stringify(trackedQueries)
-        );
-      }
-
-      return data;
-    });
+    return forward(operation);
   });
 
   const link = ApolloLink.from([

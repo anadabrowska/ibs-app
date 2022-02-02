@@ -30,6 +30,7 @@ config.autoAddCss = false;
 library.add(far, fas);
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const [online, setOnline] = useState(true);
   const [loading, setLoading] = useState(true);
   const [locale, setLocale] = useState(LOCALES.ENGLISH);
   const [client, setClient] =
@@ -45,23 +46,38 @@ function MyApp({ Component, pageProps }: AppProps) {
       locale = localeCached;
     }
 
+    setOnline(window.navigator.onLine);
     setLocale(locale === "pl-PL" ? LOCALES.POLISH : LOCALES.ENGLISH);
     localStorage?.setItem(
       "locale",
       locale === "pl-PL" ? LOCALES.POLISH : LOCALES.ENGLISH
     );
 
-    const localStorageLangHandler = function (e: LangChangeEvent) {
+    function localStorageLangHandler(e: LangChangeEvent) {
       e.key === "locale" && e.value ? setLocale(e.value) : null;
-    };
+    }
+
+    function onlineHandler() {
+      setOnline(true);
+    }
+    function offlineHandler() {
+      setOnline(false);
+    }
 
     document.addEventListener("languageChange", localStorageLangHandler, false);
+    window.addEventListener("online", onlineHandler);
+    window.addEventListener("offline", offlineHandler);
 
     createApolloClient().then((res) => {
       setClient(res.client);
       setCache(res.cache);
       setLoading(false);
     });
+
+    return () => {
+      window.removeEventListener("online", onlineHandler);
+      window.removeEventListener("offline", offlineHandler);
+    };
   }, []);
 
   useEffect(() => {
@@ -99,7 +115,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     };
 
     execute();
-  }, [client, cache]);
+  }, [client, cache, online]);
 
   return (
     <>

@@ -148,7 +148,7 @@ const CreateForm: NextPage<{ date: string }> = ({ date }) => {
               router.push(`/day/${day}-${month}-${year}`);
             }
           },
-          context: { tracked: true },
+          context: { tracked: !navigator.onLine },
         });
       }}
     >
