@@ -20,7 +20,7 @@ import {
 import { FormattedMessage } from "react-intl";
 import OfflineAlert from "./OfflineAlert";
 
-const calendarYearHeight = 5600;
+const calendarYearHeight = 5250;
 
 interface CalendarProps {
   active?: boolean;
@@ -40,8 +40,8 @@ const Calendar: React.FC<CalendarProps> = ({ active }) => {
     fetchPolicy: "cache-and-network",
   });
 
-  const dates = data?.formsFromTimeRange?.map((form) =>
-    new Date(Number(form.createdAt)).setHours(0, 0, 0, 0)
+  const dates = data?.formsFromTimeRange?.map(
+    (form) => new Date(Number(form.createdAt)).toISOString().split("T")[0]
   );
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const Calendar: React.FC<CalendarProps> = ({ active }) => {
     month: number,
     year: number,
     current: boolean,
-    dates: number[]
+    dates: string[]
   ) => {
     const firstDay = new Date(year, month, 1);
 
@@ -81,8 +81,10 @@ const Calendar: React.FC<CalendarProps> = ({ active }) => {
 
     for (let i = 0; i <= daysInMonth[month] + start - 1; i++) {
       const day = i - start + 1;
-      const currentDate = new Date(`${year}-${month + 1}-${day}`);
-      const hasForm = dates.includes(currentDate.setHours(0, 0, 0, 0));
+      const currentDate = new Date(Date.UTC(year, month, day))
+        .toISOString()
+        .split("T")[0];
+      const hasForm = dates.includes(currentDate);
       if (i < start) {
         monthDays.push(<Center key={day} className={styles.monthDay}></Center>);
       } else {
